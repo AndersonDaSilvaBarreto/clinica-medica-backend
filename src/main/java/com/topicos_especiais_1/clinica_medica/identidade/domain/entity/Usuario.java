@@ -1,11 +1,11 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.entity;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Perfil;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.UsuarioId;
 import jakarta.persistence.*;
 import lombok.Getter;
+
+import java.time.Instant;
 
 @Table(name = "usuarios")
 @Entity
@@ -16,14 +16,26 @@ public class Usuario {
     private UsuarioId id;
 
     @Embedded
-    private Senha senha;
+    private Nome nome;
 
     @Embedded
     private Email email;
 
+    @Embedded
+    private Senha senha;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "perfil", nullable = false)
     private Perfil perfil;
+
+    @Embedded
+    private Telefone telefone;
+
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo;
+
+    @Column(name = "data_criacao", nullable = false)
+    private Instant dataCriacao;
 
 
 

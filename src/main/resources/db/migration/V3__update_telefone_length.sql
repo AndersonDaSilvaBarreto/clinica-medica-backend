@@ -1,0 +1,2 @@
+ALTER TABLE usuarios
+ALTER COLUMN telefone TYPE VARCHAR(11);

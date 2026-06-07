@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.shared.domain;
 
+import com.github.f4b6a3.uuid.UuidCreator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
@@ -12,13 +13,17 @@ import java.util.UUID;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class EntityId {
-    @Id
+
     @EqualsAndHashCode.Include
     @Column(name = "id")
     private UUID value;
 
     protected EntityId(@NonNull UUID value) {
         this.value = value;
+    }
+
+    protected static UUID generateUuidV7() {
+        return UuidCreator.getTimeOrderedEpoch();
     }
 
     @Override

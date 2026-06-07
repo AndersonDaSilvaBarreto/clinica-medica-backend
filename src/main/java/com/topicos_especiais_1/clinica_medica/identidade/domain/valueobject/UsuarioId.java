@@ -1,6 +1,5 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import com.topicos_especiais_1.clinica_medica.shared.domain.EntityId;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -16,11 +15,10 @@ public final class UsuarioId extends EntityId {
         super(value);
     }
     public static UsuarioId generate() {
-        return new UsuarioId(UuidCreator.getTimeOrderedEpoch());
+        return new UsuarioId(EntityId.generateUuidV7());
     }
     public static UsuarioId of(@NonNull UUID value) {
         return new UsuarioId(value);
     }
-
 
 }

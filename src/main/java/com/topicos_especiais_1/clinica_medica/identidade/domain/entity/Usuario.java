@@ -45,14 +45,12 @@ public class Usuario  {
             @NonNull Nome nome,
             @NonNull Email email,
             @NonNull Senha senha,
-            Perfil perfil,
-            Telefone telefone) {
+            Perfil perfil) {
         this.id = UsuarioId.generate();
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.perfil = perfil != null ? perfil : Perfil.PACIENTE;
-        this.telefone = telefone;
         this.ativo = true;
         this.dataCriacao = Instant.now();
     }
@@ -60,18 +58,20 @@ public class Usuario  {
     public static Usuario createPaciente(
             @NonNull Nome nome,
             @NonNull Email email,
-            @NonNull Senha senha,
-            Telefone telefone) {
-        return new Usuario(nome, email, senha, Perfil.PACIENTE, telefone);
+            @NonNull Senha senha) {
+        return new Usuario(nome, email, senha, Perfil.PACIENTE);
     }
 
     public static Usuario createFuncionario(
             @NonNull Nome nome,
             @NonNull Email email,
             @NonNull Senha senha,
-            @NonNull Perfil perfil,
-            Telefone telefone) {
-        return new Usuario(nome, email, senha, perfil, telefone);
+            @NonNull Perfil perfil) {
+        return new Usuario(nome, email, senha, perfil);
+    }
+
+    public void mudarTelefone(@NonNull Telefone telefone) {
+        this.telefone = telefone;
     }
 
     public Optional<Telefone> getTelefone() {

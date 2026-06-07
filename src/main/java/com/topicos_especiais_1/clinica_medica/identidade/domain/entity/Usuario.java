@@ -2,11 +2,14 @@ package com.topicos_especiais_1.clinica_medica.identidade.domain.entity;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.Perfil;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -29,6 +32,7 @@ public class Usuario  {
     private Senha senha;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "perfil", nullable = false)
     private Perfil perfil;
 

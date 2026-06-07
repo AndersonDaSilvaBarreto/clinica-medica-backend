@@ -1,4 +1,4 @@
-package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
+package com.topicos_especiais_1.clinica_medica.shared.domain;
 
 public enum Perfil {
     ADMINISTRADOR,

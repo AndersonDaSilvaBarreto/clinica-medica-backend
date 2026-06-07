@@ -5,6 +5,8 @@ import com.resend.Resend;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.CreateEmailOptions;
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.service.NotificacaoService;
+import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,11 @@ public class ResendEmailService implements NotificacaoService {
         this.resend = new Resend(apiKey);
     }
     @Override
-    public void enviarEmail(String destinatario, String assunto, String corpo) {
+    public void enviarEmail(@NonNull Email destinatario,@NonNull String assunto, String corpo) {
 
         CreateEmailOptions createEmailOptions = CreateEmailOptions.builder()
                 .from(from)
-                .to(destinatario)
+                .to(destinatario.toString())
                 .subject(assunto)
                 .html(corpo)
                 .build();

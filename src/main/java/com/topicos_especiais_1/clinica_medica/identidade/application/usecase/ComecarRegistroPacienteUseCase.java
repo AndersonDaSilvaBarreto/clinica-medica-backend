@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
@@ -30,6 +31,7 @@ public class ComecarRegistroPacienteUseCase {
     private final RedisTemplate<Object, Object> redisTemplate;
     private final ApplicationEventPublisher eventPublisher;
 
+    @Transactional(readOnly = true)
     public String execute(RegisterDto dto) {
         Nome nome = Nome.of(dto.name());
         Email email = Email.of(dto.email());
@@ -51,7 +53,7 @@ public class ComecarRegistroPacienteUseCase {
             redisTemplate.opsForValue().set(chave, json, EXPIRACAO);
             eventPublisher.publishEvent(
                     new VerificacaoSolicitadaEvent(
-                            email.toString(),
+                            email,
                             codigo
                     )
             );

@@ -32,7 +32,7 @@ public final class Telefone {
     }
     @Override
     public String toString() {
-        return value;
+        return getValue();
     }
 
 }

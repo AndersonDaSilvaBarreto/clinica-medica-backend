@@ -34,6 +34,6 @@ public final class Nome {
     }
     @Override
     public String toString() {
-        return value;
+        return getValue();
     }
 }

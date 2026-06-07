@@ -9,14 +9,12 @@ public record RegisterDto(
         @NotNull(message = "Nome não pode ser nulo")
         @NotBlank(message = "Nome não pode ser vazio")
         @Length(min=2,max=150,message = "Nome deve ter de 2 até 150 caracteres")
-        String nome,
+        String name,
         @NotNull(message = "Email não pode ser nulo")
         @NotBlank(message = "Email não pode ser vazio")
         String email,
         @NotNull(message = "Senha não pode ser nulo")
         @NotBlank(message = "Senha não pode ser vazio")
-        String senha,
-        @Length(min = 11,max = 11,message = "Telefone deve ter exatamente 11 caracteres")
-        String telefone
+        String password
 ) {
 }

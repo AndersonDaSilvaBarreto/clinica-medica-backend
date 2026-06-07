@@ -23,4 +23,9 @@ public final class Senha {
     public static Senha ofHash(@NonNull String hash) {
         return new Senha(hash);
     }
+
+    @Override
+    public String toString() {
+        return getValue();
+    }
 }

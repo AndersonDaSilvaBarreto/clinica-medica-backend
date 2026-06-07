@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UsuarioDetailsService implements UserDetailsService {
     private final UsuarioRepository repository;
+
     @Override
-    public @NonNull UserDetails loadUserByUsername(@NonNull String email)  {
+    public @NonNull UserDetails loadUserByUsername(@NonNull String email) {
         return repository.buscarPorEmail(Email.of(email))
                 .map(UsuarioAutenticado::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));

@@ -7,9 +7,11 @@ public class UsuarioNaoEncontradoException extends RuntimeException {
     public UsuarioNaoEncontradoException() {
         super("Usuário não encontrado");
     }
+
     private UsuarioNaoEncontradoException(String message) {
         super(message);
     }
+
     public static UsuarioNaoEncontradoException porId(UsuarioId usuarioId) {
         return new UsuarioNaoEncontradoException(
                 "Usuário com o id " + usuarioId.toString() + " não encontrado");

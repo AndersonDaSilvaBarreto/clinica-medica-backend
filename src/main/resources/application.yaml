@@ -10,3 +10,5 @@ spring:
   flyway:
     community-db-support-enabled: true
     baseline-on-migrate: true
+jwt:
+    secret: ${JWT_SECRET:my_secret}

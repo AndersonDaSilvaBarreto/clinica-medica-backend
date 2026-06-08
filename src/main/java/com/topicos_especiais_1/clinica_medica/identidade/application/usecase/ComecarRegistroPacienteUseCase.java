@@ -7,7 +7,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.Usuar
 import com.topicos_especiais_1.clinica_medica.identidade.domain.service.CodeGenerator;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Nome;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
-import com.topicos_especiais_1.clinica_medica.identidade.infra.web.dto.RegisterDto;
+import com.topicos_especiais_1.clinica_medica.identidade.web.dto.RegisterDto;
 import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

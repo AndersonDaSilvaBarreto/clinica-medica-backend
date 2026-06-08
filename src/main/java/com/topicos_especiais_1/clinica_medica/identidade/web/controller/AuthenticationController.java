@@ -1,8 +1,8 @@
-package com.topicos_especiais_1.clinica_medica.identidade.infra.web.controller;
+package com.topicos_especiais_1.clinica_medica.identidade.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.ComecarRegistroPacienteUseCase;
-import com.topicos_especiais_1.clinica_medica.identidade.infra.web.dto.AuthenticationDto;
-import com.topicos_especiais_1.clinica_medica.identidade.infra.web.dto.RegisterDto;
+import com.topicos_especiais_1.clinica_medica.identidade.web.dto.AuthenticationDto;
+import com.topicos_especiais_1.clinica_medica.identidade.web.dto.RegisterDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

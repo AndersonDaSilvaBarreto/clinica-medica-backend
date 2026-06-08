@@ -26,7 +26,7 @@ public class RefreshUseCase {
         if (oldRefreshToken == null) {
             throw new CodigoExpiradoException(CodigoExpiradoException.REFRESH_TOKEN_EXPIRADO);
         }
-        String chaveAntiga = "refresh:" + oldRefreshToken;
+        String chaveAntiga = RedisService.REFRESH_KEY + oldRefreshToken;
         var dados = redisService.buscar(
                 chaveAntiga,
                 DadosRefreshToken.class
@@ -37,11 +37,10 @@ public class RefreshUseCase {
                 .orElseThrow(() -> UsuarioNaoEncontradoException.porId(dados.usuarioId()));
         String accessToken = tokenService.generateToken(usuario);
         String refresToken = tokenService.generateRefreshToken();
-        String chaveNova = "refresh:" + refresToken;
-        redisService.deletar("refresh:" + oldRefreshToken);
+        String chaveNova = RedisService.REFRESH_KEY + refresToken;
+        redisService.deletar(RedisService.REFRESH_KEY + oldRefreshToken);
         redisService.salvar(chaveNova, new DadosRefreshToken(usuario.getId()), Duration.ofDays(7));
-
-
+        
         return new AuthenticateResponse(
                 accessToken,
                 refresToken

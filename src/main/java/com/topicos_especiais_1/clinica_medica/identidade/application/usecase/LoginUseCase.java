@@ -37,7 +37,7 @@ public class LoginUseCase {
                 usuario.getId()
         );
         redisService.salvar(
-                "refresh:"+refreshToken,
+                RedisService.REFRESH_KEY+refreshToken,
                 dadosRefreshToken,
                 Duration.ofDays(7)
         );

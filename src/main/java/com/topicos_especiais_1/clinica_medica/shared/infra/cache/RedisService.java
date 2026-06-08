@@ -16,6 +16,7 @@ import java.util.Optional;
 public class RedisService {
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
+    public static final String REFRESH_KEY = "refresh:";
 
     public <T> void salvar(String chave, T dados, Duration expiracao) {
         try {

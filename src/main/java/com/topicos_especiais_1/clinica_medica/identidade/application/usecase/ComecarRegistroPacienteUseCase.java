@@ -28,7 +28,7 @@ public class ComecarRegistroPacienteUseCase {
     private final RedisService redisService;
 
     @Transactional(readOnly = true)
-    public String execute(RegisterDto dto) {
+    public void execute(RegisterDto dto) {
         Nome nome = Nome.of(dto.name());
         Email email = Email.of(dto.email());
         Senha senha = Senha.of(dto.password());
@@ -57,8 +57,5 @@ public class ComecarRegistroPacienteUseCase {
                         codigo
                 )
         );
-        return codigo;
-
-
     }
 }

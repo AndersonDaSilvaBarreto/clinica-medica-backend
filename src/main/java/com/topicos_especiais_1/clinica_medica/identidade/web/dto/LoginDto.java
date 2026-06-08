@@ -4,12 +4,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record AuthenticationDto(
-        @NotNull(message = "Email não pode ser nulo")
+public record LoginDto(
         @NotBlank(message = "Email não pode ser vazio")
         @Email
         String email,
-        @NotNull(message = "Senha não pode ser nula")
         @NotBlank(message = "Senha não pode ser vazia")
         String senha
 ) {

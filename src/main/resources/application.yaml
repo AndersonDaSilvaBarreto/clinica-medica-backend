@@ -10,6 +10,11 @@ spring:
   flyway:
     community-db-support-enabled: true
     baseline-on-migrate: true
+  threads:
+    virtual:
+      enabled: true
+  main:
+    keep-alive: true
 jwt:
     secret: ${JWT_SECRET:my_secret}
 resend:

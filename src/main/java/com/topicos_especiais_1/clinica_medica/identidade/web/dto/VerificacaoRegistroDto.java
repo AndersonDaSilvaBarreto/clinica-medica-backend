@@ -4,13 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record AuthenticationDto(
+public record VerificacaoRegistroDto(
         @NotNull(message = "Email não pode ser nulo")
         @NotBlank(message = "Email não pode ser vazio")
         @Email
         String email,
-        @NotNull(message = "Senha não pode ser nula")
-        @NotBlank(message = "Senha não pode ser vazia")
-        String senha
+        @NotNull(message = "Código não pode ser nulo")
+        @NotBlank(message = "Código não pode ser vazio")
+        String codigo
 ) {
 }

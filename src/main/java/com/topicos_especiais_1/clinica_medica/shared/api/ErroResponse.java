@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Builder
-public record ErroResponse<T>(
+public record ErroResponse(
        String type,
        String title,
        int status,

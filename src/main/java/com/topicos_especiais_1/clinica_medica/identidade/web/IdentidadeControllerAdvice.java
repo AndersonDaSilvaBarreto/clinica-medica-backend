@@ -73,6 +73,33 @@ public class IdentidadeControllerAdvice {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST,request.getRequestURI()));
     }
+    @ExceptionHandler(CodigoExpiradoException.class)
+    public ResponseEntity<ErroResponse> handleCodigoExpirado(
+            CodigoExpiradoException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.GONE)
+                .body(ErroResponse.of(
+                        ex.getMessage(),
+                        HttpStatus.GONE,
+                        request.getRequestURI())
+                );
 
+    }
+
+    @ExceptionHandler(VerificacaoInvalidaException.class)
+    public ResponseEntity<ErroResponse> handleVerificacao(
+        VerificacaoInvalidaException ex,
+        HttpServletRequest request
+    ) {
+        return  ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_CONTENT)
+                .body(ErroResponse.of(
+                        ex.getMessage(),
+                        HttpStatus.UNPROCESSABLE_CONTENT,
+                        request.getRequestURI())
+                );
+    }
 
 }

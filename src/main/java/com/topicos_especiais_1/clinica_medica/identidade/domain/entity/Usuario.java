@@ -74,10 +74,14 @@ public class Usuario  {
         return new Usuario(nome, email, senha, perfil);
     }
 
+    public void mudarNome(@NonNull Nome nome) {this.nome = nome;}
+    public void mudarEmail(@NonNull Email email) {this.email = email;}
     public void mudarTelefone(@NonNull Telefone telefone) {
         this.telefone = telefone;
     }
-
+    public void mudarSenha(@NonNull Senha senha) {this.senha = senha;}
+    public void mudarPerfil(@NonNull Perfil perfil) {this.perfil = perfil;}
+    public void mudarAtivo(@NonNull Boolean ativo) {this.ativo = ativo;}
     public Optional<Telefone> getTelefone() {
         return Optional.ofNullable(telefone);
     }

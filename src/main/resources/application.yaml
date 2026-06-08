@@ -1,6 +1,6 @@
 spring:
   application:
-    name: clinica-medica
+    name: clinica-medica-backend
   jpa:
     hibernate:
       ddl-auto: validate

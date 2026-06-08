@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.topicos-especiais-1</groupId>
-	<artifactId>clinica-medica</artifactId>
+	<artifactId>clinica-medica-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>

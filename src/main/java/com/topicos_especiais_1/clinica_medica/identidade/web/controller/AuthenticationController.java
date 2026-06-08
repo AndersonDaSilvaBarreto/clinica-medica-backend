@@ -22,15 +22,17 @@ import java.util.Map;
 public class AuthenticationController {
     private final ComecarRegistroPacienteUseCase useCase;
     private final AuthenticationManager authenticationManager;
+
     @PostMapping("/register/start")
-    public ResponseEntity<Map<String,String>> register(@RequestBody @Valid RegisterDto dto) {
+    public ResponseEntity<Map<String, String>> register(@RequestBody @Valid RegisterDto dto) {
         String codigo = useCase.execute(dto);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("codigo", codigo));
     }
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDto data) {
-            var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
-            var auth = this.authenticationManager.authenticate(usernamePassword);
-            return ResponseEntity.ok().build();
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+        return ResponseEntity.ok().build();
     }
 }

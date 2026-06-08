@@ -1,9 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioExistenteException;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioNaoEncontradoException;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.*;
 import com.topicos_especiais_1.clinica_medica.shared.api.ErroResponse;
-import com.topicos_especiais_1.clinica_medica.shared.exception.FormatoEmailInvalidoException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,13 +33,46 @@ public class IdentidadeControllerAdvice {
                 .body(ErroResponse.of(ex.getMessage(), HttpStatus.CONFLICT, request.getRequestURI()));
     }
 
-    @ExceptionHandler(FormatoEmailInvalidoException.class)
-    public ResponseEntity<ErroResponse> handleEmailInvalido(
-            FormatoEmailInvalidoException ex,
-            HttpServletRequest request) {
-
+    @ExceptionHandler(FormatoNomeInvalidoException.class)
+    public ResponseEntity<ErroResponse> handleNome(
+            FormatoNomeInvalidoException ex,
+            HttpServletRequest request
+    ) {
         return ResponseEntity
                 .badRequest()
                 .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
+
+    @ExceptionHandler(TokenInvalidoException.class)
+    public ResponseEntity<ErroResponse> handleToken(
+            TokenInvalidoException ex,
+            HttpServletRequest request
+    ) {
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ErroResponse.of(ex.getMessage(), HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(FormatoSenhaInvalidoException.class)
+    public ResponseEntity<ErroResponse> handleSenha(
+            FormatoSenhaInvalidoException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST,request.getRequestURI()));
+    }
+
+    @ExceptionHandler(FormatoTelefoneInvalidoException.class)
+    public ResponseEntity<ErroResponse> handleTelefone(
+            FormatoTelefoneInvalidoException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST,request.getRequestURI()));
+    }
+
+
 }

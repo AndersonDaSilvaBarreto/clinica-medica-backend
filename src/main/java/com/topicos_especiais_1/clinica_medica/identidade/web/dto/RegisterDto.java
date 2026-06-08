@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web.dto;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
@@ -12,6 +13,7 @@ public record RegisterDto(
         String name,
         @NotNull(message = "Email não pode ser nulo")
         @NotBlank(message = "Email não pode ser vazio")
+        @Email
         String email,
         @NotNull(message = "Senha não pode ser nulo")
         @NotBlank(message = "Senha não pode ser vazio")

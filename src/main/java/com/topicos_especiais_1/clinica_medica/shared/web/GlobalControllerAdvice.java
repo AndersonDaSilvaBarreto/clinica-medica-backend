@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.shared.web;
 
 import com.topicos_especiais_1.clinica_medica.shared.api.ErroResponse;
+import com.topicos_especiais_1.clinica_medica.shared.exception.FormatoEmailInvalidoException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class GlobalControllerAdvice {
                 )
                 ).toList();
         return ResponseEntity
-                .badRequest()
+                .status(HttpStatus.BAD_REQUEST)
                 .body(ErroResponse.ofValidacao(request.getRequestURI(),erros));
     }
 
@@ -41,12 +42,22 @@ public class GlobalControllerAdvice {
         log.error("Erro inesperado: ", ex);
 
         return ResponseEntity
-                .internalServerError()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErroResponse.of(
                         "Erro interno do servidor",
                         HttpStatus.INTERNAL_SERVER_ERROR,
                         request.getRequestURI())
                 );
+    }
+
+    @ExceptionHandler(FormatoEmailInvalidoException.class)
+    public ResponseEntity<ErroResponse> handleEmailInvalido(
+            FormatoEmailInvalidoException ex,
+            HttpServletRequest request) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
 }
 

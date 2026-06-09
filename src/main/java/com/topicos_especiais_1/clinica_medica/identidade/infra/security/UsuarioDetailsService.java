@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.infra.security;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
-import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;

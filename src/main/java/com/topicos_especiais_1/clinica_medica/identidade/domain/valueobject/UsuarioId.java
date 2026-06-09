@@ -1,6 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
 
-import com.topicos_especiais_1.clinica_medica.shared.domain.EntityId;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.EntityId;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

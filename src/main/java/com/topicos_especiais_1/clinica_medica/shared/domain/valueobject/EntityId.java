@@ -1,8 +1,7 @@
-package com.topicos_especiais_1.clinica_medica.shared.domain;
+package com.topicos_especiais_1.clinica_medica.shared.domain.valueobject;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 

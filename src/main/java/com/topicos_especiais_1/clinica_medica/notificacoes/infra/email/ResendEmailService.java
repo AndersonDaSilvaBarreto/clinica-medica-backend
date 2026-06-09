@@ -5,7 +5,7 @@ import com.resend.Resend;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.CreateEmailOptions;
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.service.NotificacaoService;
-import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,13 +1,10 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.entity;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
-import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
-import com.topicos_especiais_1.clinica_medica.shared.domain.Perfil;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -18,8 +15,10 @@ import java.util.Optional;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Usuario  {
     @EmbeddedId
+    @EqualsAndHashCode.Include
     private UsuarioId id;
 
     @Embedded

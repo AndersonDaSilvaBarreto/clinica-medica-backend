@@ -9,7 +9,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.Usuar
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Nome;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.VerificacaoRegistroDto;
-import com.topicos_especiais_1.clinica_medica.shared.domain.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import com.topicos_especiais_1.clinica_medica.shared.infra.cache.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class IdentidadeEventListener {
+public class UsuarioEventListener {
     private final NotificacaoService notificacaoService;
 
     @ApplicationModuleListener

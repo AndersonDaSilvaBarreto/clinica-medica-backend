@@ -1,4 +1,0 @@
-ALTER TABLE pacientes ALTER COLUMN cpf TYPE VARCHAR(11);
-
-ALTER TABLE recepcionistas ADD COLUMN cpf VARCHAR(11) NOT NULL UNIQUE;
-ALTER TABLE recepcionistas ADD COLUMN data_nascimento DATE;

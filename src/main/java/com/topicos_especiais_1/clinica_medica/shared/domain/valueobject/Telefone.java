@@ -1,6 +1,6 @@
-package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
+package com.topicos_especiais_1.clinica_medica.shared.domain.valueobject;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.FormatoTelefoneInvalidoException;
+import com.topicos_especiais_1.clinica_medica.shared.exception.FormatoTelefoneInvalidoException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public final class Telefone {
     private static final Pattern APENAS_DIGITOS = Pattern.compile("\\d{11}");
-    @Column(name = "telefone", nullable = true, length = 20)
+    @Column(name = "telefone", length = 20)
     @EqualsAndHashCode.Include
     private String value;
 

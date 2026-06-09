@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class JpaUsuarioRepository implements UsuarioRepository {
     }
 
     @Override
-    public Optional<Usuario> buscarPorId(@NonNull UsuarioId usuarioId) {
+    public Optional<Usuario> buscarPorId(@NonNull UUID usuarioId) {
         return repository.findById(usuarioId);
     }
 
@@ -41,12 +42,12 @@ public class JpaUsuarioRepository implements UsuarioRepository {
     }
 
     @Override
-    public boolean existePorid(@NonNull UsuarioId usuarioId) {
-        return repository.existsById(usuarioId);
+    public boolean existePorid(@NonNull UUID id) {
+        return repository.existsById(id);
     }
 
     @Override
-    public void deletarPorId(@NonNull UsuarioId id) {
+    public void deletarPorId(@NonNull UUID id) {
         repository.deleteById(id);
     }
 }

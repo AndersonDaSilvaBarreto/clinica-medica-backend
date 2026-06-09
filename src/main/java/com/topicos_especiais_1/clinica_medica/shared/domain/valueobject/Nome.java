@@ -1,6 +1,6 @@
-package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
+package com.topicos_especiais_1.clinica_medica.shared.domain.valueobject;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.FormatoNomeInvalidoException;
+import com.topicos_especiais_1.clinica_medica.shared.exception.FormatoNomeInvalidoException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public final class Nome {
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", length = 150, nullable = false)
     @EqualsAndHashCode.Include
     private String value;
 

@@ -1,25 +1,21 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.DataNascimento;
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.PacienteId;
+import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.CPF;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.AccessLevel;import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Table(name = "pacientes")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Paciente {
-    @EmbeddedId
-    @EqualsAndHashCode.Include
-    private PacienteId id;
+public class Paciente extends BaseEntity {
+
 
     @Column(name = "usuario_id", nullable = false, unique = true)
     private UUID usuarioId;
@@ -30,6 +26,11 @@ public class Paciente {
     @Embedded
     private DataNascimento dataNascimento;
 
+    @Column(name = "endereco", length = 500)
+    private String endereco;
+
+    @Column(name = "convenio_id")
+    private UUID convenioId;
 
     
 }

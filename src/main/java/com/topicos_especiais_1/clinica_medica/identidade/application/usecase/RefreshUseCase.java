@@ -33,8 +33,8 @@ public class RefreshUseCase {
         ).orElseThrow(
                 () -> new CodigoExpiradoException(CodigoExpiradoException.CODIGO_EXPIRADO)
         );
-        Usuario usuario = usuarioRepository.buscarPorId(dados.usuarioId())
-                .orElseThrow(() -> UsuarioNaoEncontradoException.porId(dados.usuarioId()));
+        Usuario usuario = usuarioRepository.buscarPorId(dados.id())
+                .orElseThrow(() -> UsuarioNaoEncontradoException.porId(dados.id()));
         String accessToken = tokenService.generateToken(usuario);
         String refresToken = tokenService.generateRefreshToken();
         String chaveNova = RedisService.REFRESH_KEY + refresToken;

@@ -5,13 +5,14 @@ import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Usua
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UsuarioRepository {
     Usuario salvar(Usuario usuario);
     Usuario atualizar(Usuario usuario);
-    Optional<Usuario> buscarPorId(UsuarioId usuarioId);
-    Optional<Usuario> buscarPorEmail(Email email);
+    Optional<Usuario> buscarPorId(UUID id);
+    Optional<Usuario> buscarPorEmail(Email id);
     boolean existePorEmail(Email email);
-    boolean existePorid(UsuarioId usuarioId);
-    void deletarPorId(UsuarioId id);
+    boolean existePorid(UUID id);
+    void deletarPorId(UUID id);
 }

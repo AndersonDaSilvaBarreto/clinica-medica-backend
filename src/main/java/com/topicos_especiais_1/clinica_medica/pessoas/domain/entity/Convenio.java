@@ -7,6 +7,7 @@ import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Telefone
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Table(name = "convenios")
@@ -36,5 +37,7 @@ public class Convenio {
     public static Convenio create(@NonNull Nome nome, @NonNull Telefone telefone, @NonNull Descricao descricao) {
         return new Convenio(nome,telefone,descricao);
     }
+
+    public Optional<Telefone> getTelefone() {return Optional.ofNullable(telefone);}
 
 }

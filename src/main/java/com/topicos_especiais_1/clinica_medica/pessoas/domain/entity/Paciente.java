@@ -3,6 +3,7 @@ package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.CPF;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Telefone;
 import jakarta.persistence.*;
 import lombok.AccessLevel;import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,5 +53,5 @@ public class Paciente extends BaseEntity {
             UUID convenioId) {
         return new Paciente(usuarioId,cpf,dataNascimento,endereco,convenioId);
     }
-    
+
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.util.Objects;
+
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,14 +22,12 @@ public final class Email {
         this.value = normalizedEmail;
     }
 
-    public static Email of(@NonNull String value) {
-        return new Email(value);
+    public static Email of( String value) {
+        return new Email(Objects.requireNonNull(value));
     }
 
-    private static void validate(@NonNull String email) {
-        if (email.isBlank()) {
-            throw new FormatoEmailInvalidoException(FormatoEmailInvalidoException.VAZIO);
-        }
+    private static void validate(String email) {
+        Objects.requireNonNull(email);
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             throw new FormatoEmailInvalidoException(FormatoEmailInvalidoException.INVALIDO);
         }

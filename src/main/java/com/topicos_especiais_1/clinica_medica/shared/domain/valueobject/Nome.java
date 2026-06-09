@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.util.Objects;
+
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,20 +16,17 @@ public final class Nome {
     @EqualsAndHashCode.Include
     private String value;
 
-    private Nome(@NonNull String value) {
-        String normalized = value.trim();
+    private Nome(String value) {
+        String normalized = Objects.requireNonNull(value).trim();
         Nome.validate(normalized);
         this.value = normalized;
     }
-    public static Nome of(@NonNull String value) {
+    public static Nome of(String value) {
         return new Nome(value);
     }
 
-    private static void validate(@NonNull String value) {
-        if (value.isBlank()) {
-          throw new FormatoNomeInvalidoException(FormatoNomeInvalidoException.VAZIO);
-        }
-
+    private static void validate(String value) {
+        Objects.requireNonNull(value);
         if (value.length() < 2 || value.length() > 150) {
             throw new FormatoNomeInvalidoException(FormatoNomeInvalidoException.TAMANHO);
         }

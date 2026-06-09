@@ -6,6 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.util.Objects;
+
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,15 +16,15 @@ public class CPF {
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     @EqualsAndHashCode.Include
     private String value;
-    private CPF(@NonNull String value) {
+    private CPF(String value) {
         var validator = new CPFValidator();
         if(!validator.invalidMessagesFor(value).isEmpty()) {
             throw CPFInvalidoException.cpfInvalido();
         }
         this.value = value;
     }
-    public static CPF of(@NonNull String value) {
-        return new CPF(value);
+    public static CPF of(String value) {
+        return new CPF(Objects.requireNonNull(value));
     }
 
     @Override

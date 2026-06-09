@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = this.recoverToken(request);
-        if (token != null) {
+        if (Objects.isNull(token)) {
             DecodedJWT decodedJWT = tokenService.getDecodedToken(token);
             String usuarioId = decodedJWT.getSubject();
             String role = decodedJWT.getClaim("role").asString();

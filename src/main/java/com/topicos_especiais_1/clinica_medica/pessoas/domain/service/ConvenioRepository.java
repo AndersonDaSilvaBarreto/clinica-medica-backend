@@ -10,7 +10,6 @@ public interface ConvenioRepository {
     Convenio salvar(Convenio convenio);
     Convenio atualizar(Convenio convenio);
     Optional<Convenio> buscarPorId(UUID id);
-    Optional<Convenio> buscarPorNome(Nome nome);
     boolean existePorid(UUID id);
     void deletarPorId(UUID id);
 

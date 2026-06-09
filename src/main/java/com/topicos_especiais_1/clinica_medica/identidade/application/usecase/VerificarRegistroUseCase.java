@@ -6,6 +6,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.CodigoExpiradoException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.VerificacaoInvalidaException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.CPF;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.VerificacaoRegistroDto;
@@ -43,7 +44,8 @@ public class VerificarRegistroUseCase {
         eventPublisher.publishEvent(new UsuarioCriadoEvent(
                 novoUsuario.getId(),
                 novoUsuario.getEmail(),
-                novoUsuario.getPerfil()
+                novoUsuario.getPerfil(),
+                dados.cpf()
         ));
     }
 }

@@ -19,5 +19,5 @@ public abstract class BaseEntity {
     @EqualsAndHashCode.Include
     private UUID id = UuidCreator.getTimeOrderedEpoch();
     @Column(name = "data_criacao", updatable = false, nullable = false)
-    private Instant dataCriacao;
+    private Instant dataCriacao = Instant.now();
 }

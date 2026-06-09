@@ -6,8 +6,8 @@ import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.CPF;
 import jakarta.persistence.*;
 import lombok.AccessLevel;import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Table(name = "pacientes")
@@ -32,5 +32,25 @@ public class Paciente extends BaseEntity {
     @Column(name = "convenio_id")
     private UUID convenioId;
 
+    private Paciente(
+            @NonNull UUID usuarioId,
+            @NonNull CPF cpf,
+            DataNascimento dataNascimento,
+            String endereco,
+            UUID convenioId) {
+        this.usuarioId = usuarioId;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.endereco = endereco;
+        this.convenioId = convenioId;
+    }
+    public static Paciente create(
+            @NonNull UUID usuarioId,
+            @NonNull CPF cpf,
+            DataNascimento dataNascimento,
+            String endereco,
+            UUID convenioId) {
+        return new Paciente(usuarioId,cpf,dataNascimento,endereco,convenioId);
+    }
     
 }

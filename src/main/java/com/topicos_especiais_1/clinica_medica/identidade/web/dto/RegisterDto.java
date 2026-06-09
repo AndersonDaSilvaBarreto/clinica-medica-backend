@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 
 public record RegisterDto(
         @NotNull(message = "Nome não pode ser nulo")
@@ -17,6 +18,9 @@ public record RegisterDto(
         String email,
         @NotNull(message = "Senha não pode ser nulo")
         @NotBlank(message = "Senha não pode ser vazio")
-        String password
+        String password,
+        @NotBlank(message = "CPF não pode ser vazio")
+        @CPF(message = "CPF inválido")
+        String cpf
 ) {
 }

@@ -30,9 +30,9 @@ public class ComecarRegistroPacienteUseCase {
 
     @Transactional(readOnly = true)
     public void execute(RegisterDto dto) {
-        Nome nome = Nome.of(dto.name());
+        Nome nome = Nome.of(dto.nome());
         Email email = Email.of(dto.email());
-        Senha senha = Senha.of(dto.password());
+        Senha senha = Senha.of(dto.senha());
         Senha senhaHasheada = Senha.ofHash(Objects.requireNonNull(passwordEncoder.encode(senha.getValue())));
 
         if (repository.existePorEmail(email)) throw new UsuarioExistenteException();

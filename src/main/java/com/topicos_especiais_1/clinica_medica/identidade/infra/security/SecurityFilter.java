@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.infra.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,14 +11,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -31,10 +31,15 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (!Objects.isNull(token)) {
             DecodedJWT decodedJWT = tokenService.getDecodedToken(token);
             String usuarioId = decodedJWT.getSubject();
-            String role = decodedJWT.getClaim("role").asString();
+            Usuario usuario = usuarioRepository.buscarPorId(UUID.fromString(usuarioId))
+                    .orElseThrow();
+            UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado(usuario);
 
-            var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
-            var authentication = new UsernamePasswordAuthenticationToken(usuarioId, null, authorities);
+            var authentication = new UsernamePasswordAuthenticationToken(
+                    usuarioAutenticado,
+                    null,
+                    usuarioAutenticado.getAuthorities()
+            );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

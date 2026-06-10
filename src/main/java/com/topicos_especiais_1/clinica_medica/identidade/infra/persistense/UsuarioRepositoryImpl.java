@@ -37,7 +37,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    @Cacheable(value = "usuarioPorId", key = "#usuarioId")
     public Optional<Usuario> buscarPorId(@NonNull UUID usuarioId) {
         return repository.findById(usuarioId);
     }

@@ -1,11 +1,10 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Convenio;
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.service.ConvenioRepository;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.ConvenioRepository;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -23,8 +22,13 @@ public class JpaConvenioRepository implements ConvenioRepository {
     }
 
     @Override
-    public Optional<Convenio> buscarPorId(UUID id) {
-        return repository.findById(id);
+    public Convenio buscarPorId(UUID id) {
+        return repository.findById(id).orElseThrow(
+                () -> EntidadeNaoEncontradaException.porId(
+                        EntidadeNaoEncontradaException.CONVENIO,
+                        id
+                )
+        );
     }
 
     @Override

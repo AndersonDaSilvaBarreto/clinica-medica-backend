@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.shared.domain.valueobject;
 
 import br.com.caelum.stella.validation.CPFValidator;
-import com.topicos_especiais_1.clinica_medica.shared.exception.CPFInvalidoException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.CPFInvalidoException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;

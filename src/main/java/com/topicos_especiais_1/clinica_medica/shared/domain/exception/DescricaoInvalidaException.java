@@ -1,4 +1,4 @@
-package com.topicos_especiais_1.clinica_medica.shared.exception;
+package com.topicos_especiais_1.clinica_medica.shared.domain.exception;
 
 public class DescricaoInvalidaException extends RuntimeException {
     public DescricaoInvalidaException(String message) {

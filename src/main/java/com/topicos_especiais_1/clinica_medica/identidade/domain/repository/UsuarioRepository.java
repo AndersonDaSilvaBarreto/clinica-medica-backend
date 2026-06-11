@@ -13,5 +13,5 @@ public interface UsuarioRepository {
     Usuario buscarPorEmail(Email id);
     boolean existePorEmail(Email email);
     boolean existePorid(UUID id);
-    void deletarPorId(UUID id);
+    void deletar(Usuario id);
 }

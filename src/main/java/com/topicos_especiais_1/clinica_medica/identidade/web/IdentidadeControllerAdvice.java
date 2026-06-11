@@ -2,8 +2,8 @@ package com.topicos_especiais_1.clinica_medica.identidade.web;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.*;
 import com.topicos_especiais_1.clinica_medica.shared.api.ErroResponse;
-import com.topicos_especiais_1.clinica_medica.shared.exception.FormatoNomeInvalidoException;
-import com.topicos_especiais_1.clinica_medica.shared.exception.FormatoTelefoneInvalidoException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.FormatoNomeInvalidoException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.FormatoTelefoneInvalidoException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

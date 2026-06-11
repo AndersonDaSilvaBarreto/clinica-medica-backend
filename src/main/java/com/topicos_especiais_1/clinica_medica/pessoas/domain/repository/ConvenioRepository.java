@@ -1,7 +1,6 @@
-package com.topicos_especiais_1.clinica_medica.pessoas.domain.service;
+package com.topicos_especiais_1.clinica_medica.pessoas.domain.repository;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Convenio;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -9,7 +8,7 @@ import java.util.UUID;
 public interface ConvenioRepository {
     Convenio salvar(Convenio convenio);
     Convenio atualizar(Convenio convenio);
-    Optional<Convenio> buscarPorId(UUID id);
+    Convenio buscarPorId(UUID id);
     boolean existePorid(UUID id);
     void deletarPorId(UUID id);
 

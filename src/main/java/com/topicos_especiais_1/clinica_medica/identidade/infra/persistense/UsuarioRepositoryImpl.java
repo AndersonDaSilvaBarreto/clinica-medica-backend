@@ -1,8 +1,8 @@
 package com.topicos_especiais_1.clinica_medica.identidade.infra.persistense;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioNaoEncontradoException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,15 @@ import java.util.UUID;
 @Repository
 @RequiredArgsConstructor
 public class UsuarioRepositoryImpl implements UsuarioRepository {
+
+    private static final String CACHE_POR_ID = "usuarioPorId";
+    private static final String CACHE_POR_EMAIL = "usuarioPorEmail";
     private final SpringDataUsuarioRepository repository;
 
     @Override
     @Caching(evict = {
-            @CacheEvict(value = "usuarioPorId", allEntries = true),
-            @CacheEvict(value = "usuarioPorEmail", allEntries = true)
+            @CacheEvict(value = UsuarioRepositoryImpl.CACHE_POR_ID, key = "#usuario.id"),
+            @CacheEvict(value = UsuarioRepositoryImpl.CACHE_POR_EMAIL, key = "#usuario.email")
     })
     public Usuario salvar(@NonNull Usuario usuario) {
         return repository.save(usuario);
@@ -29,26 +32,34 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     @Caching(evict = {
-            @CacheEvict(value = "usuarioPorId", allEntries = true),
-            @CacheEvict(value = "usuarioPorEmail", allEntries = true)
+            @CacheEvict(value = CACHE_POR_ID, key = "#usuario.id" ),
+            @CacheEvict(value = CACHE_POR_EMAIL, key = "#usuario.email")
     })
     public Usuario atualizar(@NonNull Usuario usuario) {
         return repository.save(usuario);
     }
 
     @Override
-    @Cacheable(value = "usuarioPorId", key = "#usuarioId")
+    @Cacheable(value = CACHE_POR_ID, key = "#usuarioId")
     public Usuario buscarPorId(@NonNull UUID usuarioId) {
         return repository.findById(usuarioId).
-                orElseThrow(() -> UsuarioNaoEncontradoException.porId(usuarioId));
+                orElseThrow(() ->
+                        EntidadeNaoEncontradaException.porId(
+                                EntidadeNaoEncontradaException.USUARIO,
+                                usuarioId
+                        ));
     }
 
     @Override
-    @Cacheable(value = "usuarioPorEmail", key = "#email")
+    @Cacheable(value = CACHE_POR_EMAIL, key = "#email")
     public Usuario buscarPorEmail(@NonNull Email email) {
 
         return repository.findByEmail(email)
-                .orElseThrow(() -> UsuarioNaoEncontradoException.porEmail(email));
+                .orElseThrow(() -> EntidadeNaoEncontradaException.porEmail(
+                        EntidadeNaoEncontradaException.USUARIO,
+                        email
+                        )
+                );
     }
 
     @Override
@@ -63,10 +74,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     @Caching(evict = {
-            @CacheEvict(value = "usuarioPorId", allEntries = true),
-            @CacheEvict(value = "usuarioPorEmail", allEntries = true)
+            @CacheEvict(value = CACHE_POR_ID, key = "#usuario.id"),
+            @CacheEvict(value = CACHE_POR_EMAIL, key = "#usuario.email")
     })
-    public void deletarPorId(@NonNull UUID id) {
-        repository.deleteById(id);
+    public void deletar(@NonNull Usuario usuario) {
+        repository.delete(usuario);
     }
 }

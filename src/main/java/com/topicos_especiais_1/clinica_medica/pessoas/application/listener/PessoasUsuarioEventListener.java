@@ -2,7 +2,7 @@ package com.topicos_especiais_1.clinica_medica.pessoas.application.listener;
 
 import com.topicos_especiais_1.clinica_medica.identidade.api.event.UsuarioCriadoEvent;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.service.PacienteRepository;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.PacienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;

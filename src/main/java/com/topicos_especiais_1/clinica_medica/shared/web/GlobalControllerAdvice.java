@@ -1,7 +1,8 @@
 package com.topicos_especiais_1.clinica_medica.shared.web;
 
 import com.topicos_especiais_1.clinica_medica.shared.api.ErroResponse;
-import com.topicos_especiais_1.clinica_medica.shared.exception.FormatoEmailInvalidoException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.FormatoEmailInvalidoException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,15 @@ public class GlobalControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
+    }
+
+    public ResponseEntity<ErroResponse> handleEntidadeNãoEncontrada(
+            EntidadeNaoEncontradaException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST,request.getRequestURI()));
     }
 }
 

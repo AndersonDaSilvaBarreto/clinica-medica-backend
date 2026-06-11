@@ -31,8 +31,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (!Objects.isNull(token)) {
             DecodedJWT decodedJWT = tokenService.getDecodedToken(token);
             String usuarioId = decodedJWT.getSubject();
-            Usuario usuario = usuarioRepository.buscarPorId(UUID.fromString(usuarioId))
-                    .orElseThrow();
+            Usuario usuario = usuarioRepository.buscarPorId(UUID.fromString(usuarioId));
             UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado(usuario);
 
             var authentication = new UsernamePasswordAuthenticationToken(

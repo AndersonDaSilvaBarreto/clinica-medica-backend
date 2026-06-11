@@ -9,8 +9,8 @@ import java.util.UUID;
 public interface UsuarioRepository {
     Usuario salvar(Usuario usuario);
     Usuario atualizar(Usuario usuario);
-    Optional<Usuario> buscarPorId(UUID id);
-    Optional<Usuario> buscarPorEmail(Email id);
+    Usuario buscarPorId(UUID id);
+    Usuario buscarPorEmail(Email id);
     boolean existePorEmail(Email email);
     boolean existePorid(UUID id);
     void deletarPorId(UUID id);

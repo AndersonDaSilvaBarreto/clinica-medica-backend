@@ -6,13 +6,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CPF {
+public class CPF implements Serializable {
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     @EqualsAndHashCode.Include
     private String value;

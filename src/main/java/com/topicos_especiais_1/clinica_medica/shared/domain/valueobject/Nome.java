@@ -5,13 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public final class Nome {
+public final class Nome implements Serializable {
     @Column(name = "nome", length = 150, nullable = false)
     @EqualsAndHashCode.Include
     private String value;

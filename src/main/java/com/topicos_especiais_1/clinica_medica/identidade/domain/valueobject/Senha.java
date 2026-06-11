@@ -5,11 +5,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.io.Serializable;
+
 
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
-public final class Senha {
+public final class Senha implements Serializable {
     @Column(name = "senha", nullable = false)
     private String value;
 

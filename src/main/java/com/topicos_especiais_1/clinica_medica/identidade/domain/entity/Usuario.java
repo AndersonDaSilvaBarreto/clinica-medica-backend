@@ -1,5 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
@@ -11,13 +13,14 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 @Table(name = "usuarios")
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
-public class Usuario extends BaseEntity {
+public class Usuario extends BaseEntity implements Serializable {
 
 
     @Embedded

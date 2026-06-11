@@ -3,7 +3,6 @@ package com.topicos_especiais_1.clinica_medica.identidade.application.usecase;
 import com.topicos_especiais_1.clinica_medica.identidade.application.dto.DadosRefreshToken;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.CodigoExpiradoException;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioNaoEncontradoException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.TokenService;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.AuthenticateResponse;
@@ -33,8 +32,7 @@ public class RefreshUseCase {
         ).orElseThrow(
                 () -> new CodigoExpiradoException(CodigoExpiradoException.CODIGO_EXPIRADO)
         );
-        Usuario usuario = usuarioRepository.buscarPorId(dados.id())
-                .orElseThrow(() -> UsuarioNaoEncontradoException.porId(dados.id()));
+        Usuario usuario = usuarioRepository.buscarPorId(dados.id());
         String accessToken = tokenService.generateToken(usuario);
         String refresToken = tokenService.generateRefreshToken();
         String chaveNova = RedisService.REFRESH_KEY + refresToken;

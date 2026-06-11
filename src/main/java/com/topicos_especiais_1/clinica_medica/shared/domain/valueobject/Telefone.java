@@ -5,13 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 @Embeddable
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public final class Telefone {
+public final class Telefone implements Serializable {
     private static final Pattern APENAS_DIGITOS = Pattern.compile("\\d{11}");
     @Column(name = "telefone", length = 20)
     @EqualsAndHashCode.Include

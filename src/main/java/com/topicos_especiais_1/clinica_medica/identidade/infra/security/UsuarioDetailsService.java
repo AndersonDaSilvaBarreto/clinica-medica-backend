@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,8 +15,6 @@ public class UsuarioDetailsService implements UserDetailsService {
 
     @Override
     public @NonNull UserDetails loadUserByUsername(@NonNull String email) {
-        return repository.buscarPorEmail(Email.of(email))
-                .map(UsuarioAutenticado::new)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+        return new UsuarioAutenticado(repository.buscarPorEmail(Email.of(email)));
     }
 }

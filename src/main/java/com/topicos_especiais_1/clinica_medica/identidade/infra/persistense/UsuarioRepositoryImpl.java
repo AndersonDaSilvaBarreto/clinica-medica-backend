@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.infra.persistense;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioNaoEncontradoException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import lombok.NonNull;
@@ -10,7 +11,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -37,14 +37,18 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public Optional<Usuario> buscarPorId(@NonNull UUID usuarioId) {
-        return repository.findById(usuarioId);
+    @Cacheable(value = "usuarioPorId", key = "#usuarioId")
+    public Usuario buscarPorId(@NonNull UUID usuarioId) {
+        return repository.findById(usuarioId).
+                orElseThrow(() -> UsuarioNaoEncontradoException.porId(usuarioId));
     }
 
     @Override
     @Cacheable(value = "usuarioPorEmail", key = "#email")
-    public Optional<Usuario> buscarPorEmail(@NonNull Email email) {
-        return repository.findByEmail(email);
+    public Usuario buscarPorEmail(@NonNull Email email) {
+
+        return repository.findByEmail(email)
+                .orElseThrow(() -> UsuarioNaoEncontradoException.porEmail(email));
     }
 
     @Override

@@ -7,13 +7,15 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
 @MappedSuperclass
+
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
     @Id
     @Column(name = "id")
     @EqualsAndHashCode.Include

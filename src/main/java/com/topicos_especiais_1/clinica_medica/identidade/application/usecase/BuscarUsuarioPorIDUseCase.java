@@ -1,7 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.identidade.application.usecase;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioNaoEncontradoException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.UsuarioResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,7 @@ import java.util.UUID;
 public class BuscarUsuarioPorIDUseCase {
     private final UsuarioRepository repository;
     public UsuarioResponse execute(UUID id) {
-        Usuario usuario = repository.buscarPorId(id)
-                .orElseThrow(() -> UsuarioNaoEncontradoException.porId(id));
+        Usuario usuario = repository.buscarPorId(id);
         return UsuarioResponse.fromEntity(usuario);
     }
 }

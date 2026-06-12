@@ -1,14 +1,11 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web.dto;
 
-import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Genero;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 
-import java.time.Instant;
-import java.util.Optional;
+
 import java.util.UUID;
 
 public record UsuarioResponse(

@@ -16,7 +16,6 @@ public class PessoasUsuarioEventListener {
     public void onUsuarioCriadoEvent(UsuarioCriadoEvent event) {
         Paciente novoPaciente = Paciente.create(
                 event.usuarioId(),
-                null,
                 null
         );
         repository.salvar(novoPaciente);

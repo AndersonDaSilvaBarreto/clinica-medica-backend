@@ -6,6 +6,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.Usuari
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.service.CodeGenerator;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.CPF;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Nome;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.RegisterDto;
@@ -40,10 +41,12 @@ public class ComecarRegistroPacienteUseCase {
         String chave = "verificacao:" + email;
 
         var dadosPendentes = new DadosUsuarioVerificacaoPendente(
-                nome.toString(),
-                email.toString(),
-                senhaHasheada.toString(),
-                CPF.of(dto.cpf())
+                nome,
+                email,
+                senhaHasheada,
+                dto.genero(),
+                CPF.of(dto.cpf()),
+                dto.dataNascimento() != null ? DataNascimento.of(dto.dataNascimento()) : null
                 ,
                 codigo
         );

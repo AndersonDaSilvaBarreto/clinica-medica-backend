@@ -1,6 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.DataNascimento;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;import lombok.Getter;
@@ -20,26 +20,20 @@ public class Paciente extends BaseEntity {
     private UUID usuarioId;
 
 
-    @Embedded
-    private DataNascimento dataNascimento;
-
     @Column(name = "endereco", length = 500)
     private String endereco;
 
         private Paciente(
             @NonNull UUID usuarioId,
-            DataNascimento dataNascimento,
             String endereco
             ) {
         this.usuarioId = usuarioId;
-        this.dataNascimento = dataNascimento;
         this.endereco = endereco;
     }
     public static Paciente create(
             @NonNull UUID usuarioId,
-            DataNascimento dataNascimento,
             String endereco) {
-        return new Paciente(usuarioId,dataNascimento,endereco);
+        return new Paciente(usuarioId,endereco);
     }
 
 }

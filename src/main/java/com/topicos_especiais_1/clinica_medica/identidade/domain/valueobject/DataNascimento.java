@@ -1,6 +1,6 @@
-package com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject;
+package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
 
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.exception.DataNascimentoInvalidaException;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.DataNascimentoInvalidaException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -21,6 +21,7 @@ public class DataNascimento implements Serializable {
         if(value.isAfter(LocalDate.now())) {
             throw DataNascimentoInvalidaException.dataInvalida();
         }
+        this.value = value;
     }
 
     public static DataNascimento of(@NonNull LocalDate value) {

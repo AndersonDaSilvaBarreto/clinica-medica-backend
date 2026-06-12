@@ -36,15 +36,18 @@ public class VerificarRegistroUseCase {
             throw new VerificacaoInvalidaException(VerificacaoInvalidaException.CODIGO_INVALIDO
             );
         var novoUsuario = Usuario.createPaciente(
-                Nome.of(dados.nome()),
-                Email.of(dados.email()),
-                Senha.ofHash(dados.senha()));
+                dados.nome(),
+                dados.email(),
+                dados.senha(),
+                dados.genero(),
+                dados.cpf(),
+                dados.dataNascimento()
+        );
         repository.salvar(novoUsuario);
         eventPublisher.publishEvent(new UsuarioCriadoEvent(
                 novoUsuario.getId(),
                 novoUsuario.getEmail(),
-                novoUsuario.getPerfil(),
-                dados.cpf()
+                novoUsuario.getPerfil()
         ));
     }
 }

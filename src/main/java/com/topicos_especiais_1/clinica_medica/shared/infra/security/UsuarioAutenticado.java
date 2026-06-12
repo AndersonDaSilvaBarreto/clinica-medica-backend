@@ -1,6 +1,7 @@
-package com.topicos_especiais_1.clinica_medica.identidade.infra.security;
+package com.topicos_especiais_1.clinica_medica.shared.infra.security;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 import lombok.Getter;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,28 +10,43 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
-@Getter
 public class UsuarioAutenticado implements UserDetails {
-    private final Usuario usuario;
-    public UsuarioAutenticado(@NonNull Usuario usuario) {
-        this.usuario = usuario;
+
+    @Getter
+    private final UUID id;
+    @Getter
+    private final Email email;
+    private final String senhaHash;
+    @Getter
+    private final Perfil perfil;
+    @Getter
+    private final boolean ativo;
+
+    public UsuarioAutenticado(UUID id, Email email, String senhaHash, Perfil perfil, boolean ativo ) {
+        this.id = id;
+        this.email = email;
+        this.senhaHash = senhaHash;
+        this.perfil = perfil;
+        this.ativo = ativo;
+
     }
 
 
     @Override
     public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + getUsuario().getPerfil().name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + perfil.name()));
     }
 
     @Override
     public String getPassword() {
-        return getUsuario().getSenha().getValue();
+        return senhaHash;
     }
 
     @Override
     public @NonNull String getUsername() {
-        return getUsuario().getEmail().toString();
+        return email.toString();
     }
 
     @Override
@@ -45,7 +61,8 @@ public class UsuarioAutenticado implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return getUsuario().getAtivo();
+        return ativo;
     }
+
 
 }

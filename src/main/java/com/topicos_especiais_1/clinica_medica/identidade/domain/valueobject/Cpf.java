@@ -13,19 +13,19 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CPF implements Serializable {
+public class Cpf implements Serializable {
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     @EqualsAndHashCode.Include
     private String value;
-    private CPF(String value) {
+    private Cpf(String value) {
         var validator = new CPFValidator();
         if(!validator.invalidMessagesFor(value).isEmpty()) {
             throw CPFInvalidoException.cpfInvalido();
         }
         this.value = value;
     }
-    public static CPF of(String value) {
-        return new CPF(Objects.requireNonNull(value));
+    public static Cpf of(String value) {
+        return new Cpf(Objects.requireNonNull(value));
     }
 
     @Override

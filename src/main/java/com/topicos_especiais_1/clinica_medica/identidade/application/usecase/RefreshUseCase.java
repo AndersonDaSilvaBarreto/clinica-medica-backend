@@ -20,7 +20,7 @@ public class RefreshUseCase {
     private final TokenService tokenService;
     private final RedisService redisService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public AuthenticateResponse execute(String oldRefreshToken) {
         if (oldRefreshToken == null) {
             throw new CodigoExpiradoException(CodigoExpiradoException.REFRESH_TOKEN_EXPIRADO);

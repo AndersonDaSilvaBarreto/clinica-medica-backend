@@ -8,6 +8,7 @@ public interface PacienteRepository {
     Paciente salvar(Paciente paciente);
     Paciente atualizar(Paciente paciente);
     Paciente buscarPorId(UUID id);
+    Paciente buscarPorUsuarioId(UUID usuarioId);
     void deletar(Paciente paciente);
 
 }

@@ -61,7 +61,8 @@ public class GlobalControllerAdvice {
                 .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
 
-    public ResponseEntity<ErroResponse> handleEntidadeNãoEncontrada(
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<ErroResponse> handleEntidadeNaoEncontrada(
             EntidadeNaoEncontradaException ex,
             HttpServletRequest request
     ) {

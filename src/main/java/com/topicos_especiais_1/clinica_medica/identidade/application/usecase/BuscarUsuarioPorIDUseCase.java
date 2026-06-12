@@ -5,6 +5,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.Usuar
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.UsuarioResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BuscarUsuarioPorIDUseCase {
     private final UsuarioRepository repository;
+    @Transactional(readOnly = true)
     public UsuarioResponse execute(UUID id) {
         Usuario usuario = repository.buscarPorId(id);
         return UsuarioResponse.fromEntity(usuario);

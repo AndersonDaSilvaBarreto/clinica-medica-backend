@@ -45,7 +45,7 @@ public class Usuario extends BaseEntity implements Serializable {
     private Genero genero;
 
     @Embedded
-    private CPF cpf;
+    private Cpf cpf;
 
     @Embedded
     private DataNascimento dataNascimento;
@@ -56,7 +56,7 @@ public class Usuario extends BaseEntity implements Serializable {
             @NonNull Email email,
             @NonNull Senha senha,
             @NonNull Genero genero,
-            @NonNull CPF cpf,
+            @NonNull Cpf cpf,
             Perfil perfil,
             DataNascimento dataNascimento) {
         this.nome = nome;
@@ -74,7 +74,7 @@ public class Usuario extends BaseEntity implements Serializable {
             @NonNull Email email,
             @NonNull Senha senha,
             @NonNull Genero genero,
-            @NonNull CPF cpf,
+            @NonNull Cpf cpf,
             DataNascimento dataNascimento) {
         return new Usuario(nome, email, senha, genero, cpf , Perfil.PACIENTE, dataNascimento);
     }
@@ -84,7 +84,7 @@ public class Usuario extends BaseEntity implements Serializable {
             @NonNull Email email,
             @NonNull Senha senha,
             @NonNull Genero genero,
-            @NonNull CPF cpf,
+            @NonNull Cpf cpf,
             @NonNull Perfil perfil,
             DataNascimento dataNascimento) {
         return new Usuario(nome, email, senha,genero, cpf, perfil, dataNascimento);

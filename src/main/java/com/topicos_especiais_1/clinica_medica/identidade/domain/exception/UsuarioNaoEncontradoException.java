@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.exception;
 
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Cpf;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 
 import java.util.UUID;
@@ -20,5 +21,10 @@ public class UsuarioNaoEncontradoException extends RuntimeException {
     public static UsuarioNaoEncontradoException porEmail(Email email) {
         return new UsuarioNaoEncontradoException(
                 "Usuário com o email " + email.toString() + " não encontrado");
+    }
+    public static UsuarioNaoEncontradoException porCpf(Cpf cpf) {
+        return new UsuarioNaoEncontradoException(
+                "Usuario com o cpf " + cpf + " não encontrado"
+        );
     }
 }

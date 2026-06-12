@@ -1,7 +1,9 @@
 package com.topicos_especiais_1.clinica_medica.identidade.infra.security;
 
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
+import com.topicos_especiais_1.clinica_medica.shared.infra.security.UsuarioAutenticado;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,13 @@ public class UsuarioDetailsService implements UserDetailsService {
 
     @Override
     public @NonNull UserDetails loadUserByUsername(@NonNull String email) {
-        return new UsuarioAutenticado(repository.buscarPorEmail(Email.of(email)));
+        Usuario usuario = repository.buscarPorEmail(Email.of(email));
+        return new UsuarioAutenticado(
+                usuario.getId(),
+                usuario.getEmail(),
+                usuario.getSenha().toString(),
+                usuario.getPerfil(),
+                usuario.getAtivo()
+        );
     }
 }

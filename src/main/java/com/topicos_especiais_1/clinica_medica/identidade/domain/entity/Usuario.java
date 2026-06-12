@@ -1,13 +1,8 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Telefone;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -43,6 +38,13 @@ public class Usuario extends BaseEntity implements Serializable {
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "genero", nullable = false)
+    private Genero genero;
+
+    @Embedded
+    private CPF cpf;
 
 
     private Usuario(

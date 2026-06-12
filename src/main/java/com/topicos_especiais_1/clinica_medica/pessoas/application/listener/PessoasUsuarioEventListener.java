@@ -16,8 +16,6 @@ public class PessoasUsuarioEventListener {
     public void onUsuarioCriadoEvent(UsuarioCriadoEvent event) {
         Paciente novoPaciente = Paciente.create(
                 event.usuarioId(),
-                event.cpf(),
-                null,
                 null,
                 null
         );

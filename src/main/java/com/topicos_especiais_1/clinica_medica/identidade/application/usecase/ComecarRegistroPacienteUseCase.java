@@ -5,8 +5,8 @@ import com.topicos_especiais_1.clinica_medica.identidade.application.dto.DadosUs
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioExistenteException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.service.CodeGenerator;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.CPF;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.CPF;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Nome;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.RegisterDto;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;

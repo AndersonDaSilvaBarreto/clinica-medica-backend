@@ -1,29 +1,37 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web.dto;
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Telefone;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Genero;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 
 import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
 
 public record UsuarioResponse(
-        String id,
+        UUID id,
         String nome,
         String email,
-        String perfil,
+        Perfil perfil,
         String telefone,
-        Boolean ativo,
-        Instant dataCriacao
+        boolean ativo,
+        Genero genero,
+        String cpf
 ) {
     public static UsuarioResponse fromEntity(Usuario usuario) {
         return new UsuarioResponse(
-                usuario.getId().toString(), // Assumindo que seu BaseEntity expõe o ID (UUID ou Long)
-                usuario.getNome().getValue(),   // Extrai a String do Value Object Nome
-                usuario.getEmail().getValue(),  // Extrai a String do Value Object Email
-                usuario.getPerfil().name(),     // Converte o Enum Perfil para String
+                usuario.getId(),
+                usuario.getNome().toString(),
+                usuario.getEmail().toString(),
+                usuario.getPerfil(),
                 usuario.getTelefone()
-                        .map(Telefone::getValue)  // Como o telefone é um Optional, mapeia se existir
-                        .orElse(null),           // Retorna null se não estiver preenchido
+                        .map(Telefone::toString)
+                        .orElse(null),
                 usuario.getAtivo(),
-                usuario.getDataCriacao()
+                usuario.getGenero(),
+                usuario.getCpf().toString()
         );
 }}

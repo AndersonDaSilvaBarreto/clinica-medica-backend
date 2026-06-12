@@ -5,13 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class DataNascimento {
+public class DataNascimento implements Serializable {
     @Column(name = "data_nascimento")
     @EqualsAndHashCode.Include
     private LocalDate value;

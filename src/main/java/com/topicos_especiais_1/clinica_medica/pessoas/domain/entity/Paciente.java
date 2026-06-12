@@ -2,8 +2,6 @@ package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.CPF;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Telefone;
 import jakarta.persistence.*;
 import lombok.AccessLevel;import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +19,6 @@ public class Paciente extends BaseEntity {
     @Column(name = "usuario_id", nullable = false, unique = true)
     private UUID usuarioId;
 
-    @Embedded
-    private CPF cpf;
 
     @Embedded
     private DataNascimento dataNascimento;
@@ -30,28 +26,20 @@ public class Paciente extends BaseEntity {
     @Column(name = "endereco", length = 500)
     private String endereco;
 
-    @Column(name = "convenio_id")
-    private UUID convenioId;
-
-    private Paciente(
+        private Paciente(
             @NonNull UUID usuarioId,
-            @NonNull CPF cpf,
             DataNascimento dataNascimento,
-            String endereco,
-            UUID convenioId) {
+            String endereco
+            ) {
         this.usuarioId = usuarioId;
-        this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.endereco = endereco;
-        this.convenioId = convenioId;
     }
     public static Paciente create(
             @NonNull UUID usuarioId,
-            @NonNull CPF cpf,
             DataNascimento dataNascimento,
-            String endereco,
-            UUID convenioId) {
-        return new Paciente(usuarioId,cpf,dataNascimento,endereco,convenioId);
+            String endereco) {
+        return new Paciente(usuarioId,dataNascimento,endereco);
     }
 
 }

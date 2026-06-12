@@ -1,4 +1,4 @@
-package com.topicos_especiais_1.clinica_medica.shared.domain.valueobject;
+package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
 
 import br.com.caelum.stella.validation.CPFValidator;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.CPFInvalidoException;

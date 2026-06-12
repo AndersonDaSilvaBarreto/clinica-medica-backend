@@ -1,31 +1,33 @@
 package com.topicos_especiais_1.clinica_medica.identidade.api.dto;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Telefone;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public record UsuarioResumo(
         UUID id,
-        Nome nome,
+        String nome,
         Email email,
         Perfil perfil,
-        Optional<Telefone> telefone,
-        boolean ativo
+        Optional<String> telefone,
+        boolean ativo,
+        Genero genero,
+        String cpf
 
 ) {
     public static UsuarioResumo ofUsuario(Usuario usuario) {
         return new UsuarioResumo(
-                usuario.getId(),
-                usuario.getNome(),
+              usuario.getId(),
+                usuario.getNome().toString(),
                 usuario.getEmail(),
                 usuario.getPerfil(),
-                usuario.getTelefone(),
-                usuario.getAtivo()
+                usuario.getTelefone().map(Telefone::toString),
+                usuario.getAtivo(),
+                usuario.getGenero(),
+                usuario.getCpf().toString()
         );
     }
 }

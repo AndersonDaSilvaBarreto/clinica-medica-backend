@@ -35,10 +35,16 @@ public class SecurityFilter extends OncePerRequestFilter {
             Usuario usuario = usuarioRepository.buscarPorId(UUID.fromString(usuarioId));
             UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado(
                     usuario.getId(),
+                    usuario.getNome(),
                     usuario.getEmail(),
-                    usuario.getSenha().toString(),
                     usuario.getPerfil(),
-                    usuario.getAtivo()
+                    usuario.getTelefone().orElse(null),
+                    usuario.getGenero(),
+                    usuario.getCpf(),
+                    usuario.getDataNascimento().orElse(null),
+                    usuario.getAtivo(),
+                    usuario.getSenha().toString()
+
             );
 
             var authentication = new UsernamePasswordAuthenticationToken(

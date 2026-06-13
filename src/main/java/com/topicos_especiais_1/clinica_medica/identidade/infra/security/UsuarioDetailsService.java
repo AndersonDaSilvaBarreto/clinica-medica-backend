@@ -20,10 +20,15 @@ public class UsuarioDetailsService implements UserDetailsService {
         Usuario usuario = repository.buscarPorEmail(Email.of(email));
         return new UsuarioAutenticado(
                 usuario.getId(),
+                usuario.getNome(),
                 usuario.getEmail(),
-                usuario.getSenha().toString(),
                 usuario.getPerfil(),
-                usuario.getAtivo()
+                usuario.getTelefone().orElse(null),
+                usuario.getGenero(),
+                usuario.getCpf(),
+                usuario.getDataNascimento().orElse(null),
+                usuario.getAtivo(),
+                usuario.getSenha().toString()
         );
     }
 }

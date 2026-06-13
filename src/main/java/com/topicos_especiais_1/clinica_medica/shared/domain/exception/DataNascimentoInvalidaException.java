@@ -1,4 +1,4 @@
-package com.topicos_especiais_1.clinica_medica.identidade.domain.exception;
+package com.topicos_especiais_1.clinica_medica.shared.domain.exception;
 
 public class DataNascimentoInvalidaException extends RuntimeException {
     public DataNascimentoInvalidaException(String message) {

@@ -1,6 +1,5 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;import lombok.Getter;

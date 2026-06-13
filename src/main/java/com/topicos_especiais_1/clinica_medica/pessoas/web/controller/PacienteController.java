@@ -22,6 +22,6 @@ public class PacienteController {
             ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(buscarPacientePorIdUseCase.execute(usuarioAutenticado.getId()));
+                .body(buscarPacientePorIdUseCase.execute(usuarioAutenticado));
     }
 }

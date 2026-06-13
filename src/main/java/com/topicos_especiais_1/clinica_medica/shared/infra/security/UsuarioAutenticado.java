@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.shared.infra.security;
 
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import lombok.Getter;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,29 +10,36 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@Getter
 public class UsuarioAutenticado implements UserDetails {
 
-    @Getter
     private final UUID id;
-    @Getter
+    private final Nome nome;
     private final Email email;
-    private final String senhaHash;
-    @Getter
     private final Perfil perfil;
-    @Getter
+    private final Telefone telefone;
+    private final Genero genero;
+    private final Cpf cpf;
+    private final DataNascimento dataNascimento;
     private final boolean ativo;
 
-    public UsuarioAutenticado(UUID id, Email email, String senhaHash, Perfil perfil, boolean ativo ) {
+    private final String senhaHash;
+
+    public UsuarioAutenticado(UUID id, Nome nome, Email email, Perfil perfil,Telefone telefone, Genero genero, Cpf cpf, DataNascimento dataNascimento, boolean ativo, String senhaHash) {
         this.id = id;
+        this.nome = nome;
         this.email = email;
-        this.senhaHash = senhaHash;
         this.perfil = perfil;
+        this.telefone = telefone;
+        this.genero = genero;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
         this.ativo = ativo;
-
+        this.senhaHash = senhaHash;
     }
-
 
     @Override
     public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,5 +71,11 @@ public class UsuarioAutenticado implements UserDetails {
         return ativo;
     }
 
+    public Optional<Telefone> getTelefone() {
+        return Optional.ofNullable(telefone);
+    }
+    public Optional<DataNascimento> getDataNascimento() {
+        return Optional.ofNullable(dataNascimento);
+    }
 
 }

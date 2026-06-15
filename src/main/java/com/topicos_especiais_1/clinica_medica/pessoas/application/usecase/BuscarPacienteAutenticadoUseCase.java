@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class BuscarPacientePorUsuarioIdUseCase {
+public class BuscarPacienteAutenticadoUseCase {
     private final PacienteRepository repository;
     @Transactional(readOnly = true)
     public PacienteResponse execute(UsuarioAutenticado usuarioAutenticado) {

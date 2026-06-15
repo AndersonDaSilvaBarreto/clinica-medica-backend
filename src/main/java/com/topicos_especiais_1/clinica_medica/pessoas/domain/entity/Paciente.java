@@ -6,6 +6,7 @@ import lombok.AccessLevel;import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Table(name = "pacientes")
@@ -29,10 +30,14 @@ public class Paciente extends BaseEntity {
         this.usuarioId = usuarioId;
         this.endereco = endereco;
     }
-    public static Paciente create(
-            @NonNull UUID usuarioId,
-            String endereco) {
-        return new Paciente(usuarioId,endereco);
+    public void mudarEndereco(String endereco) {
+            this.endereco = Objects.requireNonNull(endereco);
     }
+    public static Paciente create(
+            UUID usuarioId,
+            String endereco) {
+        return new Paciente(Objects.requireNonNull(usuarioId),endereco);
+    }
+
 
 }

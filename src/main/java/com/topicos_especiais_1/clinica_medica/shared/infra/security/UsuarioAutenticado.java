@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -17,18 +18,18 @@ import java.util.UUID;
 public class UsuarioAutenticado implements UserDetails {
 
     private final UUID id;
-    private final Nome nome;
+    private final String nome;
     private final Email email;
     private final Perfil perfil;
-    private final Telefone telefone;
-    private final Genero genero;
+    private final String telefone;
+    private final String genero;
     private final Cpf cpf;
-    private final DataNascimento dataNascimento;
+    private final LocalDate dataNascimento;
     private final boolean ativo;
 
     private final String senhaHash;
 
-    public UsuarioAutenticado(UUID id, Nome nome, Email email, Perfil perfil,Telefone telefone, Genero genero, Cpf cpf, DataNascimento dataNascimento, boolean ativo, String senhaHash) {
+    public UsuarioAutenticado(UUID id, String nome, Email email, Perfil perfil, String telefone, String genero, Cpf cpf, LocalDate dataNascimento, boolean ativo, String senhaHash) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -71,10 +72,10 @@ public class UsuarioAutenticado implements UserDetails {
         return ativo;
     }
 
-    public Optional<Telefone> getTelefone() {
+    public Optional<String> getTelefone() {
         return Optional.ofNullable(telefone);
     }
-    public Optional<DataNascimento> getDataNascimento() {
+    public Optional<LocalDate> getDataNascimento() {
         return Optional.ofNullable(dataNascimento);
     }
 

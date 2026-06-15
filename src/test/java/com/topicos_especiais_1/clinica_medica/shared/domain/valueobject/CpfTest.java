@@ -1,6 +1,5 @@
 package com.topicos_especiais_1.clinica_medica.shared.domain.valueobject;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Cpf;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.CPFInvalidoException;
 import org.junit.jupiter.api.Test;
 

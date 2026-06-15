@@ -3,6 +3,8 @@ package com.topicos_especiais_1.clinica_medica.identidade.infra.security;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
 import com.topicos_especiais_1.clinica_medica.shared.infra.security.UsuarioAutenticado;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,13 +37,13 @@ public class SecurityFilter extends OncePerRequestFilter {
             Usuario usuario = usuarioRepository.buscarPorId(UUID.fromString(usuarioId));
             UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado(
                     usuario.getId(),
-                    usuario.getNome(),
+                    usuario.getNome().toString(),
                     usuario.getEmail(),
                     usuario.getPerfil(),
-                    usuario.getTelefone().orElse(null),
-                    usuario.getGenero(),
+                    usuario.getTelefone().map(Telefone::toString).orElse(null),
+                    usuario.getGenero().toString(),
                     usuario.getCpf(),
-                    usuario.getDataNascimento().orElse(null),
+                    usuario.getDataNascimento().map(DataNascimento::getValue).orElse(null),
                     usuario.getAtivo(),
                     usuario.getSenha().toString()
 

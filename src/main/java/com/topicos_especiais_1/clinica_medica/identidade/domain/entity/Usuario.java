@@ -2,6 +2,7 @@ package com.topicos_especiais_1.clinica_medica.identidade.domain.entity;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Cpf;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import jakarta.persistence.*;

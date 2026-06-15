@@ -23,9 +23,9 @@ public record PacienteResponse(
                     paciente.getId(),
                     usuarioAutenticado.getNome().toString(),
                     usuarioAutenticado.getEmail().toString(),
-                    usuarioAutenticado.getTelefone().map(Telefone::toString).orElse(null),
+                    usuarioAutenticado.getTelefone().orElse(null),
                     usuarioAutenticado.getCpf().toString(),
-                    usuarioAutenticado.getDataNascimento().map(DataNascimento::getValue).orElse(null),
+                    usuarioAutenticado.getDataNascimento().orElse(null),
                     paciente.getEndereco()
             );
     }

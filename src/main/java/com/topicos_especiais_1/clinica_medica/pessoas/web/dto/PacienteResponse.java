@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.web.dto;
 
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
@@ -18,7 +19,7 @@ public record PacienteResponse(
         LocalDate dataNascimento,
         String endereco
 ) {
-    public static PacienteResponse ofPacienteAndUsuario(Paciente paciente, UsuarioAutenticado usuarioAutenticado) {
+    public static PacienteResponse ofPacienteAndUsuarioAutenticado(Paciente paciente, UsuarioAutenticado usuarioAutenticado) {
             return new PacienteResponse(
                     paciente.getId(),
                     usuarioAutenticado.getNome().toString(),
@@ -28,6 +29,20 @@ public record PacienteResponse(
                     usuarioAutenticado.getDataNascimento().orElse(null),
                     paciente.getEndereco()
             );
+    }
+    public static PacienteResponse ofPacienteAndUsuarioResumo(
+            Paciente paciente,
+            UsuarioResumo usuarioResumo) {
+        return new PacienteResponse(
+                paciente.getId(),
+                usuarioResumo.nome(),
+                usuarioResumo.email().toString(),
+                usuarioResumo.telefone().orElse(null),
+                usuarioResumo.cpf(),
+                usuarioResumo.dataNascimento(),
+                paciente.getEndereco()
+        );
+
     }
 
 }

@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.AtualizarPacienteUseCase;
+import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarPacientePorIdUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarPacientesPaginadoUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.AtualizarDadosPacienteRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.PacienteResponse;
@@ -21,16 +22,17 @@ import java.util.UUID;
 @RequestMapping("/pacientes")
 @RequiredArgsConstructor
 public class PacienteController {
-    private final BuscarPacienteAutenticadoUseCase buscarPacientePorIdUseCase;
+    private final BuscarPacienteAutenticadoUseCase buscarPacienteAutenticadoUseCase;
     private final AtualizarPacienteUseCase atualizarPacienteUseCase;
     private final BuscarPacientesPaginadoUseCase buscarPacientesPaginadoUseCase;
+    private final BuscarPacientePorIdUseCase buscarPacientePorIdUseCase;
     @GetMapping("/me")
-    public ResponseEntity<PacienteResponse> pegarUsuario(
+    public ResponseEntity<PacienteResponse> buscarPacienteAutenticado(
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
             ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(buscarPacientePorIdUseCase.execute(usuarioAutenticado));
+                .body(buscarPacienteAutenticadoUseCase.execute(usuarioAutenticado));
     }
     @PatchMapping("/me")
     public ResponseEntity<Void> atualizarUsuarioAutenticado(
@@ -58,5 +60,17 @@ public class PacienteController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
+    }
+    @GetMapping("/{pacienteId}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ResponseEntity<PacienteResponse> buscarPacientePorId(
+            @PathVariable UUID pacienteId
+    ) {
+        var response = buscarPacientePorIdUseCase.execute(pacienteId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+
+
     }
 }

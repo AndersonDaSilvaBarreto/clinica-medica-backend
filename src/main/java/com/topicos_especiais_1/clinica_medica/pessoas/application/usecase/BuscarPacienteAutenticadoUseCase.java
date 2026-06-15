@@ -17,7 +17,7 @@ public class BuscarPacienteAutenticadoUseCase {
     public PacienteResponse execute(UsuarioAutenticado usuarioAutenticado) {
         Paciente paciente = repository.buscarPorUsuarioId(usuarioAutenticado.getId());
 
-        return PacienteResponse.ofPacienteAndUsuario(paciente,usuarioAutenticado);
+        return PacienteResponse.ofPacienteAndUsuarioAutenticado(paciente,usuarioAutenticado);
 
 
     }

@@ -14,6 +14,7 @@ public class NotificacoesUsuarioEventListener {
 
     @ApplicationModuleListener
     public void onVerificacaoSolicitada(VerificacaoSolicitadaEvent event) {
+
         notificacaoService.enviarEmail(
                 event.email(),
                 "Código de verificação",

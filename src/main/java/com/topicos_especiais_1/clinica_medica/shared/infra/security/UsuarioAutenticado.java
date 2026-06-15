@@ -1,6 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.shared.infra.security;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import lombok.Getter;
 import org.jspecify.annotations.NonNull;

@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.entity;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.DataNascimento;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import jakarta.persistence.*;
@@ -10,6 +10,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 @Table(name = "usuarios")
@@ -58,7 +59,8 @@ public class Usuario extends BaseEntity implements Serializable {
             @NonNull Genero genero,
             @NonNull Cpf cpf,
             Perfil perfil,
-            DataNascimento dataNascimento) {
+            DataNascimento dataNascimento,
+            Telefone telefone) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -66,6 +68,7 @@ public class Usuario extends BaseEntity implements Serializable {
         this.cpf = cpf;
         this.perfil = perfil != null ? perfil : Perfil.PACIENTE;
         this.dataNascimento = dataNascimento;
+        this.telefone = telefone;
         this.ativo = true;
     }
 
@@ -75,8 +78,9 @@ public class Usuario extends BaseEntity implements Serializable {
             @NonNull Senha senha,
             @NonNull Genero genero,
             @NonNull Cpf cpf,
-            DataNascimento dataNascimento) {
-        return new Usuario(nome, email, senha, genero, cpf , Perfil.PACIENTE, dataNascimento);
+            DataNascimento dataNascimento,
+            Telefone telefone) {
+        return new Usuario(nome, email, senha, genero, cpf , Perfil.PACIENTE, dataNascimento, telefone);
     }
 
     public static Usuario createFuncionario(
@@ -86,18 +90,38 @@ public class Usuario extends BaseEntity implements Serializable {
             @NonNull Genero genero,
             @NonNull Cpf cpf,
             @NonNull Perfil perfil,
-            DataNascimento dataNascimento) {
-        return new Usuario(nome, email, senha,genero, cpf, perfil, dataNascimento);
+            DataNascimento dataNascimento,
+            Telefone telefone) {
+        return new Usuario(nome, email, senha,genero, cpf, perfil, dataNascimento, telefone);
     }
 
-    public void mudarNome(@NonNull Nome nome) {this.nome = nome;}
-    public void mudarEmail(@NonNull Email email) {this.email = email;}
-    public void mudarTelefone(@NonNull Telefone telefone) {
-        this.telefone = telefone;
+    public void mudarNome(Nome nome) {
+        this.nome = Objects.requireNonNull(nome);
     }
-    public void mudarSenha(@NonNull Senha senha) {this.senha = senha;}
-    public void mudarPerfil(@NonNull Perfil perfil) {this.perfil = perfil;}
-    public void mudarAtivo(@NonNull Boolean ativo) {this.ativo = ativo;}
+
+    public void mudarEmail(Email email) {
+        this.email = Objects.requireNonNull(email);
+    }
+
+    public void mudarTelefone(Telefone telefone) {
+        this.telefone = Objects.requireNonNull(telefone);
+    }
+
+    public void mudarSenha(Senha senha) {
+        this.senha = Objects.requireNonNull(senha);
+    }
+
+    public void mudarPerfil(Perfil perfil) {
+        this.perfil = Objects.requireNonNull(perfil);
+    }
+
+    public void mudarAtivo(Boolean ativo) {
+        this.ativo = Objects.requireNonNull(ativo);
+    }
+
+    public void mudarDataNascimento(DataNascimento dataNascimento) {
+        this.dataNascimento = Objects.requireNonNull(dataNascimento);
+    }
     public Optional<Telefone> getTelefone() {
         return Optional.ofNullable(telefone);
     }

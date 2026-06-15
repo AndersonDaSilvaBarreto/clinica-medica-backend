@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.repository;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Cpf;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Cpf;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 
 import java.util.UUID;

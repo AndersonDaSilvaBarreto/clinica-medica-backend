@@ -18,7 +18,7 @@ public class PessoasUsuarioEventListener {
 
         Paciente novoPaciente = Paciente.create(
                 event.usuarioId(),
-                null
+                event.endereco()
         );
         repository.salvar(novoPaciente);
     }

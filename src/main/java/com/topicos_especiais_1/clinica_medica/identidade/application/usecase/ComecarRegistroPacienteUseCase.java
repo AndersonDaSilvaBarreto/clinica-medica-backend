@@ -5,10 +5,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.application.dto.DadosUs
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioExistenteException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.service.CodeGenerator;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Cpf;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.DataNascimento;
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.RegisterDto;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import com.topicos_especiais_1.clinica_medica.shared.infra.cache.RedisService;
@@ -48,6 +45,9 @@ public class ComecarRegistroPacienteUseCase {
                 Cpf.of(dto.cpf()),
                 dto.dataNascimento() != null ? DataNascimento.of(dto.dataNascimento()) : null
                 ,
+                dto.telefone() != null ? Telefone.of(dto.telefone()) : null
+                ,
+                dto.endereco(),
                 codigo
         );
 

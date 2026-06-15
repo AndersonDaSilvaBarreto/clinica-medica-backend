@@ -8,6 +8,7 @@ import java.util.UUID;
 public record UsuarioCriadoEvent(
         UUID usuarioId,
         Email email,
-        Perfil perfil
+        Perfil perfil,
+        String endereco
 ) {
 }

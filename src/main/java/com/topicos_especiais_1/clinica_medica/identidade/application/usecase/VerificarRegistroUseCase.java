@@ -38,13 +38,15 @@ public class VerificarRegistroUseCase {
                 dados.senha(),
                 dados.genero(),
                 dados.cpf(),
-                dados.dataNascimento()
+                dados.dataNascimento(),
+                dados.telefone()
         );
         repository.salvar(novoUsuario);
         eventPublisher.publishEvent(new UsuarioCriadoEvent(
                 novoUsuario.getId(),
                 novoUsuario.getEmail(),
-                novoUsuario.getPerfil()
+                novoUsuario.getPerfil(),
+                dados.endereco()
         ));
     }
 }

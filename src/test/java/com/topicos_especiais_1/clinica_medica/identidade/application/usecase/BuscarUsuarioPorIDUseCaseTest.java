@@ -3,7 +3,7 @@ package com.topicos_especiais_1.clinica_medica.identidade.application.usecase;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.UsuarioNaoEncontradoException;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.*;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.UsuarioResponse;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,8 @@ class BuscarUsuarioPorIDUseCaseTest {
                 Senha.ofHash("kfakf;a"),
                 Genero.MASCULINO,
                 Cpf.of("86429118088"),
-                DataNascimento.of(LocalDate.parse("2002-05-20"))
+                DataNascimento.of(LocalDate.parse("2002-05-20")),
+                Telefone.of("55222227777")
         );
         when(repository.buscarPorId(id))
                 .thenReturn(usuario);

@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web.dto;
 
 
-import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Genero;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Genero;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +27,10 @@ public record RegisterDto(
         @Past(message = "Data de nascimento deve estar no passado")
         LocalDate dataNascimento,
         @NotNull(message = "Genero não pode ser vazio")
-        Genero genero
+        Genero genero,
+        @Length(min = 11, max = 11, message = "Telefone deve ter 11 números exatos")
+        String telefone,
+        @Length(min = 10, max = 500, message = "Endereço deve ter entre 10 e 500 caracteres")
+        String endereco
 ) {
 }

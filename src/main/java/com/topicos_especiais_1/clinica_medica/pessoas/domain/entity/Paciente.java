@@ -10,8 +10,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-@Table(name = "pacientes")
 @Entity
+@Table(name = "pacientes")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Paciente extends BaseEntity implements Serializable {

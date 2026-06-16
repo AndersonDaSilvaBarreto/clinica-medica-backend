@@ -6,6 +6,7 @@ import lombok.AccessLevel;import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Paciente extends BaseEntity {
+public class Paciente extends BaseEntity implements Serializable {
 
 
     @Column(name = "usuario_id", nullable = false, unique = true)

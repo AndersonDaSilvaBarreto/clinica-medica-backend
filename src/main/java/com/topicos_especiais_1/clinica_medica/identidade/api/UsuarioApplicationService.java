@@ -1,10 +1,16 @@
 package com.topicos_especiais_1.clinica_medica.identidade.api;
 
 import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Genero;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Senha;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Cpf;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +22,30 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsuarioApplicationService implements UsuarioApi {
     private final UsuarioRepository repository;
+
+    @Override
+    public UsuarioResumo criarFuncionario(
+            String nome,
+            Email email,
+            Genero genero,
+            Cpf cpf,
+            Perfil perfil,
+            LocalDate dataNascimento,
+            String telefone) {
+        var funcionario = Usuario.createFuncionario(
+                Nome.of(nome),
+                email,
+                Senha.ofHash(""),
+                genero,
+                cpf,
+                perfil,
+                DataNascimento.of(dataNascimento),
+                Telefone.of(telefone)
+
+        );
+        return UsuarioResumo.ofUsuario(repository.salvar(funcionario));
+    }
+
     @Override
     public UsuarioResumo buscarPorId(UUID id) {
         var usuario = repository.buscarPorId(id);

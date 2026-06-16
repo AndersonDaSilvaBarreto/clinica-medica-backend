@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web.dto;
 
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Genero;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Genero;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -2,7 +2,7 @@ package com.topicos_especiais_1.clinica_medica.identidade.api.dto;
 
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Genero;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Genero;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 

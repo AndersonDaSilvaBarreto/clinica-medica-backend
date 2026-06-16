@@ -12,7 +12,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 @MappedSuperclass
-
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class BaseEntity implements Serializable {

@@ -11,6 +11,7 @@ public class EntidadeNaoEncontradaException extends RuntimeException {
     public static final String USUARIO = "Usuário";
     public static final String PACIENTE = "Paciente";
     public static final String CONVENIO = "Convenio";
+    public static final String ESPECIALIDADE = "Especialidade";
 
     public static EntidadeNaoEncontradaException porId(String entidade, UUID id) {
         return new EntidadeNaoEncontradaException(

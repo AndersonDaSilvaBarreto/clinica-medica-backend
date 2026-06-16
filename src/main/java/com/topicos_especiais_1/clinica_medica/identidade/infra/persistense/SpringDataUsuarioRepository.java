@@ -12,6 +12,5 @@ public interface SpringDataUsuarioRepository extends JpaRepository<Usuario, UUID
     Optional<Usuario> findByEmail(Email email);
     Optional<Usuario> findByCpf(Cpf cpf);
     boolean existsByEmail(Email email);
-
     boolean existsByCpf(Cpf cpf);
 }

@@ -19,6 +19,7 @@ public class Descricao implements Serializable {
         if(value.isBlank() || value.length() < 15 || value.length() >500 ) {
             throw DescricaoInvalidaException.descricaoInvalida();
         }
+        this.value = value;
     }
 
     public static Descricao of(@NonNull String value) {

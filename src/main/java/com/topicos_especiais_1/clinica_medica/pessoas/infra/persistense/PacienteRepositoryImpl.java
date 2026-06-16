@@ -70,7 +70,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
     @Override
     public List<PacienteResponse> buscarPacientes(UUID cursor, int limit, String busca) {
-       return jdbcClient.sql(
+        return jdbcClient.sql(
                """
         SELECT p.id,
                u.nome,

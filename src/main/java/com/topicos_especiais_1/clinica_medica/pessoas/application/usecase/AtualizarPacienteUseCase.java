@@ -19,7 +19,7 @@ public class AtualizarPacienteUseCase {
         if(request.dataNascimento() != null) usuarioApi.trocarDataNascimento(usuarioId, request.dataNascimento());
         if(request.endereco() != null) {
             paciente.mudarEndereco(request.endereco());
-            repository.salvar(paciente);
+            repository.atualizar(paciente);
         }
 
 

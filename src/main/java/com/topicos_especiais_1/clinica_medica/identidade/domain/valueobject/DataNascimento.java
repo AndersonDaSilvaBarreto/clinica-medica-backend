@@ -1,6 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject;
 
-import com.topicos_especiais_1.clinica_medica.shared.domain.exception.DataNascimentoInvalidaException;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.DataNascimentoInvalidaException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;

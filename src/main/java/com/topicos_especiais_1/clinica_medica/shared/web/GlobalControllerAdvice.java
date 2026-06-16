@@ -1,8 +1,10 @@
 package com.topicos_especiais_1.clinica_medica.shared.web;
 
 import com.topicos_especiais_1.clinica_medica.shared.api.ErroResponse;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeExistenteException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.FormatoEmailInvalidoException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.FormatoNomeInvalidoException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -99,6 +101,27 @@ public class GlobalControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(ErroResponse.of("Acesso negado", HttpStatus.FORBIDDEN, request.getRequestURI()));
+    }
+    @ExceptionHandler(FormatoNomeInvalidoException.class)
+    public ResponseEntity<ErroResponse> handleNome(
+            FormatoNomeInvalidoException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .badRequest()
+                .body(ErroResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
+    }
+    @ExceptionHandler(EntidadeExistenteException.class)
+    public ResponseEntity<ErroResponse> handleEntidadeExistente(
+            EntidadeExistenteException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ErroResponse.of(
+                        ex.getMessage(), HttpStatus.CONFLICT, request.getRequestURI()
+                ));
+
     }
 }
 

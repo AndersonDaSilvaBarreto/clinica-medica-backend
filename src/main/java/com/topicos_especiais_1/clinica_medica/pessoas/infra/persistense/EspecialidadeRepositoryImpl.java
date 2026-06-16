@@ -59,6 +59,6 @@ public class EspecialidadeRepositoryImpl implements EspecialidadeRepository {
             }
     )
     public void deletar(Especialidade especialidade) {
-
+        repository.delete(especialidade);
     }
 }

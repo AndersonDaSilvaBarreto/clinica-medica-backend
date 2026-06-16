@@ -1,7 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.identidade.api;
 
 import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;

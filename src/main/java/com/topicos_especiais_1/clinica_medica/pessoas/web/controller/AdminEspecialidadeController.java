@@ -21,9 +21,7 @@ public class AdminEspecialidadeController {
     private final CriarEspecialidadeUseCase criarEspecialidadeUseCase;
     private final AtualizarEspecialidadeUseCase atualizarEspecialidadeUseCase;
     private final DeletarEspecialidadePorIdUseCase deletarEspecialidadePorIdUseCase;
-
     @PostMapping
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> criarEspecialidade(
             @RequestBody @Valid CriarEspecialidadeRequest request
             ) {
@@ -54,6 +52,5 @@ public class AdminEspecialidadeController {
                 .status(HttpStatus.NO_CONTENT)
                 .body(null);
     }
-
 
 }

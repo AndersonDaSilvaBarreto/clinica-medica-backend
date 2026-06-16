@@ -3,8 +3,6 @@ package com.topicos_especiais_1.clinica_medica.pessoas.web.dto;
 
 import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
 import com.topicos_especiais_1.clinica_medica.shared.infra.security.UsuarioAutenticado;
 
 import java.time.LocalDate;

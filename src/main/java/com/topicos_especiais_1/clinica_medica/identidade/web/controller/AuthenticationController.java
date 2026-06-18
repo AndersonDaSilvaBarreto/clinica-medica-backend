@@ -5,10 +5,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.Log
 import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.RefreshUseCase;
 import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.VerificarRegistroUseCase;
 import com.topicos_especiais_1.clinica_medica.identidade.web.CookieService;
-import com.topicos_especiais_1.clinica_medica.identidade.web.dto.LoginDto;
-import com.topicos_especiais_1.clinica_medica.identidade.web.dto.AuthenticateResponse;
-import com.topicos_especiais_1.clinica_medica.identidade.web.dto.RegisterDto;
-import com.topicos_especiais_1.clinica_medica.identidade.web.dto.VerificacaoRegistroDto;
+import com.topicos_especiais_1.clinica_medica.identidade.web.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -56,8 +53,11 @@ public class AuthenticationController {
 
     @PostMapping("/refresh")
     public ResponseEntity<AuthenticateResponse> refresh(
-            @CookieValue(name = "refreshToken", required = false) String refreshToken) {
-                var refreshResponse = refreshUseCase.execute(refreshToken);
+            @CookieValue(name = "refreshToken", required = false) String refreshToken,
+            @RequestBody RefreshTokenRequest request) {
+                String refreshTokenValue = refreshToken;
+                if(refreshToken == null && request.refreshToken() != null) refreshTokenValue = request.refreshToken();
+                var refreshResponse = refreshUseCase.execute(refreshTokenValue);
                 var cookies = cookieService.gerarCookiesAutenticacao(
                         refreshResponse.accessToken(),
                         refreshResponse.refreshToken()

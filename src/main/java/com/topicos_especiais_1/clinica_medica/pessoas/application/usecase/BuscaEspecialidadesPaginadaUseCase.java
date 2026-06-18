@@ -5,7 +5,6 @@ import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.Especial
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.EspecialidadeResponse;
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class BuscaEspecialidadesPaginadaUseCase {
             nextCursor = especialidades.getLast().getId();
         }
         List<EspecialidadeResponse> response = especialidades.stream()
-                .map(EspecialidadeResponse::ofEspecialidade)
+                .map((EspecialidadeResponse::ofEspecialidade))
                 .toList();
         return new PaginacaoResponse<>(
                 response,

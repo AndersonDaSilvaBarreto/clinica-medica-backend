@@ -12,10 +12,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class PessoasUsuarioEventListener {
     private final PacienteRepository repository;
-
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void onUsuarioCriadoEvent(UsuarioCriadoEvent event) {
-
         Paciente novoPaciente = Paciente.create(
                 event.usuarioId(),
                 event.endereco()

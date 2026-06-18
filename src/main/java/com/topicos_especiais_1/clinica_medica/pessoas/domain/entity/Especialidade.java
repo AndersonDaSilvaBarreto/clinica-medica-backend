@@ -13,9 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "especialidades")
@@ -42,6 +40,9 @@ public class Especialidade implements Serializable {
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "valor_consulta"))
     private Valor valorConsulta;
+
+    @ManyToMany(mappedBy = "especialidades", fetch = FetchType.LAZY)
+    private final Set<Medico> medicos = new LinkedHashSet<>();
 
     private Especialidade(
             Nome nome,

@@ -49,7 +49,7 @@ public class PacienteController {
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'RECEPCIONISTA')")
     public ResponseEntity<PaginacaoResponse<PacienteResponse>> buscarPacientesPaginado(
             @RequestParam(required = false)UUID cursor,
-            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(defaultValue = "10") int limit,
             @RequestParam(required = false) String busca
             ) {
         var response = buscarPacientesPaginadoUseCase.execute(

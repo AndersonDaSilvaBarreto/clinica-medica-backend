@@ -2,16 +2,15 @@ package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +29,14 @@ public class Medico extends BaseEntity implements Serializable {
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "medico_especialidades",
+            joinColumns = @JoinColumn(name = "medico_id"),
+            inverseJoinColumns = @JoinColumn(name = "especialidade_id")
+    )
+    private final Set<Especialidade> especialidades = new LinkedHashSet<>();
 
     public Medico(UUID usuarioId, Crm crm, Integer tempoConsulta, Boolean ativo) {
         this.usuarioId = Objects.requireNonNull(usuarioId);

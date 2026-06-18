@@ -26,7 +26,7 @@ public class UsuarioApplicationService implements UsuarioApi {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UsuarioResumo criarFuncionario(
+    public Usuario criarFuncionario(
             String nome,
             Email email,
             Genero genero,
@@ -45,7 +45,7 @@ public class UsuarioApplicationService implements UsuarioApi {
                 DataNascimento.of(dataNascimento),
                 Telefone.of(telefone)
         );
-        return UsuarioResumo.ofUsuario(repository.salvar(funcionario));
+        return repository.salvar(funcionario);
 
     }
 
@@ -54,6 +54,11 @@ public class UsuarioApplicationService implements UsuarioApi {
         var usuario = repository.buscarPorId(id);
        return UsuarioResumo.ofUsuario(usuario);
 
+    }
+
+    @Override
+    public Usuario buscarUsuarioPorId(UUID id) {
+        return repository.buscarPorId(id);
     }
 
     @Override

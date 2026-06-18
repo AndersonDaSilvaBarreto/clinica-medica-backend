@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -56,5 +58,14 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     @Override
     public boolean existePorCrm(Crm crm) {
         return repository.existsByCrm(crm);
+    }
+
+    @Override
+    public List<Medico> buscaPaginada(UUID cursor, String busca, int limit) {
+        return repository.buscaPaginada(
+                cursor,
+                busca,
+                PageRequest.of(0, limit)
+        );
     }
 }

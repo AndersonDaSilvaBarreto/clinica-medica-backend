@@ -1,7 +1,9 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.web.dto;
 
 
-import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
 import com.topicos_especiais_1.clinica_medica.shared.infra.security.UsuarioAutenticado;
 
@@ -20,7 +22,7 @@ public record PacienteResponse(
     public static PacienteResponse ofPacienteAndUsuarioAutenticado(Paciente paciente, UsuarioAutenticado usuarioAutenticado) {
             return new PacienteResponse(
                     paciente.getId(),
-                    usuarioAutenticado.getNome().toString(),
+                    usuarioAutenticado.getNome(),
                     usuarioAutenticado.getEmail().toString(),
                     usuarioAutenticado.getTelefone().orElse(null),
                     usuarioAutenticado.getCpf().toString(),
@@ -28,19 +30,16 @@ public record PacienteResponse(
                     paciente.getEndereco()
             );
     }
-    public static PacienteResponse ofPacienteAndUsuarioResumo(
-            Paciente paciente,
-            UsuarioResumo usuarioResumo) {
+    public static PacienteResponse ofPacienteAndUsuario(Paciente paciente, Usuario usuario) {
         return new PacienteResponse(
                 paciente.getId(),
-                usuarioResumo.nome(),
-                usuarioResumo.email().toString(),
-                usuarioResumo.telefone().orElse(null),
-                usuarioResumo.cpf(),
-                usuarioResumo.dataNascimento(),
+                usuario.getNome().toString(),
+                usuario.getEmail().toString(),
+                usuario.getTelefone().map(Telefone::toString).orElse(null),
+                usuario.getCpf().toString(),
+                usuario.getDataNascimento().map(DataNascimento::getValue).orElse(null),
                 paciente.getEndereco()
         );
 
-    }
 
-}
+}}

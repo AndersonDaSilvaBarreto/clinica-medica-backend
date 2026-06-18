@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID> {
     Optional<Medico> findByCrm(Crm crm);
+    boolean existsByCrm(Crm crm);
 }

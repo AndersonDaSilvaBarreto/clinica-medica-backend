@@ -9,5 +9,5 @@ public interface MedicoRepository {
     Medico salvar(Medico medico);
     Medico buscarPorId(UUID medicoId);
     Medico buscarPorCrm(Crm crm);
-
+    boolean existePorCrm(Crm crm);
 }

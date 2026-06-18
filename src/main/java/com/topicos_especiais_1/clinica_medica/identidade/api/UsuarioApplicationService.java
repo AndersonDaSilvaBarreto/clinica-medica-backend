@@ -12,6 +12,7 @@ import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Nome;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsuarioApplicationService implements UsuarioApi {
     private final UsuarioRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UsuarioResumo criarFuncionario(
@@ -32,18 +34,19 @@ public class UsuarioApplicationService implements UsuarioApi {
             Perfil perfil,
             LocalDate dataNascimento,
             String telefone) {
+        String senha = cpf.toString().substring(0,3) + perfil.name().toLowerCase();
         var funcionario = Usuario.createFuncionario(
                 Nome.of(nome),
                 email,
-                Senha.ofHash(""),
+                Senha.ofHash(Objects.requireNonNull(passwordEncoder.encode(senha))),
                 genero,
                 cpf,
                 perfil,
                 DataNascimento.of(dataNascimento),
                 Telefone.of(telefone)
-
         );
         return UsuarioResumo.ofUsuario(repository.salvar(funcionario));
+
     }
 
     @Override
@@ -74,6 +77,11 @@ public class UsuarioApplicationService implements UsuarioApi {
         var usuarioAtualizado = repository.atualizar(usuario);
         return UsuarioResumo.ofUsuario(usuarioAtualizado);
 
+    }
+
+    @Override
+    public boolean existePorCpf(Cpf cpf) {
+        return repository.existePorCpf(cpf);
     }
 
 

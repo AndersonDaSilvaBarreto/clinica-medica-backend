@@ -25,5 +25,5 @@ public interface UsuarioApi {
     UsuarioResumo trocarTelefone(UUID usuarioId, String telefone);
 
     UsuarioResumo trocarDataNascimento(UUID usuarioId, LocalDate dataNascimento);
-
+    boolean existePorCpf(Cpf cpf);
 }

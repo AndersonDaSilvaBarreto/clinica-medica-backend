@@ -52,6 +52,12 @@ public class Medico extends BaseEntity implements Serializable {
     ) {
         return new Medico(usuarioId,crm,tempoConsulta,ativo);
     }
+    public void adicionarEspecialidade(Especialidade especialidade) {
+        especialidades.add(Objects.requireNonNull(especialidade));
+    }
+    public void removerEspecialidade(Especialidade especialidade) {
+        especialidades.remove(Objects.requireNonNull(especialidade));
+    }
     public void mudarCrm(Crm crm) {
         this.crm = Objects.requireNonNull(crm);
     }

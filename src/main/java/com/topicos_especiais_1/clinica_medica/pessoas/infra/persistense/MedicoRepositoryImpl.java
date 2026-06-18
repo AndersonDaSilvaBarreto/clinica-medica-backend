@@ -52,4 +52,9 @@ public class MedicoRepositoryImpl implements MedicoRepository {
                         )
         );
     }
+
+    @Override
+    public boolean existePorCrm(Crm crm) {
+        return repository.existsByCrm(crm);
+    }
 }

@@ -5,7 +5,7 @@ import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.DataNascimento;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
-import com.topicos_especiais_1.clinica_medica.shared.infra.security.UsuarioAutenticado;
+import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 
 import java.time.LocalDate;
 import java.util.UUID;

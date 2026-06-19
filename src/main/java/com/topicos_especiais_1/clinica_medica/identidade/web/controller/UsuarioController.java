@@ -1,7 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.BuscarUsuarioPorIDUseCase;
-import com.topicos_especiais_1.clinica_medica.shared.infra.security.UsuarioAutenticado;
+import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.UsuarioResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

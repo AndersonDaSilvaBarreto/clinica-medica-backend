@@ -18,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MedicoRepositoryImpl implements MedicoRepository {
     private static final String CACHE_POR_ID = "medicoPorId";
+    private static final String CACHE_POR_ID_COM_ESPECIALIDADES = "medicoPorIdComEspecialidades";
     private static final String CACHE_POR_CRM = "medicoPorCrm";
     private final SpringDataMedicoRepository repository;
 
@@ -25,7 +26,8 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID, key = "#medico.id"),
-            @CacheEvict(value = CACHE_POR_CRM, key = "#medico.crm")
+            @CacheEvict(value = CACHE_POR_CRM, key = "#medico.crm"),
+            @CacheEvict(value = CACHE_POR_ID_COM_ESPECIALIDADES, key = "#medico.id")
     })
     public Medico salvar(Medico medico) {
         return repository.save(medico);
@@ -43,6 +45,7 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     }
 
     @Override
+    @Cacheable(value = CACHE_POR_ID_COM_ESPECIALIDADES, key = "#medicoId")
     public Medico buscarPorIdComEspecialidades(UUID medicoId) {
         return repository.buscarPorIdComEspecialidades(medicoId).orElseThrow(() ->
                 EntidadeNaoEncontradaException.porId(

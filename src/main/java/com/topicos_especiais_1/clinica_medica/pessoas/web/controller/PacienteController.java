@@ -5,7 +5,7 @@ import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.Buscar
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarPacientesPaginadoUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.AtualizarDadosPacienteRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.PacienteResponse;
-import com.topicos_especiais_1.clinica_medica.shared.infra.security.UsuarioAutenticado;
+import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarPacienteAutenticadoUseCase;
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
 import jakarta.validation.Valid;

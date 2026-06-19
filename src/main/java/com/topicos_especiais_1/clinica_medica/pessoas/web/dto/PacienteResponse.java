@@ -22,11 +22,11 @@ public record PacienteResponse(
     public static PacienteResponse ofPacienteAndUsuarioAutenticado(Paciente paciente, UsuarioAutenticado usuarioAutenticado) {
             return new PacienteResponse(
                     paciente.getId(),
-                    usuarioAutenticado.getNome(),
-                    usuarioAutenticado.getEmail().toString(),
-                    usuarioAutenticado.getTelefone().orElse(null),
-                    usuarioAutenticado.getCpf().toString(),
-                    usuarioAutenticado.getDataNascimento().orElse(null),
+                    usuarioAutenticado.usuario().getNome().toString(),
+                    usuarioAutenticado.usuario().getEmail().toString(),
+                    usuarioAutenticado.usuario().getTelefone().map(Telefone::toString).orElse(null),
+                    usuarioAutenticado.usuario().getCpf().toString(),
+                    usuarioAutenticado.usuario().getDataNascimento().map(DataNascimento::getValue).orElse(null),
                     paciente.getEndereco()
             );
     }

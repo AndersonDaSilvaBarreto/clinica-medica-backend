@@ -35,7 +35,7 @@ public class LoginUseCase {
         var usuarioAutenticado = (UsuarioAutenticado) auth.getPrincipal();
 
 
-        Usuario usuario = repository.buscarPorId(Objects.requireNonNull(usuarioAutenticado).getId());
+        Usuario usuario = repository.buscarPorId(Objects.requireNonNull(usuarioAutenticado).usuario().getId());
         String accessToken = tokenService.generateToken(usuario);
         String refreshToken = tokenService.generateRefreshToken();
         DadosRefreshToken dadosRefreshToken = new DadosRefreshToken(

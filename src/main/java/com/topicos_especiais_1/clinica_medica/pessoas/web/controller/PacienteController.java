@@ -39,7 +39,7 @@ public class PacienteController {
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado,
             @RequestBody @Valid AtualizarDadosPacienteRequest request
             ) {
-            atualizarPacienteUseCase.execute(usuarioAutenticado.getId(), request);
+            atualizarPacienteUseCase.execute(usuarioAutenticado.usuario().getId(), request);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(null);

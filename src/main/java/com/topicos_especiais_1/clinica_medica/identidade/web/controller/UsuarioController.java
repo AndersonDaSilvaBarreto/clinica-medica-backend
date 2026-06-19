@@ -24,7 +24,7 @@ public class UsuarioController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(useCase.execute(usuarioAutenticado.getId()));
+                .body(useCase.execute(usuarioAutenticado.usuario().getId()));
 
     }
 }

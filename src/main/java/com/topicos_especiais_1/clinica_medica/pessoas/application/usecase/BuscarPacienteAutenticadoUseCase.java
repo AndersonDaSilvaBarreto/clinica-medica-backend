@@ -15,7 +15,7 @@ public class BuscarPacienteAutenticadoUseCase {
     private final PacienteRepository repository;
     @Transactional(readOnly = true)
     public PacienteResponse execute(UsuarioAutenticado usuarioAutenticado) {
-        Paciente paciente = repository.buscarPorUsuarioId(usuarioAutenticado.getId());
+        Paciente paciente = repository.buscarPorUsuarioId(usuarioAutenticado.usuario().getId());
 
         return PacienteResponse.ofPacienteAndUsuarioAutenticado(paciente,usuarioAutenticado);
 

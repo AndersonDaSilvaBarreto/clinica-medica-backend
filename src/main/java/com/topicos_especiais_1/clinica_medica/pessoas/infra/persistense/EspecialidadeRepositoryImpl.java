@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -69,22 +70,6 @@ public class EspecialidadeRepositoryImpl implements EspecialidadeRepository {
 
     @Override
     public List<Especialidade> buscaPaginada(UUID cursor, String busca, int limit) {
-        return jdbcClient.sql(
-                """
-                     SELECT * 
-                     FROM especialidades e
-                     WHERE (:cursor::uuid IS NULL OR e.id > :cursor )
-                         AND (
-                             :busca::text IS NULL 
-                             OR LOWER(e.nome) LIKE LOWER(CONCAT('%', :busca::text,'%')))
-                     ORDER BY e.id
-                     LIMIT :limit
-                 """
-        )
-                .param("cursor", cursor)
-                .param("busca", busca == null || busca.isBlank() ? null: busca)
-                .param("limit", limit)
-                .query(Especialidade.class)
-                .list();
+        return repository.buscaPaginada(cursor,busca, PageRequest.of(0,limit));
     }
 }

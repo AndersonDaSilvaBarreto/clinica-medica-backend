@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -107,5 +108,13 @@ public class PacienteRepositoryImpl implements PacienteRepository {
                        rs.getString("endereco")
 
                )).list();
+    }
+
+    @Override
+    @Query(value = """
+
+""")
+    public List<Paciente> buscaPagientesPaginado(UUID cursor, int limit, String busca) {
+        return List.of();
     }
 }

@@ -37,4 +37,11 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID> 
             @Param("busca") String busca,
             Pageable pageable
     );
+    @Query(value = """
+        SELECT m FROM Medico m
+        JOIN FETCH m.usuario
+        JOIN FETCH m.especialidades
+        WHERE m.id = :medicoId
+""")
+    Optional<Medico> buscarPorIdComEspecialidades(@Param("medicoId") UUID medicoId);
 }

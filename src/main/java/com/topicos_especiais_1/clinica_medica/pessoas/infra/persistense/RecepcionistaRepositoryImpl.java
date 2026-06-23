@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Recepcionista;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.RecepcionistaRepository;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
@@ -21,6 +22,7 @@ public class RecepcionistaRepositoryImpl implements RecepcionistaRepository {
     private static final String CACHE_POR_ID_COM_DETALHES = "RecepcionistaPorIdComDetalhes";
     private static final String CACHE_POR_CPF = "medicoPorCpf";
     private final SpringDataRecepcionistaRepository repository;
+    private final UsuarioApi usuarioApi;
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID, key = "#recepcionista.id"),
@@ -28,7 +30,9 @@ public class RecepcionistaRepositoryImpl implements RecepcionistaRepository {
             @CacheEvict(value = CACHE_POR_ID_COM_DETALHES, key = "#recepcionista.id")
     })
     public Recepcionista salvar(Recepcionista recepcionista) {
-        return repository.save(recepcionista);
+        var recepcionistaSaved = repository.save(recepcionista);
+        usuarioApi.apagarCache(recepcionistaSaved.getUsuario());
+        return recepcionistaSaved;
     }
 
     @Override

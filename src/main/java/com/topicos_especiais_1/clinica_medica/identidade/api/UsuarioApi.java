@@ -28,4 +28,5 @@ public interface UsuarioApi {
 
     UsuarioResumo trocarDataNascimento(UUID usuarioId, LocalDate dataNascimento);
     boolean existePorCpf(Cpf cpf);
+    void apagarCache(Usuario usuario);
 }

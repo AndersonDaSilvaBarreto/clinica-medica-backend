@@ -50,7 +50,7 @@ public class MedicoController {
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado,
             @RequestBody @Valid AtualizarMedicoRequest request
             ) {
-        atualizarMedicoUseCase.execute(medicoId,usuarioAutenticado.usuario(),request);
+        atualizarMedicoUseCase.execute(medicoId,usuarioAutenticado,request);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(null);

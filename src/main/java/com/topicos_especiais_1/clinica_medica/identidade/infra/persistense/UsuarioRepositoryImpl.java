@@ -97,4 +97,14 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public void deletar(@NonNull Usuario usuario) {
         repository.delete(usuario);
     }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(value = UsuarioRepositoryImpl.CACHE_POR_ID, key = "#usuario.id"),
+            @CacheEvict(value = UsuarioRepositoryImpl.CACHE_POR_EMAIL, key = "#usuario.email"),
+            @CacheEvict(value = CACHE_POR_CPF,key = "#usuario.cpf")
+    })
+    public void apagarCache(Usuario usuario) {
+
+    }
 }

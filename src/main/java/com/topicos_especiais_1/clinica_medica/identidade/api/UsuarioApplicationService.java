@@ -89,5 +89,10 @@ public class UsuarioApplicationService implements UsuarioApi {
         return repository.existePorCpf(cpf);
     }
 
+    @Override
+    public void apagarCache(Usuario usuario) {
+        repository.apagarCache(usuario);
+    }
+
 
 }

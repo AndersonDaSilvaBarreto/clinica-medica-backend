@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.PacienteRepository;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.PacienteResponse;
@@ -23,6 +24,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     private static final String CACHE_POR_USUARIO_ID = "pacientePorUsuarioId";
     private final SpringDataPacienteRepository repository;
     private final JdbcClient jdbcClient;
+    private final UsuarioApi usuarioApi;
 
     @Override
     @Caching(evict = {
@@ -30,7 +32,9 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuarioId")
     })
     public Paciente salvar(Paciente paciente) {
-        return repository.save(paciente);
+        var pacienteSaved = repository.save(paciente);
+        usuarioApi.apagarCache(pacienteSaved.getUsuario());
+        return pacienteSaved;
     }
 
     @Override

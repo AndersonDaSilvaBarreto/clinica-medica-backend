@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.MedicoRepository;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
@@ -21,6 +22,7 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     private static final String CACHE_POR_ID_COM_ESPECIALIDADES = "medicoPorIdComEspecialidades";
     private static final String CACHE_POR_CRM = "medicoPorCrm";
     private final SpringDataMedicoRepository repository;
+    private final UsuarioApi usuarioApi;
 
 
     @Override
@@ -30,7 +32,9 @@ public class MedicoRepositoryImpl implements MedicoRepository {
             @CacheEvict(value = CACHE_POR_ID_COM_ESPECIALIDADES, key = "#medico.id")
     })
     public Medico salvar(Medico medico) {
-        return repository.save(medico);
+        var medicoSaved = repository.save(medico);
+        usuarioApi.apagarCache(medicoSaved.getUsuario());
+        return medicoSaved;
     }
 
     @Override

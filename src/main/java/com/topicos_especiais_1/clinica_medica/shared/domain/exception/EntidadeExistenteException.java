@@ -14,6 +14,8 @@ public class EntidadeExistenteException extends RuntimeException {
     public static final String CONVENIO = "Convênio";
     public static final String ESPECIALIDADE = "Especialidade";
     public static final String MEDICO = "Medico";
+    public static final String RECEPCIONISTA = "Recepcionista";
+
 
     public static EntidadeExistenteException porId(String entidade, UUID id) {
         return new EntidadeExistenteException(

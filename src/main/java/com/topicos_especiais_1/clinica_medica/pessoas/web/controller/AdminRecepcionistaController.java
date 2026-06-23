@@ -1,10 +1,8 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.AtualizarRecepcionistaUseCase;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscaRecepcionistaPaginadoUseCase;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarRecepcionistaPorIdUseCase;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.CriarRecepcionistaUseCase;
+import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.*;
+import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.AtivoRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.AtualizarRecepcionistaRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.CriarRecepcionistaRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.RecepcionistaResponse;
@@ -26,6 +24,7 @@ public class AdminRecepcionistaController {
     private final BuscaRecepcionistaPaginadoUseCase buscaRecepcionistaPaginadoUseCase;
     private final BuscarRecepcionistaPorIdUseCase buscarRecepcionistaPorIdUseCase;
     private final AtualizarRecepcionistaUseCase atualizarRecepcionistaUseCase;
+    private final AtivoRecepcionistaUseCase ativoRecepcionistaUseCase;
 
     @PostMapping
     public ResponseEntity<Void> criarRecepcionista(
@@ -67,5 +66,15 @@ public class AdminRecepcionistaController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(null);
+    }
+    @DeleteMapping("/{recepcionistaId}")
+    public ResponseEntity<Void> ativoRecepcionista(
+            @PathVariable UUID recepcionistaId,
+            @RequestBody @Valid AtivoRequest request
+            ) {
+        ativoRecepcionistaUseCase.execute(recepcionistaId,request);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(null);
     }
 }

@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscaRecepcionistaPaginadoUseCase;
+import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarRecepcionistaPorIdUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.CriarRecepcionistaUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.CriarRecepcionistaRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.RecepcionistaResponse;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class AdminRecepcionistaController {
     private final CriarRecepcionistaUseCase criarRecepcionistaUseCase;
     private final BuscaRecepcionistaPaginadoUseCase buscaRecepcionistaPaginadoUseCase;
+    private final BuscarRecepcionistaPorIdUseCase buscarRecepcionistaPorIdUseCase;
 
     @PostMapping
     public ResponseEntity<Void> criarRecepcionista(
@@ -40,5 +42,14 @@ public class AdminRecepcionistaController {
                 .status(HttpStatus.OK)
                 .body(response);
 
+    }
+    @GetMapping("/{recepcionistaId}")
+    public ResponseEntity<RecepcionistaResponse> buscarPorId(
+            @PathVariable UUID recepcionistaId
+    ) {
+        var response = buscarRecepcionistaPorIdUseCase.execute(recepcionistaId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 }

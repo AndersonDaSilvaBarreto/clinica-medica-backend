@@ -18,12 +18,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RecepcionistaRepositoryImpl implements RecepcionistaRepository {
     private static final String CACHE_POR_ID = "recepcionistaPorId";
+    private static final String CACHE_POR_ID_COM_DETALHES = "RecepcionistaPorIdComDetalhes";
     private static final String CACHE_POR_CPF = "medicoPorCpf";
     private final SpringDataRecepcionistaRepository repository;
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID, key = "#recepcionista.id"),
-            @CacheEvict(value = CACHE_POR_CPF,key = "#recepcionista.usuario.cpf")
+            @CacheEvict(value = CACHE_POR_CPF,key = "#recepcionista.usuario.cpf"),
+            @CacheEvict(value = CACHE_POR_ID_COM_DETALHES, key = "#recepcionista.id")
     })
     public Recepcionista salvar(Recepcionista recepcionista) {
         return repository.save(recepcionista);
@@ -55,13 +57,27 @@ public class RecepcionistaRepositoryImpl implements RecepcionistaRepository {
     }
 
     @Override
+    @Cacheable(value = CACHE_POR_ID_COM_DETALHES, key = "#recepcionistaId")
     public Recepcionista buscarPorIdComDatalhes(UUID recepcionistaId) {
-        return null;
+        return repository.buscarPorIdComDetalhes(recepcionistaId).orElseThrow(
+                () ->
+                        EntidadeNaoEncontradaException.porId(
+                                EntidadeNaoEncontradaException.RECEPCIONISTA,
+                                recepcionistaId
+                        )
+        );
     }
 
     @Override
     public Recepcionista buscarPorCpfComDetalhes(Cpf cpf) {
-        return null;
+        return repository.findByUsuarioCpf(cpf).orElseThrow(
+                () ->
+                        EntidadeNaoEncontradaException.porCampo(
+                                EntidadeNaoEncontradaException.RECEPCIONISTA,
+                                "Cpf",
+                                cpf.toString()
+                        )
+        );
     }
 
     @Override

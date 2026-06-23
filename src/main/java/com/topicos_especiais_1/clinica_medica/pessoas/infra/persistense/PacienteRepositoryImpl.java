@@ -29,7 +29,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID,key = "#paciente.id"),
-            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuarioId")
+            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuario.id")
     })
     public Paciente salvar(Paciente paciente) {
         var pacienteSaved = repository.save(paciente);
@@ -40,7 +40,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID,key = "#paciente.id"),
-            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuarioId")
+            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuario.id")
     })
     public Paciente atualizar(Paciente paciente) {
         return repository.save(paciente);
@@ -67,7 +67,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID,key = "#paciente.id"),
-            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuarioId")
+            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuario.id")
     })
     public void deletar(Paciente paciente) {
         repository.delete(paciente);
@@ -115,9 +115,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     }
 
     @Override
-    @Query(value = """
-
-""")
+    @Query()
     public List<Paciente> buscaPagientesPaginado(UUID cursor, int limit, String busca) {
         return List.of();
     }

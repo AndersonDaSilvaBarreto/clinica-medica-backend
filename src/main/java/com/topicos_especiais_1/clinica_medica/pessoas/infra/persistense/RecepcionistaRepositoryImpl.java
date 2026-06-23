@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class RecepcionistaRepositoryImpl implements RecepcionistaRepository {
     }
 
     @Override
-    public List<Recepcionista> buscaPaginada(UUID cursor, String busca) {
-        return List.of();
+    public List<Recepcionista> buscaPaginada(UUID cursor, String busca, int limit) {
+        return repository.buscaPaginada(cursor, busca, PageRequest.of(0, limit));
     }
 }

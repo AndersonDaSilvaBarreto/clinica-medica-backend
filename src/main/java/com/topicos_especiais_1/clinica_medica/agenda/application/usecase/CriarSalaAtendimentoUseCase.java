@@ -18,7 +18,7 @@ public class CriarSalaAtendimentoUseCase {
     var salaAtendimento = SalaAtendimento.create(
             Nome.of(request.nome()),
             request.descricao() != null ? Descricao.of(request.descricao()) : null,
-            request.ativo()
+            request.ativa()
     );
     repository.salvar(salaAtendimento);
     }

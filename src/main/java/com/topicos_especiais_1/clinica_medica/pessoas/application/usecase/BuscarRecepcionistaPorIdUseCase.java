@@ -4,6 +4,7 @@ import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.Recepcio
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.RecepcionistaResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 public class BuscarRecepcionistaPorIdUseCase {
     private final RecepcionistaRepository repository;
 
+    @Transactional(readOnly = true)
     public RecepcionistaResponse execute(UUID recepcionistaId) {
         return RecepcionistaResponse.of(repository.buscarPorIdComDatalhes(recepcionistaId));
     }

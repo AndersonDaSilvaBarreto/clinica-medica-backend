@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,7 +46,9 @@ public class SalaAtendimentoRepositoryImpl implements SalaAtendimentoRepository 
     }
 
     @Override
-    public List<SalaAtendimento> buscaPaginada(UUID cursor, String busca, int limit) {
-        return List.of();
+    public List<SalaAtendimento> buscaPaginada(UUID cursor, String busca, Boolean ativa, int limit) {
+        return springDataSalaAtendimento.buscaPaginada(
+                cursor,busca != null? "%" + busca.toLowerCase() + "%": null,ativa, PageRequest.of(0,limit)
+        );
     }
 }

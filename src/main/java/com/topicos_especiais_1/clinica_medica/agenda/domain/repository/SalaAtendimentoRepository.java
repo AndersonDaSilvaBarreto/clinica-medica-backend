@@ -9,5 +9,5 @@ public interface SalaAtendimentoRepository {
     SalaAtendimento salvar(SalaAtendimento salaAtendimento);
     void deletar(SalaAtendimento salaAtendimento);
     SalaAtendimento buscarPorId(UUID salaAtendimentoId);
-    List<SalaAtendimento> buscaPaginada(UUID cursor, String busca, int limit);
+    List<SalaAtendimento> buscaPaginada(UUID cursor, String busca, Boolean ativa, int limit);
 }

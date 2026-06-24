@@ -22,7 +22,7 @@ public class AtualizarSalaAtendimentoUseCase {
         if(request.descricao() != null && !request.descricao().isBlank()) {
             sala.mudarDescricao(Descricao.of(request.descricao()));
         }
-        if(request.ativo() != null) sala.mudarAtivo(request.ativo());
+        if(request.ativa() != null) sala.mudarAtivo(request.ativa());
         repository.salvar(sala);
     }
 }

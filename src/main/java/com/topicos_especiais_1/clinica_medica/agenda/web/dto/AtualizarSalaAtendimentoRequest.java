@@ -7,6 +7,6 @@ public record AtualizarSalaAtendimentoRequest(
         String nome,
         @Length(min = 15, max = 500, message = "Descrição deve ter de 15 até 500 caracteres")
         String descricao,
-        Boolean ativo
+        Boolean ativa
 ) {
 }

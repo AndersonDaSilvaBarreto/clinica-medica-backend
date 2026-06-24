@@ -17,7 +17,7 @@ public interface SpringDataRecepcionistaRepository extends JpaRepository<Recepci
     @Query(value = """
         SELECT distinct r FROM Recepcionista r 
         JOIN FETCH r.usuario
-        WHERE (CAST(:cursor AS uuid ) IS NULL OR r.id > :cursor )
+        WHERE ((CAST(:cursor AS uuid ) IS NULL OR r.id > :cursor ))
         AND(
            CAST(:busca AS string ) IS NULL
            OR LOWER(r.usuario.nome.value) LIKE LOWER(CONCAT('%',CAST(:busca AS string ), '%')) 

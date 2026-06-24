@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
+import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.HorarioAtendimento;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
@@ -37,6 +38,13 @@ public class Medico extends BaseEntity implements Serializable {
     )
     private final Set<Especialidade> especialidades = new LinkedHashSet<>();
 
+    @OneToMany(
+            mappedBy = "medico",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private final Set<HorarioAtendimento> horariosAtendimento = new LinkedHashSet<>();
     public Medico(Usuario usuario, Crm crm, Integer tempoConsulta) {
         this.usuario = Objects.requireNonNull(usuario);
         this.crm = Objects.requireNonNull(crm);
@@ -67,5 +75,11 @@ public class Medico extends BaseEntity implements Serializable {
     }
     public void desativar() {
         this.usuario.mudarAtivo(false);
+    }
+    public void adicionarHorarioAtendimento(HorarioAtendimento horarioAtendimento) {
+        horariosAtendimento.add(Objects.requireNonNull(horarioAtendimento));
+    }
+    public void limparHorariosAtendimento() {
+        horariosAtendimento.clear();
     }
 }

@@ -44,4 +44,11 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID> 
         WHERE m.id = :medicoId
 """)
     Optional<Medico> buscarPorIdComEspecialidades(@Param("medicoId") UUID medicoId);
+
+    @Query(value = """
+                  SELECT DISTINCT m FROM Medico m
+                  LEFT JOIN fetch m.horariosAtendimento
+                  WHERE m.id = :medicoId 
+""")
+    Optional<Medico> buscarMedicoComHorariosAtendimento(@Param("medicoId") UUID medicoId);
 }

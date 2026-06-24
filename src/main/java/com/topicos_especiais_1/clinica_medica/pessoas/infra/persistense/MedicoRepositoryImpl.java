@@ -59,6 +59,15 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     }
 
     @Override
+    public Medico buscarPorIdComAgenda(UUID medicoId) {
+        return repository.buscarMedicoComHorariosAtendimento(medicoId).orElseThrow(
+                () -> EntidadeNaoEncontradaException.porId(
+                        EntidadeNaoEncontradaException.MEDICO,
+                        medicoId
+        ));
+    }
+
+    @Override
     @Cacheable(value = CACHE_POR_CRM, key = "#crm")
     public Medico buscarPorCrm(Crm crm) {
         return repository.findByCrm(crm).orElseThrow(

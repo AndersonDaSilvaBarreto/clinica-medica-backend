@@ -10,7 +10,9 @@ public interface MedicoRepository {
     Medico salvar(Medico medico);
     Medico buscarPorId(UUID medicoId);
     Medico buscarPorIdComEspecialidades(UUID medicoId);
+    Medico buscarPorIdComAgenda(UUID medicoId);
     Medico buscarPorCrm(Crm crm);
     boolean existePorCrm(Crm crm);
     List<Medico> buscaPaginada(UUID cursor, String busca, int limit);
+
 }

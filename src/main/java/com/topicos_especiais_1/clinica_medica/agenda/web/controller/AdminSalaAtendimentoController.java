@@ -2,6 +2,7 @@ package com.topicos_especiais_1.clinica_medica.agenda.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.agenda.application.usecase.AtualizarSalaAtendimentoUseCase;
 import com.topicos_especiais_1.clinica_medica.agenda.application.usecase.CriarSalaAtendimentoUseCase;
+import com.topicos_especiais_1.clinica_medica.agenda.application.usecase.DeletarSalaAtendimentoUseCase;
 import com.topicos_especiais_1.clinica_medica.agenda.web.dto.AtualizarSalaAtendimentoRequest;
 import com.topicos_especiais_1.clinica_medica.agenda.web.dto.CriarSalaAtendimentoRequest;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class AdminSalaAtendimentoController {
     private final CriarSalaAtendimentoUseCase criarSalaAtendimentoUseCase;
     private final AtualizarSalaAtendimentoUseCase atualizarSalaAtendimentoUseCase;
+    private final DeletarSalaAtendimentoUseCase deletarSalaAtendimentoUseCase;
     @PostMapping
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> criarSalaAtendimento(
@@ -38,6 +40,16 @@ public class AdminSalaAtendimentoController {
         atualizarSalaAtendimentoUseCase.execute(salaId,request);
         return ResponseEntity
                 .status(HttpStatus.OK)
+                .body(null);
+    }
+    @DeleteMapping("/{salaId}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ResponseEntity<Void> deletarSalaAtendimento(
+        @PathVariable UUID salaId
+    ) {
+        deletarSalaAtendimentoUseCase.execute(salaId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
                 .body(null);
     }
 }

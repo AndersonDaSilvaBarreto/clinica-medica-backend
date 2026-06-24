@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class HorarioAtendimentoRepositoryImpl implements HorarioAtendimentoRepository {
-    private final SpringDataHorarioAtendimento springDataHorarioAtendimento;
 
     @Override
     public List<HorarioAtendimento> buscarPorMedico(Medico medico) {

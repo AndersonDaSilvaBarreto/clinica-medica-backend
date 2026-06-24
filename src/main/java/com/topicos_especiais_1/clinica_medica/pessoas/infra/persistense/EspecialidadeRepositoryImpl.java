@@ -70,6 +70,8 @@ public class EspecialidadeRepositoryImpl implements EspecialidadeRepository {
 
     @Override
     public List<Especialidade> buscaPaginada(UUID cursor, String busca, int limit) {
-        return repository.buscaPaginada(cursor,busca, PageRequest.of(0,limit));
+        return repository.buscaPaginada(cursor,
+                busca != null? "%" + busca.toLowerCase() + "%" : null,
+                PageRequest.of(0,limit));
     }
 }

@@ -14,8 +14,8 @@ public interface SpringDataEspecialidadeRepository extends JpaRepository<Especia
     boolean existsByNome(Nome nome);
     @Query(value = """
         SELECT e FROM Especialidade e
-        WHERE (CAST(:cursor AS uuid) IS NULL OR e.id > :cursor)
-            AND (CAST(:busca AS string) IS NULL OR LOWER(e.nome) LIKE LOWER(CONCAT('%', CAST(:busca AS string), '%')))
+        WHERE (:cursor IS NULL OR e.id > :cursor)
+            AND (:busca IS NULL OR LOWER(e.nome) LIKE :busca)
         ORDER BY e.id ASC
 """)
     List<Especialidade> buscaPaginada(

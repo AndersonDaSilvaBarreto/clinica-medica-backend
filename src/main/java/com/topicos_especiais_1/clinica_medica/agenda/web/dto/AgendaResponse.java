@@ -4,6 +4,7 @@ import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.HorarioAtendi
 import com.topicos_especiais_1.clinica_medica.agenda.domain.valueobject.DiaSemana;
 
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public record AgendaResponse(
                 ))
                 .entrySet()
                 .stream()
+                .sorted(Comparator.comparingInt(e -> e.getKey().ordinal()))
                 .map(entry ->
                         new DiaAgendaResponse(
                                 entry.getKey(),

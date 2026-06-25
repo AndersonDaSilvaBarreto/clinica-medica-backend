@@ -11,4 +11,5 @@ public interface BloqueioAgendaRepository {
     BloqueioAgenda buscarPorId(UUID bloqueioAgendaId);
     List<BloqueioAgenda> buscaPaginada(UUID cursor, UUID medicoId, LocalDate dataInicio, LocalDate dataFim, int limit);
     void deletar(BloqueioAgenda bloqueioAgenda);
+    boolean existeBloquioAtivoParaData(UUID medicoId, LocalDate data);
 }

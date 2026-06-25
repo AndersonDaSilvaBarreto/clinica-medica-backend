@@ -1,5 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.agenda.domain.valueobject;
 
+import java.time.DayOfWeek;
+
 public enum DiaSemana {
     SEGUNDA,
     TERCA,
@@ -7,5 +9,17 @@ public enum DiaSemana {
     QUINTA,
     SEXTA,
     SABADO,
-    DOMINGO
+    DOMINGO;
+
+    public static DiaSemana de(DayOfWeek dayOfWeek) {
+        return switch (dayOfWeek) {
+            case MONDAY -> SEGUNDA;
+            case TUESDAY -> TERCA;
+            case WEDNESDAY -> QUARTA;
+            case THURSDAY -> QUINTA;
+            case FRIDAY -> SEXTA;
+            case SATURDAY -> SABADO;
+            case SUNDAY -> DOMINGO;
+        };
+    }
 }

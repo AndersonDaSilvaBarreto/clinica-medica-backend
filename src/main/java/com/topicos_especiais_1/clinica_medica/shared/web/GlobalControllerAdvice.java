@@ -132,6 +132,7 @@ public class GlobalControllerAdvice {
                         )
                 );
     }
+    @ExceptionHandler(FormatoInvalidoException.class)
     public ResponseEntity<ErroResponse> handleFormatoInvalido(
             FormatoInvalidoException ex,
             HttpServletRequest request
@@ -139,6 +140,15 @@ public class GlobalControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErroResponse.of(ex.getMessage(),HttpStatus.BAD_REQUEST,request.getRequestURI()));
+    }
+    @ExceptionHandler(ConflitoException.class)
+    public ResponseEntity<ErroResponse> handleConflito(
+            ConflitoException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ErroResponse.of(ex.getMessage(),HttpStatus.CONFLICT,request.getRequestURI()));
     }
 }
 

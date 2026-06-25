@@ -11,10 +11,11 @@ import java.util.UUID;
 public class ConsultaSpecifications {
     public static Specification<Consulta> porMedicoId(UUID medicoId) {
         return ((root, _, cb) ->
-                cb.equal(root.get("medico").get("id"),medicoId));
+                medicoId != null ?cb.equal(root.get("medico").get("id"),medicoId) : null);
     }
     public static Specification<Consulta> porPacienteId(UUID pacienteId) {
-        return (root, query, cb) -> cb.equal(root.get("paciente").get("id"), pacienteId);
+        return (root, query, cb) ->
+                pacienteId != null? cb.equal(root.get("paciente").get("id"), pacienteId) : null;
     }
 
     public static Specification<Consulta> statusDiferenteDe(List<StatusConsulta> status) {

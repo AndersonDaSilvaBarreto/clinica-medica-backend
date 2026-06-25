@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableCaching
 @EnableAsync
 public class ClinicaMedicaApplication {
-
 	static void main(String[] args) {
 		SpringApplication.run(ClinicaMedicaApplication.class, args);
 	}

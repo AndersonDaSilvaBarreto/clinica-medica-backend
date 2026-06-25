@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -54,5 +55,12 @@ public class BloqueioAgendaImpl implements BloqueioAgendaRepository {
     })
     public void deletar(BloqueioAgenda bloqueioAgenda) {
         springDataBloqueioAgenda.delete(bloqueioAgenda);
+    }
+
+    @Override
+    public boolean existeBloquioAtivoParaData(UUID medicoId, LocalDate data) {
+        Specification<BloqueioAgenda> specs = Specification.where(BloqueioAgendaSpecifications.porMedicoId(medicoId))
+                .and(BloqueioAgendaSpecifications.dataContidaNoBloqueio(data));
+        return springDataBloqueioAgenda.exists(specs);
     }
 }

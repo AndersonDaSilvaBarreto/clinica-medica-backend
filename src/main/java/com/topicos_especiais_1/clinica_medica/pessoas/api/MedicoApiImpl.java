@@ -15,4 +15,9 @@ public class MedicoApiImpl implements MedicoApi{
     public Medico buscarPorIdComAgenda(UUID medicoId) {
         return medicoRepository.buscarPorIdComAgenda(medicoId);
     }
+
+    @Override
+    public Medico buscarPorId(UUID medicoId) {
+        return medicoRepository.buscarPorId(medicoId);
+    }
 }

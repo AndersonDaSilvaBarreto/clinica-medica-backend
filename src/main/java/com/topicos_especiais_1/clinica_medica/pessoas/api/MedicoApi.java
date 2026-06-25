@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface MedicoApi {
     Medico buscarPorIdComAgenda(UUID medicoId);
+    Medico buscarPorId(UUID medicoId);
 }

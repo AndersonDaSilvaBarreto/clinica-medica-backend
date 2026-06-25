@@ -29,10 +29,17 @@ public class BloqueioAgenda extends BaseEntity implements Serializable {
 
     private BloqueioAgenda(Medico medico, LocalDate dataInicio, LocalDate dataFim, String motivo) {
         this.medico = Objects.requireNonNull(medico);
+        validarData(dataInicio,dataFim);
         this.dataInicio = Objects.requireNonNull(dataInicio);
         this.dataFim = Objects.requireNonNull(dataFim);
+        if(motivo != null) {
+            if(motivo.isBlank() || motivo.length() < 15 || motivo.length() > 500) {
+                throw FormatoInvalidoException.from("Bloqueio de Agenda", "motivo deve ter entre 15 e 500 caracteres");
+
+            }
+        }
         this.motivo = motivo;
-        validarData(dataInicio,dataFim);
+
     }
     public static BloqueioAgenda create(
             Medico medico,

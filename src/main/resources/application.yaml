@@ -30,3 +30,5 @@ resend:
 app:
   cookie:
     domain: ${DOMINIO_URL:}
+mercadopago:
+  access-token: ${ACCESS-TOKEN:}

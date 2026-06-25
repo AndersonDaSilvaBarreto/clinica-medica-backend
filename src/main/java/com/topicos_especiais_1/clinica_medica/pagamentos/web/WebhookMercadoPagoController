@@ -1,0 +1,23 @@
+package com.topicos_especiais_1.clinica_medica.pagamentos.web.controller;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/webhooks/mercadopago")
+public class WebhookMercadoPagoController {
+
+    @PostMapping
+    public ResponseEntity<Void> receberWebhook(
+            @RequestBody Map<String, Object> payload
+    ) {
+
+        log.info("Webhook Mercado Pago: {}", payload);
+
+        return ResponseEntity.ok().build();
+    }
+}

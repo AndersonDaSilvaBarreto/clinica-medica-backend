@@ -2,6 +2,7 @@ package com.topicos_especiais_1.clinica_medica.agenda.infra.persistense;
 
 import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.BloqueioAgenda;
 import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.BloqueioAgendaRepository;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,7 +29,12 @@ public class BloqueioAgendaImpl implements BloqueioAgendaRepository {
     @Override
     @Cacheable(value = CACHE_POR_ID, key = "#bloqueioAgendaId")
     public BloqueioAgenda buscarPorId(UUID bloqueioAgendaId) {
-        return null;
+        return springDataBloqueioAgenda.findById(bloqueioAgendaId).orElseThrow(
+                () -> EntidadeNaoEncontradaException.porId(
+                    EntidadeNaoEncontradaException.BLOQUEIO_AGENDA,
+                        bloqueioAgendaId
+                )
+        );
     }
 
     @Override

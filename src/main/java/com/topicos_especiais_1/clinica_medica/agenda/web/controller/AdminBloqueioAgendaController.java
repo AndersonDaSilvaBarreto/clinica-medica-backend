@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class AdminBloqueioAgendaController {
     private final CriarBloqueioAgendaUseCase criarBloqueioAgendaUseCase;
     private final DeletarBloqueioAgendaUseCase deletarBloqueioAgendaUseCase;
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> criar(
             @RequestBody @Valid CriarBloqueioAgendaRequest request
             ) {
@@ -27,6 +29,7 @@ public class AdminBloqueioAgendaController {
                 .body(null);
     }
     @DeleteMapping("/{bloqueioId}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> deletar(
             @PathVariable UUID bloqueioId
             ) {

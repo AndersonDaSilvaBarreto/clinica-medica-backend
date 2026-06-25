@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -39,7 +40,12 @@ public class BloqueioAgendaImpl implements BloqueioAgendaRepository {
 
     @Override
     public List<BloqueioAgenda> buscaPaginada(UUID cursor, UUID medicoId, LocalDate dataInicio, LocalDate dataFim, int limit) {
-        return List.of();
+        return springDataBloqueioAgenda.buscaPaginada(
+                cursor,
+                medicoId,
+                dataInicio,
+                dataFim,
+                PageRequest.of(0, limit));
     }
 
     @Override

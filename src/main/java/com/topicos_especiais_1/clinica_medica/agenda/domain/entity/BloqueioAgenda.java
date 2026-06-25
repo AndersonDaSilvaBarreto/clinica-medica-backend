@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name = "bloqueios_agenda")
@@ -70,5 +71,8 @@ public class BloqueioAgenda extends BaseEntity implements Serializable {
                     "Bloqueio de Agenda",
                     "Data de inicio precisa ser antes da data de fim");
         }
+    }
+    public Optional<String> getMotivo() {
+        return Optional.ofNullable(motivo);
     }
 }

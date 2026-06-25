@@ -15,7 +15,9 @@ public interface SpringDataBloqueioAgenda extends JpaRepository<BloqueioAgenda, 
             SELECT b FROM BloqueioAgenda b
             WHERE (:cursor IS NULL OR b.id > :cursor)
                 AND(:medicoId IS NULL OR b.medico.id = :medicoId)
-                AND()
+                AND(CAST(:dataInicio AS date ) IS NULL OR b.dataInicio >=:dataInicio)
+                AND(CAST(:dataFim AS date) IS NULL OR b.dataFim <=:dataFim)
+            ORDER BY b.id ASC
 """)
     List<BloqueioAgenda> buscaPaginada(
             @Param("cursor") UUID cursor,

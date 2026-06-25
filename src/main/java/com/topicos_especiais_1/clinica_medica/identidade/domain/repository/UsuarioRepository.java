@@ -16,4 +16,5 @@ public interface UsuarioRepository {
     boolean existePorid(UUID id);
     boolean existePorCpf(Cpf cpf);
     void deletar(Usuario id);
+    void apagarCache(Usuario usuario);
 }

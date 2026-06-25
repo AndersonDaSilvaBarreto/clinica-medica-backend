@@ -6,6 +6,7 @@ import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.EspecialidadeRespo
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class BuscaEspecialidadesPaginadaUseCase {
     private final EspecialidadeRepository especialidadeRepository;
 
+    @Transactional(readOnly = true)
     public PaginacaoResponse<EspecialidadeResponse> execute(
             UUID cursor,
             String busca,

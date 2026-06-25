@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.PacienteRepository;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.PacienteResponse;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -22,20 +24,23 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     private static final String CACHE_POR_USUARIO_ID = "pacientePorUsuarioId";
     private final SpringDataPacienteRepository repository;
     private final JdbcClient jdbcClient;
+    private final UsuarioApi usuarioApi;
 
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID,key = "#paciente.id"),
-            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuarioId")
+            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuario.id")
     })
     public Paciente salvar(Paciente paciente) {
-        return repository.save(paciente);
+        var pacienteSaved = repository.save(paciente);
+        usuarioApi.apagarCache(pacienteSaved.getUsuario());
+        return pacienteSaved;
     }
 
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID,key = "#paciente.id"),
-            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuarioId")
+            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuario.id")
     })
     public Paciente atualizar(Paciente paciente) {
         return repository.save(paciente);
@@ -62,7 +67,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID,key = "#paciente.id"),
-            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuarioId")
+            @CacheEvict(value = CACHE_POR_USUARIO_ID, key = "#paciente.usuario.id")
     })
     public void deletar(Paciente paciente) {
         repository.delete(paciente);
@@ -107,5 +112,11 @@ public class PacienteRepositoryImpl implements PacienteRepository {
                        rs.getString("endereco")
 
                )).list();
+    }
+
+    @Override
+    @Query()
+    public List<Paciente> buscaPagientesPaginado(UUID cursor, int limit, String busca) {
+        return List.of();
     }
 }

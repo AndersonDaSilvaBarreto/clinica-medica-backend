@@ -23,6 +23,8 @@ public record CriarMedicoRequest(
         @NotBlank(message = "Crm não pode ser Vazio")
         String crm,
         @Positive(message = "Tempo de consulta é em minutos e não pode ser nagativo ou zero")
+        @Min(value = 15, message = "Tempo de consulta deve ser no mínimo 15 minutos")
+        @Max(value = 60, message = "Tempo de consulta de ser no máximo 60 minutos")
         Integer tempoConsultaMinutos,
         @NotEmpty(message = "Deve haver pelo menos uma especialidade")
         List<UUID> especialidades,

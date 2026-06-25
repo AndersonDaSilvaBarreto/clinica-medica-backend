@@ -1,5 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
+import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.HorarioAtendimento;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -11,7 +13,6 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "medicos")
@@ -19,16 +20,15 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Medico extends BaseEntity implements Serializable {
 
-    @Column(name = "usuario_id", nullable = false)
-    private UUID usuarioId;
     @Embedded
     private Crm crm;
 
     @Column(name = "tempo_consulta_minutos", nullable = false)
     private Integer tempoConsultaMinutos;
 
-    @Column(name = "ativo", nullable = false)
-    private Boolean ativo;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -38,20 +38,26 @@ public class Medico extends BaseEntity implements Serializable {
     )
     private final Set<Especialidade> especialidades = new LinkedHashSet<>();
 
-    public Medico(UUID usuarioId, Crm crm, Integer tempoConsulta, Boolean ativo) {
-        this.usuarioId = Objects.requireNonNull(usuarioId);
+    @OneToMany(
+            mappedBy = "medico",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private final Set<HorarioAtendimento> horariosAtendimento = new LinkedHashSet<>();
+    public Medico(Usuario usuario, Crm crm, Integer tempoConsulta) {
+        this.usuario = Objects.requireNonNull(usuario);
         this.crm = Objects.requireNonNull(crm);
         this.tempoConsultaMinutos = tempoConsulta != null ? tempoConsulta : 20;
-        this.ativo = ativo != null ? ativo : true;
     }
     public static Medico create(
-            UUID usuarioId,
+            Usuario usuario,
             Crm crm,
-            Integer tempoConsulta,
-            Boolean ativo
+            Integer tempoConsulta
     ) {
-        return new Medico(usuarioId,crm,tempoConsulta,ativo);
+        return new Medico(usuario,crm,tempoConsulta);
     }
+
     public void adicionarEspecialidade(Especialidade especialidade) {
         especialidades.add(Objects.requireNonNull(especialidade));
     }
@@ -65,9 +71,15 @@ public class Medico extends BaseEntity implements Serializable {
         this.tempoConsultaMinutos = Objects.requireNonNull(tempoConsulta);
     }
     public void ativar() {
-        this.ativo = true;
+        this.usuario.mudarAtivo(true);
     }
     public void desativar() {
-        this.ativo = false;
+        this.usuario.mudarAtivo(false);
+    }
+    public void adicionarHorarioAtendimento(HorarioAtendimento horarioAtendimento) {
+        horariosAtendimento.add(Objects.requireNonNull(horarioAtendimento));
+    }
+    public void limparHorariosAtendimento() {
+        horariosAtendimento.clear();
     }
 }

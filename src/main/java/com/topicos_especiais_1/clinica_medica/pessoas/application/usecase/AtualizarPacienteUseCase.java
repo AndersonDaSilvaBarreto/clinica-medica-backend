@@ -5,6 +5,7 @@ import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.Paciente
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.AtualizarDadosPacienteRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class AtualizarPacienteUseCase {
     private final UsuarioApi usuarioApi;
     private final PacienteRepository repository;
+    @Transactional
     public void execute(UUID usuarioId, AtualizarDadosPacienteRequest request) {
         var paciente = repository.buscarPorUsuarioId(usuarioId);
         if(request.telefone() != null) usuarioApi.trocarTelefone(usuarioId,request.telefone());

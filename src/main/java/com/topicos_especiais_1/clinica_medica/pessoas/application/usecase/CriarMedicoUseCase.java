@@ -2,6 +2,7 @@ package com.topicos_especiais_1.clinica_medica.pessoas.application.usecase;
 
 import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
 import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Especialidade;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.EspecialidadeRepository;
@@ -39,7 +40,7 @@ public class CriarMedicoUseCase {
                 "Cpf",
                 cpf.toString()
         );
-        UsuarioResumo usuarioResumo = usuarioApi.criarFuncionario(
+        Usuario usuario = usuarioApi.criarFuncionario(
                 request.nome(),
                 Email.of(request.email()),
                 request.genero(),
@@ -49,10 +50,9 @@ public class CriarMedicoUseCase {
                 request.telefone()
         );
         Medico medico = Medico.create(
-                usuarioResumo.id(),
+                usuario,
                 crm,
-                request.tempoConsultaMinutos(),
-                true
+                request.tempoConsultaMinutos()
         );
         for(UUID especialidadeId : request.especialidades()) {
             Especialidade especialidade = especialidadeRepository.buscarPorId(especialidadeId);

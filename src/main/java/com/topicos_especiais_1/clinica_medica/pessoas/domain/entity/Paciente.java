@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.domain.entity;
 
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;import lombok.Getter;
@@ -17,27 +18,28 @@ import java.util.UUID;
 public class Paciente extends BaseEntity implements Serializable {
 
 
-    @Column(name = "usuario_id", nullable = false, unique = true)
-    private UUID usuarioId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
 
 
     @Column(name = "endereco", length = 500)
     private String endereco;
 
         private Paciente(
-            @NonNull UUID usuarioId,
+            @NonNull Usuario usuario,
             String endereco
             ) {
-        this.usuarioId = usuarioId;
+        this.usuario = usuario;
         this.endereco = endereco;
     }
     public void mudarEndereco(String endereco) {
             this.endereco = Objects.requireNonNull(endereco);
     }
     public static Paciente create(
-            UUID usuarioId,
+            Usuario usuario,
             String endereco) {
-        return new Paciente(Objects.requireNonNull(usuarioId),endereco);
+        return new Paciente(Objects.requireNonNull(usuario),endereco);
     }
 
 

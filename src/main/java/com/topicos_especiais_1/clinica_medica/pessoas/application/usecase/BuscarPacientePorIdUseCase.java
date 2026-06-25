@@ -18,7 +18,7 @@ public class BuscarPacientePorIdUseCase {
     @Transactional(readOnly = true)
     public PacienteResponse execute(UUID pacienteId) {
         var paciente = pacienteRepository.buscarPorId(pacienteId);
-        var usuarioResumo = usuarioApi.buscarPorId(paciente.getUsuarioId());
-        return PacienteResponse.ofPacienteAndUsuarioResumo(paciente, usuarioResumo);
+        var usuario = usuarioApi.buscarUsuarioPorId(paciente.getUsuario().getId());
+        return PacienteResponse.ofPacienteAndUsuario(paciente,usuario);
     }
 }

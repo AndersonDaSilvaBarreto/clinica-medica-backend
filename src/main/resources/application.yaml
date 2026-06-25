@@ -5,14 +5,11 @@ spring:
     active: dev
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
-  flyway:
-    community-db-support-enabled: true
-    baseline-on-migrate: true
   threads:
     virtual:
       enabled: true

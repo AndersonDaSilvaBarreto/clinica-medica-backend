@@ -7,9 +7,6 @@ import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,7 +28,6 @@ public class Usuario extends BaseEntity implements Serializable {
     private Senha senha;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "perfil", nullable = false)
     private Perfil perfil;
 
@@ -42,7 +38,6 @@ public class Usuario extends BaseEntity implements Serializable {
     private Boolean ativo;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "genero", nullable = false)
     private Genero genero;
 

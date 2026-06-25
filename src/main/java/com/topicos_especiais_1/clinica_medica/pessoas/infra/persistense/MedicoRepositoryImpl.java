@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.MedicoRepository;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
@@ -8,25 +9,32 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
 public class MedicoRepositoryImpl implements MedicoRepository {
     private static final String CACHE_POR_ID = "medicoPorId";
+    private static final String CACHE_POR_ID_COM_ESPECIALIDADES = "medicoPorIdComEspecialidades";
     private static final String CACHE_POR_CRM = "medicoPorCrm";
     private final SpringDataMedicoRepository repository;
+    private final UsuarioApi usuarioApi;
 
 
     @Override
     @Caching(evict = {
             @CacheEvict(value = CACHE_POR_ID, key = "#medico.id"),
-            @CacheEvict(value = CACHE_POR_CRM, key = "#medico.crm")
+            @CacheEvict(value = CACHE_POR_CRM, key = "#medico.crm"),
+            @CacheEvict(value = CACHE_POR_ID_COM_ESPECIALIDADES, key = "#medico.id")
     })
     public Medico salvar(Medico medico) {
-        return repository.save(medico);
+        var medicoSaved = repository.save(medico);
+        usuarioApi.apagarCache(medicoSaved.getUsuario());
+        return medicoSaved;
     }
 
     @Override
@@ -38,6 +46,25 @@ public class MedicoRepositoryImpl implements MedicoRepository {
                         medicoId
                 )
         );
+    }
+
+    @Override
+    @Cacheable(value = CACHE_POR_ID_COM_ESPECIALIDADES, key = "#medicoId")
+    public Medico buscarPorIdComEspecialidades(UUID medicoId) {
+        return repository.buscarPorIdComEspecialidades(medicoId).orElseThrow(() ->
+                EntidadeNaoEncontradaException.porId(
+                        EntidadeNaoEncontradaException.MEDICO,
+                        medicoId
+                ));
+    }
+
+    @Override
+    public Medico buscarPorIdComAgenda(UUID medicoId) {
+        return repository.buscarMedicoComHorariosAtendimento(medicoId).orElseThrow(
+                () -> EntidadeNaoEncontradaException.porId(
+                        EntidadeNaoEncontradaException.MEDICO,
+                        medicoId
+        ));
     }
 
     @Override
@@ -56,5 +83,14 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     @Override
     public boolean existePorCrm(Crm crm) {
         return repository.existsByCrm(crm);
+    }
+
+    @Override
+    public List<Medico> buscaPaginada(UUID cursor, String busca, int limit) {
+        return repository.buscaPaginada(
+                cursor,
+                busca,
+                PageRequest.of(0, limit)
+        );
     }
 }

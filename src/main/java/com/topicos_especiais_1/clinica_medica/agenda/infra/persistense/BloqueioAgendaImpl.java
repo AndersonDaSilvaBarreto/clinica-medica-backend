@@ -58,7 +58,7 @@ public class BloqueioAgendaImpl implements BloqueioAgendaRepository {
     }
 
     @Override
-    public boolean existeBloquioAtivoParaData(UUID medicoId, LocalDate data) {
+    public boolean existeBloqueioAtivoParaData(UUID medicoId, LocalDate data) {
         Specification<BloqueioAgenda> specs = Specification.where(BloqueioAgendaSpecifications.porMedicoId(medicoId))
                 .and(BloqueioAgendaSpecifications.dataContidaNoBloqueio(data));
         return springDataBloqueioAgenda.exists(specs);

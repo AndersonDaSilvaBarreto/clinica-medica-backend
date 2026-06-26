@@ -6,6 +6,7 @@ import com.topicos_especiais_1.clinica_medica.consulta.domain.repository.Consult
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -53,6 +54,13 @@ public class ConsultaRepositoryImpl implements ConsultaRepository {
 
     @Override
     public List<Consulta> buscarPaginada(UUID cursor, UUID pacienteId, UUID medicoId, StatusConsulta status, Instant dataInicio, Instant dataFim, int limit) {
-        return List.of();
+        Specification<Consulta> specs = Specification.where(ConsultaSpecifications.porPacienteId(pacienteId))
+                .and(ConsultaSpecifications.porMedicoId(medicoId))
+                .and((ConsultaSpecifications.porStatus(status)))
+                .and(ConsultaSpecifications.dataHoraInicioDepoisDe(dataInicio))
+                .and(ConsultaSpecifications.dataHoraInicioAntesDe(dataFim))
+                .and(ConsultaSpecifications.idMaiorQue(cursor));
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.ASC, "id"));
+        return springDataConsulta.findAll(specs,pageable).getContent();
     }
 }

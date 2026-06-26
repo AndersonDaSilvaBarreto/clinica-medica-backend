@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class AdminRecepcionistaController {
     private final AtivoRecepcionistaUseCase ativoRecepcionistaUseCase;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> criarRecepcionista(
             @RequestBody @Valid CriarRecepcionistaRequest request
             ) {
@@ -36,6 +38,7 @@ public class AdminRecepcionistaController {
                 .body(null);
     }
     @GetMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<PaginacaoResponse<RecepcionistaResponse>> buscaRecepcionistaPaginado(
             @RequestParam(required = false) UUID cursor,
             @RequestParam(required = false) String busca,
@@ -48,6 +51,7 @@ public class AdminRecepcionistaController {
 
     }
     @GetMapping("/{recepcionistaId}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<RecepcionistaResponse> buscarPorId(
             @PathVariable UUID recepcionistaId
     ) {
@@ -57,6 +61,7 @@ public class AdminRecepcionistaController {
                 .body(response);
     }
     @PatchMapping("/{recepcionistaId}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> atualizarRecepcionista(
             @PathVariable UUID recepcionistaId,
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado,
@@ -68,6 +73,7 @@ public class AdminRecepcionistaController {
                     .body(null);
     }
     @DeleteMapping("/{recepcionistaId}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> ativoRecepcionista(
             @PathVariable UUID recepcionistaId,
             @RequestBody @Valid AtivoRequest request

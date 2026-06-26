@@ -93,4 +93,14 @@ public class MedicoRepositoryImpl implements MedicoRepository {
                 PageRequest.of(0, limit)
         );
     }
+
+    @Override
+    public Medico buscarPorUsuarioId(UUID usuarioId) {
+        return repository.findByUsuarioId(usuarioId).orElseThrow(
+                () -> EntidadeNaoEncontradaException.porCampo(
+                        EntidadeNaoEncontradaException.MEDICO,
+                        "usuario",
+                        usuarioId
+        ));
+    }
 }

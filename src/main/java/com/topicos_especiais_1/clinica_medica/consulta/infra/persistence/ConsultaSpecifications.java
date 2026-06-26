@@ -14,15 +14,15 @@ public class ConsultaSpecifications {
                 medicoId != null ?cb.equal(root.get("medico").get("id"),medicoId) : null);
     }
     public static Specification<Consulta> porPacienteId(UUID pacienteId) {
-        return (root, query, cb) ->
+        return (root, _, cb) ->
                 pacienteId != null? cb.equal(root.get("paciente").get("id"), pacienteId) : null;
     }
 
     public static Specification<Consulta> statusDiferenteDe(List<StatusConsulta> status) {
-        return (root, query, cb) -> cb.not(root.get("statusConsulta").in(status));
+        return (root, _, cb) -> cb.not(root.get("statusConsulta").in(status));
     }
     public static Specification<Consulta> sobrepoeHorario(Instant inicio, Instant fim) {
-        return ((root, query, cb) ->
+        return ((root, _, cb) ->
                 cb.or(
                         cb.and(cb.greaterThanOrEqualTo(root.get("dataHoraInicio"),inicio), cb.lessThan(root.get("dataHoraInicio"),fim)),
                         cb.and(cb.greaterThan(root.get("dataHoraFim"),inicio),cb.lessThanOrEqualTo(root.get("dataHoraFim"),fim)),
@@ -30,6 +30,19 @@ public class ConsultaSpecifications {
                 ));
     }
     public static Specification<Consulta> idMaiorQue(UUID cursor) {
-        return (root,query,cb) -> cursor == null? null : cb.greaterThan(root.get("id"),cursor);
+        return (root, _, cb) -> cursor == null? null : cb.greaterThan(root.get("id"),cursor);
     }
+    public static Specification<Consulta> porStatus(StatusConsulta statusConsulta) {
+        return (root, _, criteriaBuilder) ->
+                statusConsulta != null? criteriaBuilder.equal(root.get("statusConsulta"),statusConsulta) : null;
+    }
+    public static Specification<Consulta> dataHoraInicioDepoisDe(Instant inicio) {
+        return ((root, _, cb) ->
+                inicio != null ? cb.greaterThanOrEqualTo(root.get("dataHoraInicio"), inicio): null);
+    }
+    public static Specification<Consulta> dataHoraInicioAntesDe(Instant fim) {
+        return (root, _, cb) ->
+                fim != null ? cb.lessThanOrEqualTo(root.get("dataHoraInicio"), fim) : null;
+    }
+
 }

@@ -14,5 +14,5 @@ public interface MedicoRepository {
     Medico buscarPorCrm(Crm crm);
     boolean existePorCrm(Crm crm);
     List<Medico> buscaPaginada(UUID cursor, String busca, int limit);
-
+    Medico buscarPorUsuarioId(UUID usuarioId);
 }

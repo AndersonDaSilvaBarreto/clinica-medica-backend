@@ -10,7 +10,9 @@ import com.topicos_especiais_1.clinica_medica.pessoas.api.MedicoApi;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.PacienteRepository;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.AcessoNegadoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.ConflitoException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +41,15 @@ public class AgendarConsultaUseCase {
         DayOfWeek dayOfWeekJava = inicio.atZone(FUSO_HORARIO).getDayOfWeek();
         DiaSemana diaSemanaDesejado = DiaSemana.de(dayOfWeekJava);
 
-        boolean medicoBloqueado = bloqueioAgendaRepository.existeBloquioAtivoParaData(medico.getId(), dataLocal);
+        if(Perfil.PACIENTE.equals(usuarioAutenticado.getPerfil())) {
+            Paciente pacienteLogado = pacienteRepository.buscarPorUsuarioId(usuarioAutenticado.getId());
+            if(!pacienteLogado.equals(paciente)) {
+                throw new AcessoNegadoException("Ação não permitida. Um paciente só pode agendar consultas para si mesmo.");
+            }
+        } else if (!Perfil.RECEPCIONISTA.equals(usuarioAutenticado.getPerfil()) && !Perfil.ADMINISTRADOR.equals(usuarioAutenticado.getPerfil())) {
+                throw new AcessoNegadoException("Seu perfil de usuário não tem permissão para realizar agendamentos.");
+        }
+        boolean medicoBloqueado = bloqueioAgendaRepository.existeBloqueioAtivoParaData(medico.getId(), dataLocal);
         if(medicoBloqueado) {
             throw ConflitoException.of("Consulta", "O médico não realizará atendimentos na data selecionada devido a bloqueio de agenda.");
         }

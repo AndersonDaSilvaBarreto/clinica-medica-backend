@@ -99,4 +99,8 @@ public class Consulta extends BaseEntity implements Serializable {
         String blocoMotivo = "\n[REAGENDAMENTO - " + Instant.now() + " por " + usuarioOperador.getNome() + "]: " + motivo;
         this.observacao = this.observacao == null ? blocoMotivo.trim() : this.observacao + blocoMotivo;
     }
+
+    public void mudarStatus(StatusConsulta statusConsulta) {
+        this.statusConsulta = Objects.requireNonNull(statusConsulta);
+    }
 }

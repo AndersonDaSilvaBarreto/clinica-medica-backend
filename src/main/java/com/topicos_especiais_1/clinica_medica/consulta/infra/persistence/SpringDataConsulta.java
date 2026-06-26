@@ -18,6 +18,8 @@ public interface SpringDataConsulta extends JpaRepository<Consulta, UUID>, JpaSp
     @EntityGraph(attributePaths = {
             "paciente",
             "paciente.usuario",
+            "medico",
+            "medico.usuario"
     })
     Optional<Consulta> findById(@NonNull UUID consultaId);
     @Override

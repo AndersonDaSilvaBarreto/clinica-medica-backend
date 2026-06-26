@@ -24,9 +24,15 @@ public class ConsultaSpecifications {
     public static Specification<Consulta> sobrepoeHorario(Instant inicio, Instant fim) {
         return ((root, _, cb) ->
                 cb.or(
-                        cb.and(cb.greaterThanOrEqualTo(root.get("dataHoraInicio"),inicio), cb.lessThan(root.get("dataHoraInicio"),fim)),
-                        cb.and(cb.greaterThan(root.get("dataHoraFim"),inicio),cb.lessThanOrEqualTo(root.get("dataHoraFim"),fim)),
-                        cb.and(cb.lessThanOrEqualTo(root.get("dataHoraInicio"),inicio), cb.greaterThanOrEqualTo(root.get("dataHoraFim"),fim))
+                        cb.and(
+                                cb.greaterThanOrEqualTo(root.get("dataHoraInicio"),inicio),
+                                cb.lessThan(root.get("dataHoraInicio"),fim)),
+                        cb.and(
+                                cb.greaterThan(root.get("dataHoraFim"),inicio),
+                                cb.lessThanOrEqualTo(root.get("dataHoraFim"),fim)),
+                        cb.and(
+                                cb.lessThanOrEqualTo(root.get("dataHoraInicio"),inicio),
+                                cb.greaterThanOrEqualTo(root.get("dataHoraFim"),fim))
                 ));
     }
     public static Specification<Consulta> idMaiorQue(UUID cursor) {

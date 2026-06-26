@@ -8,6 +8,7 @@ import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.*;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.util.UUID;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -117,6 +118,12 @@ public class Usuario extends BaseEntity implements Serializable {
 
     public void mudarDataNascimento(DataNascimento dataNascimento) {
         this.dataNascimento = Objects.requireNonNull(dataNascimento);
+    }
+    public UUID getId() {
+        return super.getId();
+    }
+    public Perfil getPerfil(){
+        return this.perfil;
     }
     public Optional<Telefone> getTelefone() {
         return Optional.ofNullable(telefone);

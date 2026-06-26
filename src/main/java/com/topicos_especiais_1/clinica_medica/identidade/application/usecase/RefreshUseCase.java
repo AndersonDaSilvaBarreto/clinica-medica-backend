@@ -34,14 +34,18 @@ public class RefreshUseCase {
         );
         Usuario usuario = usuarioRepository.buscarPorId(dados.id());
         String accessToken = tokenService.generateToken(usuario);
-        String refresToken = tokenService.generateRefreshToken();
-        String chaveNova = RedisService.REFRESH_KEY + refresToken;
+        String refreshToken = tokenService.generateRefreshToken();
+        String chaveNova = RedisService.REFRESH_KEY + refreshToken;
         redisService.deletar(RedisService.REFRESH_KEY + oldRefreshToken);
         redisService.salvar(chaveNova, new DadosRefreshToken(usuario.getId()), Duration.ofDays(7));
-        
+
+        String role = usuario.getPerfil().name();
+
         return new AuthenticateResponse(
                 accessToken,
-                refresToken
+                refreshToken,
+                role
+
         );
     }
 }

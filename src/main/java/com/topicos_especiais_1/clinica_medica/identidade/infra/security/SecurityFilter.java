@@ -29,18 +29,35 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String token = this.recoverToken(request);
         if (!Objects.isNull(token)) {
-            DecodedJWT decodedJWT = tokenService.getDecodedToken(token);
-            String usuarioId = decodedJWT.getSubject();
-            Usuario usuario = usuarioRepository.buscarPorId(UUID.fromString(usuarioId));
-            UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado(
-                   usuario
-            );
-            var authentication = new UsernamePasswordAuthenticationToken(
-                    usuarioAutenticado,
-                    null,
-                    usuarioAutenticado.getAuthorities()
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+           try {
+                DecodedJWT decodedJWT = tokenService.getDecodedToken(token);
+                String usuarioId = decodedJWT.getSubject();
+                Usuario usuario = usuarioRepository.buscarPorId(UUID.fromString(usuarioId));
+            
+                UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado(usuario);
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        usuarioAutenticado,
+                        null,
+                        usuarioAutenticado.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            
+            } catch (com.topicos_especiais_1.clinica_medica.identidade.domain.exception.TokenInvalidoException e) {
+            
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(
+                    "{" +
+                    "\"type\":\"https://sumed.online\"," +
+                    "\"title\":\"Sessão expirada. Tentando renovação automática.\"," +
+                    "\"status\":401," +
+                    "\"instance\":\"" + request.getRequestURI() + "\"," +
+                    "\"errors\":null" +
+                    "}"
+                );
+                return; 
+            }
         }
 
         filterChain.doFilter(request, response);

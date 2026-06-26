@@ -2,10 +2,7 @@ package com.topicos_especiais_1.clinica_medica.consulta.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.*;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.AgendarConsultaRequest;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.CancelarConsultaRequest;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ConsultaResponse;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ReagendarConsultaRequest;
+import com.topicos_especiais_1.clinica_medica.consulta.web.dto.*;
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
 import jakarta.validation.Valid;
@@ -29,6 +26,7 @@ public class ConsultaController {
     private final BuscaPaginadaMedicoMeConsultasUseCase buscaPaginadaMedicoMeConsultasUseCase;
     private final CancelarConsultaUseCase cancelarConsultaUseCase;
     private final ReagendarConsultaUseCase reagendarConsultaUseCase;
+    private final BuscaPaginadaReagendamentoConsultaUseCase buscaPaginadaReagendamentoConsultaUseCase;
     @PostMapping
     public ResponseEntity<Void> agendar(
             @RequestBody @Valid AgendarConsultaRequest agendarConsultaRequest,
@@ -125,5 +123,29 @@ public class ConsultaController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(null);
+    }
+    @GetMapping("/{consultaId}/historico-reagendamento")
+    public ResponseEntity<PaginacaoResponse<ReagendamentoResponse>> historicoReagendamento(
+            @RequestParam(required = false) UUID cursor,
+            @PathVariable UUID consultaId,
+            @RequestParam(required = false) UUID pacienteId,
+            @RequestParam(required = false) Instant depoisDe,
+            @RequestParam(required = false) Instant antesDe,
+            @RequestParam(required = false,defaultValue = "05") int limit
+    ) {
+
+        var response = buscaPaginadaReagendamentoConsultaUseCase.execute(
+                cursor,
+                consultaId,
+                pacienteId,
+                depoisDe,
+                antesDe,
+                limit
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+
     }
 }

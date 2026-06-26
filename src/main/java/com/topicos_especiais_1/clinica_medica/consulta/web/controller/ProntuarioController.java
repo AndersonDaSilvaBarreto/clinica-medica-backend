@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.consulta.web.controller;
 
+import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscarProntuarioPorConsultaIdUseCase;
 import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.RegistrarProntuarioUseCase;
 import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ProntuarioResponse;
 import com.topicos_especiais_1.clinica_medica.consulta.web.dto.RegistrarProntuarioRequest;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProntuarioController {
     private final RegistrarProntuarioUseCase registrarProntuarioUseCase;
+    private final BuscarProntuarioPorConsultaIdUseCase buscarProntuarioPorConsultaIdUseCase;
 
     @PostMapping
     public ResponseEntity<ProntuarioResponse>  salvar(
@@ -31,5 +33,16 @@ public class ProntuarioController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(response);
+    }
+    @GetMapping
+    public ResponseEntity<ProntuarioResponse> buscarPorConsultaId(
+            @PathVariable UUID consultaId,
+            @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
+    ){
+        var response = buscarProntuarioPorConsultaIdUseCase.execute(consultaId,usuarioAutenticado.usuario());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+
     }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE especialidades DROP COLUMN exige_pagamento;

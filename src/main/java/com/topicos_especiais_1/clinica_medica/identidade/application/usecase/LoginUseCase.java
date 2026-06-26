@@ -1,21 +1,23 @@
 package com.topicos_especiais_1.clinica_medica.identidade.application.usecase;
 
-import com.topicos_especiais_1.clinica_medica.identidade.application.dto.DadosRefreshToken;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
-import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
-import com.topicos_especiais_1.clinica_medica.identidade.infra.security.TokenService;
-import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
-import com.topicos_especiais_1.clinica_medica.identidade.web.dto.LoginDto;
-import com.topicos_especiais_1.clinica_medica.identidade.web.dto.AuthenticateResponse;
-import com.topicos_especiais_1.clinica_medica.shared.infra.cache.RedisService;
-import lombok.RequiredArgsConstructor;
+import java.time.Duration;
+import java.util.Objects;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.util.Objects;
+import com.topicos_especiais_1.clinica_medica.identidade.application.dto.DadosRefreshToken;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.repository.UsuarioRepository;
+import com.topicos_especiais_1.clinica_medica.identidade.infra.security.TokenService;
+import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
+import com.topicos_especiais_1.clinica_medica.identidade.web.dto.AuthenticateResponse;
+import com.topicos_especiais_1.clinica_medica.identidade.web.dto.LoginDto;
+import com.topicos_especiais_1.clinica_medica.shared.infra.cache.RedisService;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +48,12 @@ public class LoginUseCase {
                 dadosRefreshToken,
                 Duration.ofDays(7)
         );
+        String role = usuario.getPerfil().name();
+
         return new AuthenticateResponse(
                 accessToken,
-                refreshToken
+                refreshToken,
+                role
         );
 
     }

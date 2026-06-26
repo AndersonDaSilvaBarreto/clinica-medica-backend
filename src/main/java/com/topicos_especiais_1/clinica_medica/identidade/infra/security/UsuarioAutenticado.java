@@ -1,11 +1,15 @@
 package com.topicos_especiais_1.clinica_medica.identidade.infra.security;
 
-import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import java.util.*;
+
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 
 public record UsuarioAutenticado(Usuario usuario) implements UserDetails {
 
@@ -20,7 +24,9 @@ public record UsuarioAutenticado(Usuario usuario) implements UserDetails {
 
     @Override
     public String getPassword() {
-        return usuario().getSenha().toString();
+        String senhaHash = usuario().getSenha().toString();
+        System.out.println("====== [PASSO 2] Spring Security lendo getPassword(): [" + senhaHash + "]");
+        return senhaHash;
     }
 
     @Override

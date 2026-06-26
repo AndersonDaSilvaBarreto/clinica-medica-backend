@@ -76,9 +76,9 @@ public class AdminRecepcionistaController {
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> ativoRecepcionista(
             @PathVariable UUID recepcionistaId,
-            @RequestBody @Valid AtivoRequest request
-            ) {
-        ativoRecepcionistaUseCase.execute(recepcionistaId,request);
+            @RequestBody @Valid AtivoRequest request            
+        ) {
+        ativoRecepcionistaUseCase.execute(recepcionistaId, request);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .body(null);

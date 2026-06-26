@@ -37,6 +37,17 @@ public class GlobalControllerAdvice {
                 .body(ErroResponse.ofValidacao(request.getRequestURI(),erros));
     }
 
+    @ExceptionHandler({
+        org.springframework.security.authentication.InternalAuthenticationServiceException.class,
+        org.springframework.security.authentication.BadCredentialsException.class
+    })
+    public ResponseEntity<ErroResponse> handleFalhaAutenticacaoLogin(Exception ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED; // Transforma em 401
+        return ResponseEntity
+                .status(status)
+                .body(ErroResponse.of("E-mail ou senha incorretos.", status, request.getRequestURI()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroResponse> handleGenerico(
             Exception ex,

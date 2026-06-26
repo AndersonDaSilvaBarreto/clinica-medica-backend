@@ -1,14 +1,17 @@
 package com.topicos_especiais_1.clinica_medica.identidade.infra.security;
 
 import com.topicos_especiais_1.clinica_medica.shared.api.ErroResponse;
+
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +21,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.List;
+
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -26,13 +38,14 @@ import tools.jackson.databind.ObjectMapper;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final SecurityFilter securityFilter;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, ObjectMapper objectMapper) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, ObjectMapper objectMapper) throws Exception {
         return httpSecurity
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(
@@ -41,10 +54,9 @@ public class SecurityConfiguration {
                                 "/swagger-ui.html"
                         ).permitAll()
                         .anyRequest().authenticated()
-
                 )
                 .exceptionHandling(ex -> {
-                    ex  .authenticationEntryPoint((request, response, authException) -> {
+                    ex.authenticationEntryPoint((request, response, authException) -> {
                                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                                 response.setContentType("application/json");
                                 var erro = ErroResponse.of("Não autenticado", HttpStatus.UNAUTHORIZED, request.getRequestURI());
@@ -56,15 +68,37 @@ public class SecurityConfiguration {
                                 var erro = ErroResponse.of("Acesso negado", HttpStatus.FORBIDDEN, request.getRequestURI());
                                 response.getWriter().write(objectMapper.writeValueAsString(erro));
                             });
-                } )
+                })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); 
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true); 
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) {
-        return authenticationConfiguration.getAuthenticationManager();
+        UserDetailsService userDetailsService, 
+        PasswordEncoder passwordEncoder) {
+    
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+    
+        return new ProviderManager(authProvider);
     }
+
+
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

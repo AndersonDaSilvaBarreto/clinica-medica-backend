@@ -74,4 +74,29 @@ public class Consulta extends BaseEntity implements Serializable {
             throw FormatoInvalidoException.from("Consulta", "Observação deve ter de 15 até 500 caracteres.");
         }
     }
+    public void cancelar(String motivo, Usuario usuarioOperador) {
+        if (this.statusConsulta == StatusConsulta.CANCELADA) {
+            throw FormatoInvalidoException.from("Consulta", "Esta consulta já está cancelada.");
+        }
+
+        this.statusConsulta = StatusConsulta.CANCELADA;
+
+        String blocoMotivo = "\n[CANCELAMENTO - " + Instant.now() + " por " + usuarioOperador.getNome() + "]: " + motivo;
+        this.observacao = this.observacao == null ? blocoMotivo.trim() : this.observacao + blocoMotivo;
+    }
+
+    public void reagendar(Instant novoInicio, Instant novoFim, String motivo, Usuario usuarioOperador) {
+        if (this.statusConsulta == StatusConsulta.CANCELADA) {
+            throw FormatoInvalidoException.from("Consulta", "Não é possível reagendar uma consulta cancelada.");
+        }
+
+        validarDataHora(novoInicio, novoFim);
+
+        this.dataHoraInicio = novoInicio;
+        this.dataHoraFim = novoFim;
+        this.statusConsulta = StatusConsulta.AGUARDANDO_PAGAMENTO;
+
+        String blocoMotivo = "\n[REAGENDAMENTO - " + Instant.now() + " por " + usuarioOperador.getNome() + "]: " + motivo;
+        this.observacao = this.observacao == null ? blocoMotivo.trim() : this.observacao + blocoMotivo;
+    }
 }

@@ -1,12 +1,11 @@
 package com.topicos_especiais_1.clinica_medica.consulta.web.controller;
 
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.AgendarConsultaUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscaPaginadaMedicoMeConsultasUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscaPaginadaPacienteMeConsultasUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscaPaginadaConsultaUseCase;
+import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.*;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
 import com.topicos_especiais_1.clinica_medica.consulta.web.dto.AgendarConsultaRequest;
+import com.topicos_especiais_1.clinica_medica.consulta.web.dto.CancelarConsultaRequest;
 import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ConsultaResponse;
+import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ReagendarConsultaRequest;
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
 import jakarta.validation.Valid;
@@ -28,6 +27,8 @@ public class ConsultaController {
     private final BuscaPaginadaConsultaUseCase buscaPaginadaConsultaUseCase;
     private final BuscaPaginadaPacienteMeConsultasUseCase buscaPaginaPacienteMeConsultasUseCase;
     private final BuscaPaginadaMedicoMeConsultasUseCase buscaPaginadaMedicoMeConsultasUseCase;
+    private final CancelarConsultaUseCase cancelarConsultaUseCase;
+    private final ReagendarConsultaUseCase reagendarConsultaUseCase;
     @PostMapping
     public ResponseEntity<Void> agendar(
             @RequestBody @Valid AgendarConsultaRequest agendarConsultaRequest,
@@ -100,5 +101,29 @@ public class ConsultaController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
+    }
+
+    @PatchMapping("/{consultaId}/cancelar")
+    public ResponseEntity<Void> cancelar(
+        @PathVariable UUID consultaId,
+        @RequestBody CancelarConsultaRequest cancelarConsultaRequest,
+        @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
+    ) {
+        cancelarConsultaUseCase.execute(consultaId,cancelarConsultaRequest.motivo(),usuarioAutenticado.usuario());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
+    }
+
+    @PatchMapping("/{consultaId}/reagendar")
+    public ResponseEntity<Void> reagendar(
+            @PathVariable UUID consultaId,
+            @RequestBody @Valid ReagendarConsultaRequest request,
+            @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
+            ) {
+            reagendarConsultaUseCase.execute(consultaId, request.inicio(),request.motivo(),usuarioAutenticado.usuario());
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(null);
     }
 }

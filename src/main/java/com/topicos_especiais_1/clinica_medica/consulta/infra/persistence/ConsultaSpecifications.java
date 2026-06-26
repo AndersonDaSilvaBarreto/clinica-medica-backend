@@ -45,4 +45,9 @@ public class ConsultaSpecifications {
                 fim != null ? cb.lessThanOrEqualTo(root.get("dataHoraInicio"), fim) : null;
     }
 
+    public static Specification<Consulta> idDiferenteDe(UUID consultaId) {
+        return (root, _, cb) ->
+                consultaId != null ? cb.notEqual(root.get("id"), consultaId) : null;
+    }
+
 }

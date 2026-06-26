@@ -9,9 +9,17 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SpringDataConsulta extends JpaRepository<Consulta, UUID>, JpaSpecificationExecutor<Consulta> {
+
+    @Override
+    @EntityGraph(attributePaths = {
+            "paciente",
+            "paciente.usuario",
+    })
+    Optional<Consulta> findById(@NonNull UUID consultaId);
     @Override
     @EntityGraph(attributePaths = {
             "paciente",

@@ -19,4 +19,5 @@ public interface ConsultaRepository {
                                   Instant dataInicio,
                                   Instant dataFim,
                                   int limit);
+    boolean existeConflitoHorarioMedicoIgnorandoConsulta(UUID medicoId, Instant inicio, Instant fim, UUID consulta);
 }

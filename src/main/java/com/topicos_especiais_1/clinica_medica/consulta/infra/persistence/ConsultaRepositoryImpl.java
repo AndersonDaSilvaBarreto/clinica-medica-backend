@@ -63,4 +63,12 @@ public class ConsultaRepositoryImpl implements ConsultaRepository {
         Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.ASC, "id"));
         return springDataConsulta.findAll(specs,pageable).getContent();
     }
+
+    @Override
+    public boolean existeConflitoHorarioMedicoIgnorandoConsulta(UUID medicoId, Instant inicio, Instant fim, UUID consultaId) {
+        Specification<Consulta> specs = Specification.where(ConsultaSpecifications.porMedicoId(medicoId))
+                .and(ConsultaSpecifications.sobrepoeHorario(inicio,fim))
+                .and(ConsultaSpecifications.idDiferenteDe(consultaId));
+        return springDataConsulta.exists(specs);
+    }
 }

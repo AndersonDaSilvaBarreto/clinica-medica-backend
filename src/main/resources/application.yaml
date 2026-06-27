@@ -2,7 +2,7 @@ spring:
   application:
     name: clinica-medica-backend
   profiles:
-    active: prod
+    active: dev
   jpa:
     hibernate:
       ddl-auto: update

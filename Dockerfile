@@ -2,6 +2,9 @@ FROM eclipse-temurin:25-jdk-alpine AS build
 WORKDIR /app
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
+
+RUN chmod +x mvnw
+
 RUN ./mvnw dependency:go-offline
 COPY src/ src/
 RUN ./mvnw package -DskipTests
@@ -9,4 +12,6 @@ RUN ./mvnw package -DskipTests
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
+
+# CORREÇÃO DA LINHA CORTADA: Executa o jar gerado usando o comando java nativo do JRE
 ENTRYPOINT ["java", "-jar", "app.jar"]

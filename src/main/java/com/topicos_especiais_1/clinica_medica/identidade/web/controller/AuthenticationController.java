@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -20,6 +23,8 @@ public class AuthenticationController {
     private final CookieService cookieService;
     private final RefreshUseCase refreshUseCase;
     private final EsqueciSenhaUseCase esqueciSenhaUseCase;
+    private final EsqueciSenhaVerificarCodigoUseCase esqueciSenhaVerificarCodigoUseCase;
+    private final EsqueciSenhaTrocarSenhaUseCase esqueciSenhaTrocarSenhaUseCase;
     @PostMapping("/register/start")
     public ResponseEntity<Void> register(@RequestBody @Valid RegisterDto dto) {
         comecarRegistroPacienteUseCase.execute(dto);
@@ -72,6 +77,24 @@ public class AuthenticationController {
             @RequestBody @Valid EsqueciSenhaRequest request
     ) {
         esqueciSenhaUseCase.execute(request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
+    }
+    @PostMapping("/esqueci-minha-senha-verificar")
+    public ResponseEntity<Map<String, UUID>> esqueciSenhaVerificar(
+            @RequestBody @Valid EsqueciSenhaVerificarCodigoRequest request
+    ) {
+        var response = esqueciSenhaVerificarCodigoUseCase.execute(request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+    @PostMapping("/esqueci-minha-senha-trocar-senha")
+    public ResponseEntity<Void> trocarSenha(
+            @RequestBody @Valid EsqueciSenhaTrocarSenhaRequest request
+    ) {
+        esqueciSenhaTrocarSenhaUseCase.execute(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(null);

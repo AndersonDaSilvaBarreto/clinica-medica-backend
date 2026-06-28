@@ -1,6 +1,15 @@
 package com.topicos_especiais_1.clinica_medica.consulta.application.usecase;
 
-import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.HorarioMedico;
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.BloqueioAgendaRepository;
 import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.HorarioMedicoRepository;
 import com.topicos_especiais_1.clinica_medica.agenda.domain.valueobject.DiaSemana;
@@ -15,11 +24,8 @@ import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.Paciente
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.AcessoNegadoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.ConflitoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.*;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

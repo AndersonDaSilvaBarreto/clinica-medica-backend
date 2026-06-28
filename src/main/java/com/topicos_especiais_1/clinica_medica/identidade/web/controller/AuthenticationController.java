@@ -1,9 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.identidade.web.controller;
 
-import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.ComecarRegistroPacienteUseCase;
-import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.LoginUseCase;
-import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.RefreshUseCase;
-import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.VerificarRegistroUseCase;
+import com.topicos_especiais_1.clinica_medica.identidade.application.usecase.*;
 import com.topicos_especiais_1.clinica_medica.identidade.web.CookieService;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.*;
 import jakarta.validation.Valid;
@@ -22,7 +19,7 @@ public class AuthenticationController {
     private final LoginUseCase loginUseCase;
     private final CookieService cookieService;
     private final RefreshUseCase refreshUseCase;
-
+    private final EsqueciSenhaUseCase esqueciSenhaUseCase;
     @PostMapping("/register/start")
     public ResponseEntity<Void> register(@RequestBody @Valid RegisterDto dto) {
         comecarRegistroPacienteUseCase.execute(dto);
@@ -68,6 +65,16 @@ public class AuthenticationController {
                 .header(HttpHeaders.SET_COOKIE, cookies.refreshCookie().toString())
                 .body(refreshResponse);
 
+    }
+
+    @PostMapping("/esqueci-minha-senha")
+    public ResponseEntity<Void> esqueciSenha(
+            @RequestBody @Valid EsqueciSenhaRequest request
+    ) {
+        esqueciSenhaUseCase.execute(request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
     }
 
 

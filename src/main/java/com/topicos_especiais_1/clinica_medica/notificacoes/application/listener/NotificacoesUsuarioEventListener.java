@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.notificacoes.application.listener;
 
+import com.topicos_especiais_1.clinica_medica.identidade.api.event.EsqueciSenhaCodigoEvent;
 import com.topicos_especiais_1.clinica_medica.identidade.api.event.UsuarioCriadoEvent;
 import com.topicos_especiais_1.clinica_medica.identidade.api.event.VerificacaoSolicitadaEvent;
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.service.NotificacaoService;
@@ -26,6 +27,15 @@ public class NotificacoesUsuarioEventListener {
                 event.email(),
                 "Cadastro concluído",
                 "Seja bem vindo ao sistema da Sumed Clinica médica"
+        );
+    }
+    @ApplicationModuleListener
+    public void onEsqueciSenha(EsqueciSenhaCodigoEvent event) {
+        IO.println("chegou no listener");
+        notificacaoService.enviarEmail(
+                event.email(),
+                "Codigo para trocar de senha",
+                "Codigo : " + event.codigo()
         );
     }
 }

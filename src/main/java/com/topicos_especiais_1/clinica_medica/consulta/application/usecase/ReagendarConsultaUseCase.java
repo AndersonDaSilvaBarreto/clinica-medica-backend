@@ -1,6 +1,17 @@
 package com.topicos_especiais_1.clinica_medica.consulta.application.usecase;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.BloqueioAgendaRepository;
+import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.HorarioMedicoRepository;
 import com.topicos_especiais_1.clinica_medica.agenda.domain.valueobject.DiaSemana;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.Consulta;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.ReagendamentoConsulta;
@@ -11,18 +22,15 @@ import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.AcessoNegadoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.ConflitoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.*;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ReagendarConsultaUseCase {
     private final ConsultaRepository consultaRepository;
     private final BloqueioAgendaRepository bloqueioAgendaRepository;
+    private final HorarioMedicoRepository horarioMedicoRepository;
     private final ReagendamentoConsultaRepository reagendamentoConsultaRepository;
     private static final ZoneId FUSO_HORARIO = ZoneId.of("America/Sao_Paulo");
 
@@ -31,7 +39,6 @@ public class ReagendarConsultaUseCase {
         Consulta consulta = consultaRepository.buscarPorId(consultaId);
         Medico medico = consulta.getMedico();
 
-        // 1. Barreira de Segurança (Igual ao cancelamento)
         if (Perfil.PACIENTE.equals(usuarioAutenticado.getPerfil())) {
             if (!consulta.getPaciente().getUsuario().getId().equals(usuarioAutenticado.getId())) {
                 throw new AcessoNegadoException("Ação não permitida. Você só pode reagendar suas próprias consultas.");
@@ -43,7 +50,6 @@ public class ReagendarConsultaUseCase {
         Instant inicioAntigo = consulta.getDataHoraInicio();
         Instant fimAntigo = consulta.getDataHoraFim();
 
-        // 2. Cálculo dos novos horários locais para validação
         Instant novoFim = novoInicio.plus(Duration.ofMinutes(medico.getTempoConsultaMinutos()));
         LocalDate dataLocal = novoInicio.atZone(FUSO_HORARIO).toLocalDate();
         LocalTime horaInicioLocal = novoInicio.atZone(FUSO_HORARIO).toLocalTime();
@@ -72,7 +78,6 @@ public class ReagendarConsultaUseCase {
             throw ConflitoException.of("Consulta", "O médico escolhido já possui um agendamento neste horário.");
         }
 
-        // 6. Atualiza e Salva
         consulta.reagendar(novoInicio, novoFim, motivo, usuarioAutenticado);
         consultaRepository.salvar(consulta);
 
@@ -88,5 +93,19 @@ public class ReagendarConsultaUseCase {
 
         reagendamentoConsultaRepository.salvar(historico);
 
-    }}
+        horarioMedicoRepository
+                .buscarPorMedicoIdEDataHora(consulta.getMedico().getId(), inicioAntigo)
+                .ifPresent(slot -> {
+                    slot.marcarDisponivel();
+                    horarioMedicoRepository.salvar(slot);
+                });
 
+        horarioMedicoRepository
+                .buscarPorMedicoIdEDataHora(consulta.getMedico().getId(), novoInicio)
+                .ifPresent(slot -> {
+                    slot.marcarOcupado();
+                    horarioMedicoRepository.salvar(slot);
+                });
+
+    }
+}

@@ -1,10 +1,10 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.domain.repository;
 
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
 
 public interface MedicoRepository {
     Medico salvar(Medico medico);
@@ -15,4 +15,5 @@ public interface MedicoRepository {
     boolean existePorCrm(Crm crm);
     List<Medico> buscaPaginada(UUID cursor, String busca, int limit);
     Medico buscarPorUsuarioId(UUID usuarioId);
+    List<Medico> buscarTodosComAgenda();
 }

@@ -1,12 +1,13 @@
 package com.topicos_especiais_1.clinica_medica.consulta.infra.persistence;
 
-import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.Consulta;
-import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
-import org.springframework.data.jpa.domain.Specification;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.jpa.domain.Specification;
+
+import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.Consulta;
+import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
 
 public class ConsultaSpecifications {
     public static Specification<Consulta> porMedicoId(UUID medicoId) {

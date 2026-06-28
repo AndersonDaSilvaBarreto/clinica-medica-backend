@@ -1,7 +1,13 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.application.usecase;
 
+
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.topicos_especiais_1.clinica_medica.agenda.application.service.GeradorHorarioMedicoService;
 import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
-import com.topicos_especiais_1.clinica_medica.identidade.api.dto.UsuarioResumo;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Especialidade;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
@@ -13,11 +19,8 @@ import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeEx
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Cpf;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class CriarMedicoUseCase {
     private final MedicoRepository medicoRepository;
     private final UsuarioApi usuarioApi;
     private final EspecialidadeRepository especialidadeRepository;
+        private final GeradorHorarioMedicoService geradorHorarioMedicoService;
     @Transactional
     public void execute(CriarMedicoRequest request) {
         Crm crm = Crm.of(request.crm());
@@ -58,7 +62,8 @@ public class CriarMedicoUseCase {
             Especialidade especialidade = especialidadeRepository.buscarPorId(especialidadeId);
             medico.adicionarEspecialidade(especialidade);
         }
-        medicoRepository.salvar(medico);
+        Medico medicoSalvo = medicoRepository.salvar(medico);
+        geradorHorarioMedicoService.gerarSlotsFaltantes(medicoSalvo);
 
     }
 }

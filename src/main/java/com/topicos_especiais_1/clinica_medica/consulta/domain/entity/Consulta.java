@@ -1,19 +1,30 @@
 package com.topicos_especiais_1.clinica_medica.consulta.domain.entity;
 
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.Objects;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.FormatoInvalidoException;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.Objects;
 
 @Entity
 @Table(name = "consultas", schema = "public")
@@ -36,6 +47,7 @@ public class Consulta extends BaseEntity implements Serializable {
     private Instant dataHoraFim;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "status", nullable = false)
     private StatusConsulta statusConsulta;
 

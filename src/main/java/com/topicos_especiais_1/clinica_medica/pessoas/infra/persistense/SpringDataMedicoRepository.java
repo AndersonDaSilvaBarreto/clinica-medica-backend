@@ -1,16 +1,17 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
 
 public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID> {
     Optional<Medico> findByCrm(Crm crm);
@@ -55,4 +56,15 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID> 
                   WHERE m.id = :medicoId 
 """)
     Optional<Medico> buscarMedicoComHorariosAtendimento(@Param("medicoId") UUID medicoId);
+
+
+
+    @Query("""
+           SELECT DISTINCT m FROM Medico m
+           LEFT JOIN FETCH m.horariosAtendimento
+           JOIN FETCH m.usuario
+           """)
+    List<Medico> buscarTodosComAgenda();
+
+    
 }

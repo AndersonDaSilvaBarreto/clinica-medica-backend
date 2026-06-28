@@ -1,6 +1,8 @@
 package com.topicos_especiais_1.clinica_medica.consulta.application.usecase;
 
+import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.HorarioMedico;
 import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.BloqueioAgendaRepository;
+import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.HorarioMedicoRepository;
 import com.topicos_especiais_1.clinica_medica.agenda.domain.valueobject.DiaSemana;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.Consulta;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.repository.ConsultaRepository;
@@ -22,10 +24,15 @@ import java.time.*;
 @Service
 @RequiredArgsConstructor
 public class AgendarConsultaUseCase {
+
     private final ConsultaRepository consultaRepository;
     private final MedicoApi medicoApi;
     private final PacienteRepository pacienteRepository;
     private final BloqueioAgendaRepository bloqueioAgendaRepository;
+    // ── NOVO ──────────────────────────────────────────────────────────────────
+    private final HorarioMedicoRepository horarioMedicoRepository;
+    // ─────────────────────────────────────────────────────────────────────────
+
     private static final ZoneId FUSO_HORARIO = ZoneId.of("America/Sao_Paulo");
 
     @Transactional
@@ -41,39 +48,45 @@ public class AgendarConsultaUseCase {
         DayOfWeek dayOfWeekJava = inicio.atZone(FUSO_HORARIO).getDayOfWeek();
         DiaSemana diaSemanaDesejado = DiaSemana.de(dayOfWeekJava);
 
-        if(Perfil.PACIENTE.equals(usuarioAutenticado.getPerfil())) {
+        if (Perfil.PACIENTE.equals(usuarioAutenticado.getPerfil())) {
             Paciente pacienteLogado = pacienteRepository.buscarPorUsuarioId(usuarioAutenticado.getId());
-            if(!pacienteLogado.equals(paciente)) {
+            if (!pacienteLogado.equals(paciente)) {
                 throw new AcessoNegadoException("Ação não permitida. Um paciente só pode agendar consultas para si mesmo.");
             }
-        } else if (!Perfil.RECEPCIONISTA.equals(usuarioAutenticado.getPerfil()) && !Perfil.ADMINISTRADOR.equals(usuarioAutenticado.getPerfil())) {
-                throw new AcessoNegadoException("Seu perfil de usuário não tem permissão para realizar agendamentos.");
+        } else if (!Perfil.RECEPCIONISTA.equals(usuarioAutenticado.getPerfil())
+                && !Perfil.ADMINISTRADOR.equals(usuarioAutenticado.getPerfil())) {
+            throw new AcessoNegadoException("Seu perfil de usuário não tem permissão para realizar agendamentos.");
         }
+
         boolean medicoBloqueado = bloqueioAgendaRepository.existeBloqueioAtivoParaData(medico.getId(), dataLocal);
-        if(medicoBloqueado) {
+        if (medicoBloqueado) {
             throw ConflitoException.of("Consulta", "O médico não realizará atendimentos na data selecionada devido a bloqueio de agenda.");
         }
 
         boolean dentroDoHorarioDeTrabalho = medico.getHorariosAtendimento().stream()
-                .anyMatch(h -> h.getDiaSemana() == diaSemanaDesejado &&
-                        !horaInicioLocal.isBefore(h.getHoraInicio()) &&
-                        !horaFimLocal.isAfter(h.getHoraFim()));
+                .anyMatch(h -> h.getDiaSemana() == diaSemanaDesejado
+                        && !horaInicioLocal.isBefore(h.getHoraInicio())
+                        && !horaFimLocal.isAfter(h.getHoraFim()));
 
         if (!dentroDoHorarioDeTrabalho) {
             throw ConflitoException.of("Medico Agenda", "O horário selecionado está fora do expediente de atendimento cadastrado para este médico.");
         }
-        boolean conflitoHorarioConsulta = consultaRepository.existeConflitoHorarioMedico(medico.getId(),request.dataHoraInicio(), fim);
-        if(conflitoHorarioConsulta) {
+
+        boolean conflitoHorarioConsulta = consultaRepository.existeConflitoHorarioMedico(medico.getId(), inicio, fim);
+        if (conflitoHorarioConsulta) {
             throw ConflitoException.of("Consulta", "O médico escolhido já possui um agendamento neste horário.");
         }
-        Consulta novaConsulta = Consulta.create(
-                paciente,
-                medico,
-                inicio,
-                fim,
-                request.observacao(),
-                usuarioAutenticado
-        );
+
+        Consulta novaConsulta = Consulta.create(paciente, medico, inicio, fim, request.observacao(), usuarioAutenticado);
         consultaRepository.salvar(novaConsulta);
+
+        // ── NOVO: marcar o slot correspondente como OCUPADO ───────────────────
+        horarioMedicoRepository
+                .buscarPorMedicoIdEDataHora(medico.getId(), inicio)
+                .ifPresent(slot -> {
+                    slot.marcarOcupado();
+                    horarioMedicoRepository.salvar(slot);
+                });
+        // ─────────────────────────────────────────────────────────────────────
     }
 }

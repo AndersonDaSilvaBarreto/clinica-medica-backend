@@ -3,6 +3,7 @@ package com.topicos_especiais_1.clinica_medica.identidade.application.usecase;
 import com.topicos_especiais_1.clinica_medica.identidade.api.event.EsqueciSenhaCodigoEvent;
 import com.topicos_especiais_1.clinica_medica.identidade.application.dto.EsqueciSenhaDadosVerificadosDto;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.exception.CodigoExpiradoException;
+import com.topicos_especiais_1.clinica_medica.identidade.web.dto.EsqueciSenhaVerificadoResponse;
 import com.topicos_especiais_1.clinica_medica.identidade.web.dto.EsqueciSenhaVerificarCodigoRequest;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.EntidadeNaoEncontradaException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Email;
@@ -21,7 +22,7 @@ public class EsqueciSenhaVerificarCodigoUseCase {
     private final RedisService redisService;
 
     @Transactional(readOnly = true)
-    public Map<String,UUID> execute(EsqueciSenhaVerificarCodigoRequest request) {
+    public EsqueciSenhaVerificadoResponse execute(EsqueciSenhaVerificarCodigoRequest request) {
         Email email = Email.of(request.email());
         String chave = "esqueciSenha:" + email.toString();
         EsqueciSenhaCodigoEvent dados = redisService.buscar(
@@ -39,7 +40,9 @@ public class EsqueciSenhaVerificarCodigoUseCase {
                 new EsqueciSenhaDadosVerificadosDto(email),
                 Duration.ofMinutes(5)
         );
-        return Map.of("chave", chaveTrocaDeSenha);
+        return new EsqueciSenhaVerificadoResponse(
+                chaveTrocaDeSenha
+        );
 
     }
 }

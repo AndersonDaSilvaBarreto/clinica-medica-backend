@@ -82,7 +82,7 @@ public class AuthenticationController {
                 .body(null);
     }
     @PostMapping("/esqueci-minha-senha-verificar")
-    public ResponseEntity<Map<String, UUID>> esqueciSenhaVerificar(
+    public ResponseEntity<EsqueciSenhaVerificadoResponse> esqueciSenhaVerificar(
             @RequestBody @Valid EsqueciSenhaVerificarCodigoRequest request
     ) {
         var response = esqueciSenhaVerificarCodigoUseCase.execute(request);

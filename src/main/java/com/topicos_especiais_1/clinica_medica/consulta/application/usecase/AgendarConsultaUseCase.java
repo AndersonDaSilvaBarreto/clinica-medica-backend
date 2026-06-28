@@ -6,7 +6,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
+import com.topicos_especiais_1.clinica_medica.notificacoes.api.events.CriarNotificacaoEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,9 +40,13 @@ public class AgendarConsultaUseCase {
     private final BloqueioAgendaRepository bloqueioAgendaRepository;
     // ── NOVO ──────────────────────────────────────────────────────────────────
     private final HorarioMedicoRepository horarioMedicoRepository;
+    private final ApplicationEventPublisher eventPublisher;
     // ─────────────────────────────────────────────────────────────────────────
 
     private static final ZoneId FUSO_HORARIO = ZoneId.of("America/Sao_Paulo");
+    private static final DateTimeFormatter FORMATADOR_BR = DateTimeFormatter
+            .ofPattern("dd/MM/yyyy 'às' HH:mm")
+            .withZone(FUSO_HORARIO);
 
     @Transactional
     public void execute(AgendarConsultaRequest request, Usuario usuarioAutenticado) {
@@ -53,6 +60,8 @@ public class AgendarConsultaUseCase {
         LocalTime horaFimLocal = fim.atZone(FUSO_HORARIO).toLocalTime();
         DayOfWeek dayOfWeekJava = inicio.atZone(FUSO_HORARIO).getDayOfWeek();
         DiaSemana diaSemanaDesejado = DiaSemana.de(dayOfWeekJava);
+
+
 
         if (Perfil.PACIENTE.equals(usuarioAutenticado.getPerfil())) {
             Paciente pacienteLogado = pacienteRepository.buscarPorUsuarioId(usuarioAutenticado.getId());
@@ -94,5 +103,13 @@ public class AgendarConsultaUseCase {
                     horarioMedicoRepository.salvar(slot);
                 });
         // ─────────────────────────────────────────────────────────────────────
+        String dataFormatada = FORMATADOR_BR.format(novaConsulta.getDataHoraInicio());
+        eventPublisher.publishEvent(new CriarNotificacaoEvent(
+                paciente.getUsuario(),
+                "CONSULTA_AGENDADA",
+                "Consulta agendada com o(a) médico(a) " +
+                        medico.getUsuario().getNome().toString() + " em " +
+                        dataFormatada
+        ));
     }
 }

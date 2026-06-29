@@ -88,4 +88,10 @@ public class RecepcionistaRepositoryImpl implements RecepcionistaRepository {
     public List<Recepcionista> buscaPaginada(UUID cursor, String busca, int limit) {
         return repository.buscaPaginada(cursor, busca, PageRequest.of(0, limit));
     }
+
+    @Override
+    public Recepcionista buscarPorUsuarioId(UUID usuarioId) {
+        return repository.findByUsuarioId(usuarioId).orElseThrow(() ->
+                EntidadeNaoEncontradaException.porCampo("Recepcionista", "usuarioId", usuarioId));
+    }
 }

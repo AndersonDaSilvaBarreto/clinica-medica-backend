@@ -38,4 +38,5 @@ public interface SpringDataRecepcionistaRepository extends JpaRepository<Recepci
 """)
     Optional<Recepcionista> buscarPorIdComDetalhes(UUID recepcionistaId);
 
+    Optional<Recepcionista> findByUsuarioId(UUID usuarioId);
 }

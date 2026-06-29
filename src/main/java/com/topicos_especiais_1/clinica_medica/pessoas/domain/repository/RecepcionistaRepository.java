@@ -13,4 +13,5 @@ public interface RecepcionistaRepository {
     Recepcionista buscarPorIdComDatalhes(UUID recepcionistaId);
     Recepcionista buscarPorCpfComDetalhes(Cpf cpf);
     List<Recepcionista> buscaPaginada(UUID cursor, String busca, int limit);
+    Recepcionista buscarPorUsuarioId(UUID usuarioId);
 }

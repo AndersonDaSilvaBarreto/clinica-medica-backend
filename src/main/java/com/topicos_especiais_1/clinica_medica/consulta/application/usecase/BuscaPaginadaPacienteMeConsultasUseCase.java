@@ -49,7 +49,6 @@ public class BuscaPaginadaPacienteMeConsultasUseCase {
                 .limit(limit)
                 .map(ConsultaResponse::fromEntity)
                 .toList();
-
         return new PaginacaoResponse<>(
                 response,
                 hasNext ? response.getLast().id() : null,

@@ -8,7 +8,10 @@ import com.topicos_especiais_1.clinica_medica.atendimento.infra.persistense.Fila
 import com.topicos_especiais_1.clinica_medica.atendimento.web.dto.AdicionarFilaRequest;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.Consulta;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.repository.ConsultaRepository;
+import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.shared.domain.exception.AcessoNegadoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.ConflitoException;
+import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +34,17 @@ public class AdicionarNaFilaUseCase {
 
     private static final ZoneId FUSO_HORARIO = ZoneId.of("America/Sao_Paulo");
     @Transactional
-    public void execute(AdicionarFilaRequest request) {
+    public void execute(AdicionarFilaRequest request, Usuario usuario) {
         Consulta consulta = consultaRepository.buscarPorId(request.consultaId());
         SalaAtendimento salaAtendimento = salaAtendimentoRepository.buscarPorId(request.salaId());
 
         UUID medicoId = consulta.getMedico().getId();
         LocalDate hoje = LocalDate.now(FUSO_HORARIO);
 
-        // 2. Validação limpa usando o método que você pensou:
+        if(!Perfil.RECEPCIONISTA.equals(usuario.getPerfil()) && !consulta.getMedico().getUsuario().equals(usuario)) {
+            throw new AcessoNegadoException("Você não tem permissão de adicionar consulta na fila");
+        }
+
         boolean jaExiste = filaAtendimentoRepository.existeConsultaNaFilaDoDia(request.consultaId(), hoje);
         if (jaExiste) {
             throw ConflitoException.of("Fila Atendimento", "Esta consulta já foi inserida na fila de atendimento hoje.");

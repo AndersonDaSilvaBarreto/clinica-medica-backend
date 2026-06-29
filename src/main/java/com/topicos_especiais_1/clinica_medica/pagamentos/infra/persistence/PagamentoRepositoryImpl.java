@@ -39,4 +39,13 @@ public class PagamentoRepositoryImpl
                 consultaId
         );
     }
+
+    @Override
+    public Optional<Pagamento> buscarPorPaymentIdMp(
+            String paymentIdMp
+    ) {
+        return repository.findByPaymentIdMp(
+                paymentIdMp
+        );
+    }
 }

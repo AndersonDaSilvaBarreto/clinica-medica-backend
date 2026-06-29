@@ -1,9 +1,9 @@
 package com.topicos_especiais_1.clinica_medica.notificacoes.web.dto;
 
-import com.topicos_especiais_1.clinica_medica.notificacoes.domain.entity.Notificacao;
-
 import java.time.Instant;
 import java.util.UUID;
+
+import com.topicos_especiais_1.clinica_medica.notificacoes.domain.entity.Notificacao;
 
 public record NotificacaoResponse(
         UUID id,
@@ -15,10 +15,10 @@ public record NotificacaoResponse(
     public static NotificacaoResponse fromEntity(Notificacao notificacao) {
         return new NotificacaoResponse(
                 notificacao.getId(),
-                notificacao.getTipo(),
+                notificacao.getTipo().name(),
                 notificacao.getMensagem(),
-                notificacao.getLida(),
-                notificacao.getDataCriacao() // Assumindo que herda do seu BaseEntity
+                notificacao.isLida(),
+                notificacao.getDataCriacao() 
         );
     }
 }

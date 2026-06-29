@@ -3,6 +3,7 @@ package com.topicos_especiais_1.clinica_medica.consulta.domain.entity;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -53,6 +54,9 @@ public class Consulta extends BaseEntity implements Serializable {
 
     @Column(name = "observacao", columnDefinition = "text")
     private String observacao;
+
+    @Column(name = "pagamento_id")
+    private UUID pagamentoId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "criado_por", nullable = false)
@@ -122,5 +126,14 @@ public class Consulta extends BaseEntity implements Serializable {
 
     public void mudarStatus(StatusConsulta statusConsulta) {
         this.statusConsulta = Objects.requireNonNull(statusConsulta);
+    }
+
+    public void confirmarPagamento(UUID pagamentoId) {
+        if (this.statusConsulta != StatusConsulta.AGUARDANDO_PAGAMENTO) {
+            throw FormatoInvalidoException.from("Consulta",
+                    "Apenas consultas com status AGUARDANDO_PAGAMENTO podem ser confirmadas por pagamento.");
+        }
+        this.pagamentoId = Objects.requireNonNull(pagamentoId);
+        this.statusConsulta = StatusConsulta.AGENDADA;
     }
 }

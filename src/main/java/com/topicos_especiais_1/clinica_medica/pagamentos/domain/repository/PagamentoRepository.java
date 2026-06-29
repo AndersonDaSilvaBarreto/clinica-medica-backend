@@ -12,4 +12,6 @@ public interface PagamentoRepository {
     Optional<Pagamento> buscarPorId(UUID id);
 
     Optional<Pagamento> buscarPorConsultaId(UUID consultaId);
+
+    Optional<Pagamento> buscarPorPaymentIdMp(String paymentIdMp);
 }

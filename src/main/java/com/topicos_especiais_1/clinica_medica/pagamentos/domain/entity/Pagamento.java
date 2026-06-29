@@ -68,15 +68,23 @@ public class Pagamento extends BaseEntity {
         this.qrCodeBase64 = qrCodeBase64;
     }
 
-    public void aprovar() {
+    public void aprovar(String statusDetail) {
         this.status = StatusPagamento.APROVADO;
+        this.statusDetail = statusDetail;
     }
 
-    public void recusar() {
+    public void recusar(String statusDetail) {
         this.status = StatusPagamento.RECUSADO;
+        this.statusDetail = statusDetail;
     }
 
     public void cancelar() {
         this.status = StatusPagamento.CANCELADO;
+    }
+
+    public boolean estaFinalizado() {
+        return this.status == StatusPagamento.APROVADO
+                || this.status == StatusPagamento.RECUSADO
+                || this.status == StatusPagamento.CANCELADO;
     }
 }

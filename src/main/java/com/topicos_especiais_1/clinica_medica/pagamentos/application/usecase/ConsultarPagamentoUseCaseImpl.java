@@ -9,7 +9,6 @@ import com.topicos_especiais_1.clinica_medica.pagamentos.domain.exception.Pagame
 import com.topicos_especiais_1.clinica_medica.pagamentos.domain.repository.PagamentoRepository;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

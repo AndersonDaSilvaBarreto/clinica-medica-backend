@@ -31,6 +31,16 @@ public class NotificacaoRepositoryImpl implements NotificacaoRepository {
     }
 
     @Override
+    public List<Notificacao> buscarPorUsuarioId(UUID usuarioId) {
+        return springDataNotificacao.findByUsuarioIdOrderByDataCriacaoDesc(usuarioId);
+    }
+
+    @Override
+    public List<Notificacao> buscarNaoLidasPorUsuarioId(UUID usuarioId) {
+        return springDataNotificacao.findByUsuarioIdAndLidaFalseOrderByDataCriacaoDesc(usuarioId);
+    }
+
+    @Override
     public List<Notificacao> buscaPaginada(UUID cursor, UUID usuarioId, Boolean lida, int limit) {
         Specification<Notificacao> specs = Specification.where(NotificacaoSpecifications.porUsuarioId(usuarioId))
                 .and(NotificacaoSpecifications.porLida(lida))

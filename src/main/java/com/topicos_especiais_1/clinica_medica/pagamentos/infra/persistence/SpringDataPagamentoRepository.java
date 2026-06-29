@@ -12,4 +12,8 @@ public interface SpringDataPagamentoRepository
     Optional<Pagamento> findByConsultaId(
             UUID consultaId
     );
+
+    Optional<Pagamento> findByPaymentIdMp(
+            String paymentIdMp
+    );
 }

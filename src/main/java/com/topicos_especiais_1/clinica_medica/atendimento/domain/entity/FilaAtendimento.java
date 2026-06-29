@@ -73,4 +73,7 @@ public class FilaAtendimento extends BaseEntity implements Serializable {
         this.status = StatusFila.ATENDIDO;
     }
 
+    public void mudarStatus(StatusFila status) {
+        this.status = Objects.requireNonNull(status);
+    }
 }

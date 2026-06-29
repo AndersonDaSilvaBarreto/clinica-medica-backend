@@ -112,6 +112,14 @@ public class Consulta extends BaseEntity implements Serializable {
         this.observacao = this.observacao == null ? blocoMotivo.trim() : this.observacao + blocoMotivo;
     }
 
+    public void marcarFaltou() {
+        if (this.statusConsulta != StatusConsulta.AGENDADA && this.statusConsulta != StatusConsulta.REAGENDADA) {
+            throw FormatoInvalidoException.from("Consulta",
+                    "Apenas consultas com status AGENDADA ou REAGENDADA podem ser marcadas como FALTOU.");
+        }
+        this.statusConsulta = StatusConsulta.FALTOU;
+    }
+
     public void mudarStatus(StatusConsulta statusConsulta) {
         this.statusConsulta = Objects.requireNonNull(statusConsulta);
     }

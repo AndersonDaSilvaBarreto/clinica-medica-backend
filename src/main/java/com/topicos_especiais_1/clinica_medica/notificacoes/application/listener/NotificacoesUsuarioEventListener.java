@@ -31,7 +31,7 @@ public class NotificacoesUsuarioEventListener {
     }
     @ApplicationModuleListener
     public void onEsqueciSenha(EsqueciSenhaCodigoEvent event) {
-        IO.println("chegou no listener");
+        System.out.println("chegou no listener");
         notificacaoService.enviarEmail(
                 event.email(),
                 "Codigo para trocar de senha",

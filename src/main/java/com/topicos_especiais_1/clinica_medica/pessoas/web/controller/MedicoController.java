@@ -3,6 +3,7 @@ package com.topicos_especiais_1.clinica_medica.pessoas.web.controller;
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.AtualizarMedicoUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscaMedicoPaginadoUseUse;
+import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarMedicoPorUsuarioIdUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarMedicoComEspecialidadesUseCase;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.AtualizarMedicoRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.MedicoResponse;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RequestMapping("/medicos")
 @RequiredArgsConstructor
 public class MedicoController {
+    private final BuscarMedicoPorUsuarioIdUseCase buscarMedicoPorUsuarioIdUseCase;    
     private final BuscaMedicoPaginadoUseUse buscaMedicoPaginadoUseUse;
     private final BuscarMedicoComEspecialidadesUseCase buscarMedicoComEspecialidadesUseCase;
     private final AtualizarMedicoUseCase atualizarMedicoUseCase;
@@ -35,6 +37,16 @@ public class MedicoController {
                 .body(response);
 
     }
+
+    @GetMapping("/me") 
+        public ResponseEntity<MedicoResponse> buscarMedicoLogado(
+                @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
+        ) {
+        var response = buscarMedicoPorUsuarioIdUseCase.execute(usuarioAutenticado.usuario().getId());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+        }
     @GetMapping("/{medicoId}")
     public ResponseEntity<MedicoResponse> buscarPorIdComEspecialidades(
             @PathVariable UUID medicoId

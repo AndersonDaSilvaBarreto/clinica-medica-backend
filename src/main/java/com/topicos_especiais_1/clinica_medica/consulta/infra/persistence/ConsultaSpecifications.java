@@ -18,6 +18,11 @@ public class ConsultaSpecifications {
         return (root, _, cb) ->
                 pacienteId != null? cb.equal(root.get("paciente").get("id"), pacienteId) : null;
     }
+    public static Specification<Consulta> dataHoraInicioDepoisDeInclusive(Instant dataHoraInicio) {
+    return (root, query, cb) -> dataHoraInicio == null
+            ? cb.conjunction()
+            : cb.greaterThanOrEqualTo(root.get("dataHoraInicio"), dataHoraInicio);
+    }
 
     public static Specification<Consulta> statusDiferenteDe(List<StatusConsulta> status) {
         return (root, _, cb) -> cb.not(root.get("statusConsulta").in(status));
@@ -42,6 +47,9 @@ public class ConsultaSpecifications {
     public static Specification<Consulta> porStatus(StatusConsulta statusConsulta) {
         return (root, _, criteriaBuilder) ->
                 statusConsulta != null? criteriaBuilder.equal(root.get("statusConsulta"),statusConsulta) : null;
+    }
+    public static Specification<Consulta> statusEm(List<StatusConsulta> statuses) {
+        return (root, _, cb) -> root.get("statusConsulta").in(statuses);
     }
     public static Specification<Consulta> dataHoraInicioDepoisDe(Instant inicio) {
         return ((root, _, cb) ->

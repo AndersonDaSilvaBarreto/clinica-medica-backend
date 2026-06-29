@@ -1,6 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.infra.persistense;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.cache.annotation.CacheEvict;
@@ -67,6 +68,11 @@ public class MedicoRepositoryImpl implements MedicoRepository {
                         EntidadeNaoEncontradaException.MEDICO,
                         medicoId
                 ));
+    }
+
+    @Override
+    public Optional<Medico> findByUsuarioId(UUID usuarioId) {
+        return repository.findByUsuarioId(usuarioId);
     }
 
     @Override

@@ -93,4 +93,11 @@ public class ConsultaRepositoryImpl implements ConsultaRepository {
                 .and(ConsultaSpecifications.dataHoraInicioAntesDe(limite));
         return springDataConsulta.findAll(specs, Sort.by(Sort.Direction.ASC, "dataHoraInicio"));
     }
+
+    @Override
+    public long contarComSpecs(Specification<Consulta> specs) {
+        return springDataConsulta.count(specs);
+    }
+
+
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface MedicoRepository {
     Medico salvar(Medico medico);
@@ -18,4 +19,5 @@ public interface MedicoRepository {
     List<Medico> buscaPaginada(UUID cursor, String busca, int limit);
     Medico buscarPorUsuarioId(UUID usuarioId);
     List<Medico> buscarTodosComAgenda();
+    long contarComSpecs(Specification<Medico> specs);
 }

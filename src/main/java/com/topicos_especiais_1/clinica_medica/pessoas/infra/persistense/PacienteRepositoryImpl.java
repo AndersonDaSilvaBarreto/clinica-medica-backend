@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -118,5 +119,10 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     @Query()
     public List<Paciente> buscaPagientesPaginado(UUID cursor, int limit, String busca) {
         return List.of();
+    }
+
+    @Override
+    public long contarComSpecs(Specification<Paciente> specs) {
+        return repository.count(specs);
     }
 }

@@ -3,6 +3,7 @@ package com.topicos_especiais_1.clinica_medica.pessoas.domain.repository;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.PacienteResponse;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,4 +20,5 @@ public interface PacienteRepository {
             String busca
     );
     List<Paciente> buscaPagientesPaginado(UUID cursor, int limit, String busca);
+    long contarComSpecs(Specification<Paciente> specs);
 }

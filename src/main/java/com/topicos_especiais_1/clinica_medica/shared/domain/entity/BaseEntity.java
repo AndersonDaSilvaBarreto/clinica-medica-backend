@@ -24,7 +24,4 @@ public abstract class BaseEntity implements Serializable {
     private Instant dataCriacao = Instant.now();
 
 
-    public UUID getId() {
-        return this.id;
-    }
 }

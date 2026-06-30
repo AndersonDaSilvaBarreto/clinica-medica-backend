@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import com.topicos_especiais_1.clinica_medica.identidade.api.UsuarioApi;
@@ -115,6 +116,11 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     @Override
     public List<Medico> buscarTodosComAgenda() {
         return repository.buscarTodosComAgenda();
+    }
+
+    @Override
+    public long contarComSpecs(Specification<Medico> specs) {
+        return repository.count(specs);
     }
 
 }

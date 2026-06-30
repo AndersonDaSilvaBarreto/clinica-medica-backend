@@ -29,7 +29,8 @@ public class BuscarMedicoPorEspecialidadeUseCase {
     ) {
         Specification<Medico> specs = Specification.where(MedicoSpecifications.porEspecialidadeId(especialidadeId))
                 .and(MedicoSpecifications.idMaiorQue(cursor))
-                .and(MedicoSpecifications.porNomeMedico(nome));
+                .and(MedicoSpecifications.porNomeMedico(nome))
+                .and(MedicoSpecifications.porAtivoUsuario(true));
         Pageable pageable = PageRequest.of(
                 0, limit + 1, Sort.by(Sort.Direction.ASC,"id"));
         List<Medico> medicos = medicoRepository.buscarComSpecs(specs,pageable);

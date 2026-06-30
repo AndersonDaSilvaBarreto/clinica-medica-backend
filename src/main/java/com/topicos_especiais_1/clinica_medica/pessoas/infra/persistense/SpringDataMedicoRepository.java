@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -25,7 +27,7 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID>,
             """
             SELECT DISTINCT m
             FROM Medico m
-            JOIN FETCH m.especialidades e 
+            JOIN FETCH m.especialidades e
             JOIN FETCH m.usuario u
             WHERE 
                 (cast(:cursor AS uuid ) IS NULL OR m.id > :cursor)
@@ -67,5 +69,11 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID>,
            """)
     List<Medico> buscarTodosComAgenda();
 
+    @Query("""
+        SELECT DISTINCT m FROM Medico m
+        JOIN FETCH m.usuario
+        JOIN FETCH m.especialidades
+""")
+    Page<Medico> findAllComRelacionamentos(Specification<Medico> specs, Pageable pageable);
     
 }

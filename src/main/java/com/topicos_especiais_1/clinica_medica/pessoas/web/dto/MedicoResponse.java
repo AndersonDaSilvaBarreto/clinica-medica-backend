@@ -10,7 +10,7 @@ public record MedicoResponse(
         UUID id,
         String nome,
         String crm,
-        List<String> especialidades,
+        List<EspecialidadeResumidaResponse> especialidades,
         boolean ativo,
         Instant dataCriacao
 ) {
@@ -21,10 +21,17 @@ public record MedicoResponse(
                 medico.getCrm().toString(),
                 medico.getEspecialidades()
                         .stream()
-                        .map(e -> e.getNome().toString())
+                        .map(e -> new EspecialidadeResumidaResponse(
+                                e.getId(),
+                                e.getNome().toString()
+                        ))
                         .toList(),
                 medico.getUsuario().getAtivo(),
                 medico.getDataCriacao()
         );
     }
+    public record EspecialidadeResumidaResponse(
+            UUID id,
+            String nome
+    ) {}
 }

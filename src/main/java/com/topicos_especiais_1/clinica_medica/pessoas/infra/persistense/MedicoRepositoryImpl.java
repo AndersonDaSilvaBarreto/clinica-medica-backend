@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
@@ -121,6 +122,11 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     @Override
     public long contarComSpecs(Specification<Medico> specs) {
         return repository.count(specs);
+    }
+
+    @Override
+    public List<Medico> buscarComSpecs(Specification<Medico> specs, Pageable pageable) {
+        return repository.findAllComRelacionamentos(specs,pageable).getContent();
     }
 
 }

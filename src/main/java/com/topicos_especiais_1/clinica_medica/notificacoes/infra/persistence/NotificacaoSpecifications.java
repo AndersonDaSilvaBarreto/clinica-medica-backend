@@ -1,4 +1,4 @@
-package com.topicos_especiais_1.clinica_medica.notificacoes.infra.persistense;
+package com.topicos_especiais_1.clinica_medica.notificacoes.infra.persistence;
 
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.entity.Notificacao;
 import org.springframework.data.jpa.domain.Specification;

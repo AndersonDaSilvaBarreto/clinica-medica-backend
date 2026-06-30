@@ -1,10 +1,7 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.web.controller;
 
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.AtualizarMedicoUseCase;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscaMedicoPaginadoUseUse;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarMedicoPorUsuarioIdUseCase;
-import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.BuscarMedicoComEspecialidadesUseCase;
+import com.topicos_especiais_1.clinica_medica.pessoas.application.usecase.*;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.AtualizarMedicoRequest;
 import com.topicos_especiais_1.clinica_medica.pessoas.web.dto.MedicoResponse;
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
@@ -25,6 +22,7 @@ public class MedicoController {
     private final BuscaMedicoPaginadoUseUse buscaMedicoPaginadoUseUse;
     private final BuscarMedicoComEspecialidadesUseCase buscarMedicoComEspecialidadesUseCase;
     private final AtualizarMedicoUseCase atualizarMedicoUseCase;
+    private final BuscarMedicoPorEspecialidadeUseCase buscarMedicoPorEspecialidadeUseCase;
     @GetMapping
     public ResponseEntity<PaginacaoResponse<MedicoResponse>> buscaPaginada(
             @RequestParam(name = "cursor", required = false)UUID cursor,
@@ -36,6 +34,23 @@ public class MedicoController {
                 .status(HttpStatus.OK)
                 .body(response);
 
+    }
+    @GetMapping("/busca")
+    public ResponseEntity<PaginacaoResponse<MedicoResponse>> buscarPorEspecialidade(
+            @RequestParam(required = false) UUID especialidadeId,
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false,defaultValue = "10") int limit,
+            @RequestParam(required = false) UUID cursor
+    ){
+        PaginacaoResponse<MedicoResponse> response = buscarMedicoPorEspecialidadeUseCase.execute(
+                especialidadeId,
+                cursor,
+                nome,
+                limit
+        );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     @GetMapping("/me") 

@@ -62,7 +62,14 @@ public class CriarPagamentoUseCaseImpl implements CriarPagamentoUseCase {
             ));
         }
 
-        return gatewayResponse;
+        return new PagamentoResponse(
+                pagamento.getId(),
+                gatewayResponse.paymentId(),
+                gatewayResponse.status(),
+                gatewayResponse.statusDetail(),
+                gatewayResponse.qrCode(),
+                gatewayResponse.qrCodeBase64()
+        );
     }
 
     private StatusPagamento mapStatus(String statusMercadoPago) {

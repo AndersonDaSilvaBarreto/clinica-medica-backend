@@ -46,6 +46,7 @@ public class MercadoPagoGatewayImpl
                     client.create(paymentRequest);
 
             return new PagamentoResponse(
+                    null,
                     String.valueOf(payment.getId()),
                     payment.getStatus(),
                     payment.getStatusDetail(),
@@ -106,6 +107,7 @@ public class MercadoPagoGatewayImpl
             }
 
             return new PagamentoResponse(
+                    null,
                     String.valueOf(payment.getId()),
                     payment.getStatus(),
                     payment.getStatusDetail(),
@@ -137,6 +139,7 @@ public class MercadoPagoGatewayImpl
                     );
 
             return new PagamentoResponse(
+                    null,
                     String.valueOf(payment.getId()),
                     payment.getStatus(),
                     payment.getStatusDetail(),

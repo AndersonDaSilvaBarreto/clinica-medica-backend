@@ -28,4 +28,4 @@ app:
   cookie:
     domain: ${DOMINIO_URL:}
 mercadopago:
-  access-token: ${ACCESS-TOKEN-MERCADO-PAGO:}
+  access-token: ${ACCESS-TOKEN-MERCADO-PAGO:APP_USR-30052401898860-063016-58b5032bf13ad6fae1cbd52f738e9b73-3510178796}

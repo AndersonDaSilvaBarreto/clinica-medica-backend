@@ -21,6 +21,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RegistrarProntuarioUseCase {
+
     private final ConsultaRepository consultaRepository;
     private final ProntuarioRepository prontuarioRepository;
 
@@ -29,19 +30,33 @@ public class RegistrarProntuarioUseCase {
             UUID consultaId,
             RegistrarProntuarioRequest request,
             Usuario usuarioAutenticado) {
-        if(!Perfil.MEDICO.equals(usuarioAutenticado.getPerfil())) {
-            throw new AcessoNegadoException("Apenas médicos podem registrar prontuários clínicos.");
+
+        if (!Perfil.MEDICO.equals(usuarioAutenticado.getPerfil())) {
+            throw new AcessoNegadoException(
+                "Apenas médicos podem registrar prontuários clínicos.");
         }
+
         Consulta consulta = consultaRepository.buscarPorId(consultaId);
 
         if (!consulta.getMedico().getUsuario().equals(usuarioAutenticado)) {
-            throw new AcessoNegadoException("Você não tem permissão para registrar prontuários para consultas de outro profissional.");
+            throw new AcessoNegadoException(
+                "Você não tem permissão para registrar prontuários de consultas de outro profissional.");
         }
-        if (consulta.getStatusConsulta() == StatusConsulta.CANCELADA) {
-            throw FormatoInvalidoException.from("Consulta", "Não é possível registrar prontuário para uma consulta cancelada.");
+
+        // [NOVO] O prontuário só pode ser preenchido se a consulta estiver EM_ATENDIMENTO.
+        // Consultas CANCELADAS, PRESENTES, AGENDADAS ou já FINALIZADAS não são elegíveis.
+        if (consulta.getStatusConsulta() != StatusConsulta.EM_ATENDIMENTO) {
+            throw FormatoInvalidoException.from(
+                "Consulta",
+                "O prontuário só pode ser registrado para consultas com status EM_ATENDIMENTO. " +
+                "Status atual: " + consulta.getStatusConsulta()
+            );
         }
-        if(prontuarioRepository.existePorConsulta(consulta)) {
-            throw ConflitoException.of("Prontuario", "Já existe um prontuário médico registrado para esta consulta.");
+
+        if (prontuarioRepository.existePorConsulta(consulta)) {
+            throw ConflitoException.of(
+                "Prontuario",
+                "Já existe um prontuário médico registrado para esta consulta.");
         }
 
         Prontuario prontuario = Prontuario.builder()
@@ -52,8 +67,11 @@ public class RegistrarProntuarioUseCase {
                 .receita(request.receita())
                 .examesSolicitados(request.examesSolicitados())
                 .build();
+
+        // Salvar prontuário e marcar consulta como FINALIZADA
         consulta.mudarStatus(StatusConsulta.FINALIZADA);
         consultaRepository.salvar(consulta);
+
         Prontuario prontuarioSalvo = prontuarioRepository.salvar(prontuario);
         return ProntuarioResponse.fromEntity(prontuarioSalvo);
     }

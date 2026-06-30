@@ -1,4 +1,4 @@
-package com.topicos_especiais_1.clinica_medica.notificacoes.infra.persistence;
+package com.topicos_especiais_1.clinica_medica.notificacoes.infra.persistense;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,3 +13,4 @@ public interface SpringDataNotificacaoRepository extends JpaRepository<Notificac
 
     List<Notificacao> findByUsuarioIdAndLidaFalseOrderByDataCriacaoDesc(UUID usuarioId);
 }
+    

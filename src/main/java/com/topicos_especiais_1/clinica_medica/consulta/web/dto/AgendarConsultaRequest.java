@@ -12,6 +12,8 @@ public record AgendarConsultaRequest(
         @NotNull
         UUID medicoId,
         @NotNull
+        UUID especialidadeId,
+        @NotNull
         @Future
         Instant dataHoraInicio,
         String observacao

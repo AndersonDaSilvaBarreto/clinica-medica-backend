@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SpringDataEspecialidadeRepository extends JpaRepository<Especialidade, UUID> {
@@ -23,4 +24,13 @@ public interface SpringDataEspecialidadeRepository extends JpaRepository<Especia
             @Param("busca") String busca,
             Pageable pageable
     );
+
+    @Query("""
+        SELECT e FROM Medico m
+        JOIN m.especialidades e
+        WHERE m.id = :medicoId AND e.id = :especialidadeId
+""")
+    Optional<Especialidade> findEspecialidadeByMedicoIdEspecialidadeId(
+            @Param("especialidadeId") UUID especialidadeId,
+            @Param("medicoId") UUID medicoId);
 }

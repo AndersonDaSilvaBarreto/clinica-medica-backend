@@ -9,6 +9,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import com.topicos_especiais_1.clinica_medica.notificacoes.api.events.CriarNotificacaoEvent;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Especialidade;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.EspecialidadeRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,7 @@ public class AgendarConsultaUseCase {
     private final MedicoApi medicoApi;
     private final PacienteRepository pacienteRepository;
     private final BloqueioAgendaRepository bloqueioAgendaRepository;
+    private final EspecialidadeRepository especialidadeRepository;
     // ── NOVO ──────────────────────────────────────────────────────────────────
     private final HorarioMedicoRepository horarioMedicoRepository;
     private final ApplicationEventPublisher eventPublisher;
@@ -52,6 +55,7 @@ public class AgendarConsultaUseCase {
     public void execute(AgendarConsultaRequest request, Usuario usuarioAutenticado) {
         Paciente paciente = pacienteRepository.buscarPorId(request.pacienteId());
         Medico medico = medicoApi.buscarPorIdComAgenda(request.medicoId());
+        Especialidade especialidade = especialidadeRepository.buscarPorIdMedicoId(request.especialidadeId(),medico.getId());
         Instant inicio = request.dataHoraInicio();
         Instant fim = inicio.plus(Duration.ofMinutes(medico.getTempoConsultaMinutos()));
 
@@ -92,7 +96,7 @@ public class AgendarConsultaUseCase {
             throw ConflitoException.of("Consulta", "O médico escolhido já possui um agendamento neste horário.");
         }
 
-        Consulta novaConsulta = Consulta.create(paciente, medico, inicio, fim, request.observacao(), usuarioAutenticado);
+        Consulta novaConsulta = Consulta.create(paciente, medico, inicio, fim, request.observacao(),especialidade, usuarioAutenticado);
         consultaRepository.salvar(novaConsulta);
 
         // ── NOVO: marcar o slot correspondente como OCUPADO ───────────────────

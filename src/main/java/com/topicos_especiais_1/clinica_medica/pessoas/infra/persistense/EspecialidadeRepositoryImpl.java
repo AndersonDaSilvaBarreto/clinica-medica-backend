@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -73,5 +72,12 @@ public class EspecialidadeRepositoryImpl implements EspecialidadeRepository {
         return repository.buscaPaginada(cursor,
                 busca != null? "%" + busca.toLowerCase() + "%" : null,
                 PageRequest.of(0,limit));
+    }
+
+    @Override
+    public Especialidade buscarPorIdMedicoId(UUID especialidadeId, UUID medicoId) {
+        return repository.findEspecialidadeByMedicoIdEspecialidadeId(especialidadeId,medicoId).orElseThrow(
+                () -> EntidadeNaoEncontradaException.porCampo("Especialidade", "Medico Id e EspecialidadeId", medicoId.toString() + ":" + especialidadeId.toString())
+        );
     }
 }

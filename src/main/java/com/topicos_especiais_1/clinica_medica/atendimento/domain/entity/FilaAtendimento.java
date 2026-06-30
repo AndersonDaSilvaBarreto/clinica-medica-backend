@@ -49,7 +49,7 @@ public class FilaAtendimento extends BaseEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "StatusFila default 'AGUARDANDO'")
     private StatusFila status;
 
     private FilaAtendimento(Consulta consulta, Medico medico,Paciente paciente, SalaAtendimento sala, Integer ordemFila, LocalDate dataFila) {

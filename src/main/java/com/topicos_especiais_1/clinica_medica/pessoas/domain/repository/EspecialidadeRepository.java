@@ -14,5 +14,5 @@ public interface EspecialidadeRepository {
     boolean existePorNome(Nome nome);
     void deletar(Especialidade especialidade);
     List<Especialidade> buscaPaginada(UUID cursor, String busca, int limit);
-
+    Especialidade buscarPorIdMedicoId(UUID especialidadeId, UUID medicoId);
 }

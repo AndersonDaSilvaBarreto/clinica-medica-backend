@@ -95,6 +95,11 @@ public class ConsultaRepositoryImpl implements ConsultaRepository {
     }
 
     @Override
+    public List<Consulta> buscaComSpecsAndPageable(Specification<Consulta> specs, Pageable pageable) {
+        return springDataConsulta.findAll(specs,pageable).getContent();
+    }
+
+    @Override
     public long contarComSpecs(Specification<Consulta> specs) {
         return springDataConsulta.count(specs);
     }

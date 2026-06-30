@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.Consulta;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 public interface ConsultaRepository {
@@ -23,5 +24,6 @@ public interface ConsultaRepository {
     boolean existeConflitoHorarioMedicoIgnorandoConsulta(UUID medicoId, Instant inicio, Instant fim, UUID consulta);
     List<Consulta> buscarConsultasAtivasPorMedicoEData(UUID medicoId, Instant inicioDia, Instant fimDia);
     List<Consulta> buscarConsultasParaMarcarFaltou(Instant limite);
+    List<Consulta> buscaComSpecsAndPageable(Specification<Consulta> specs, Pageable pageable);
     long contarComSpecs(Specification<Consulta> specs);
 }

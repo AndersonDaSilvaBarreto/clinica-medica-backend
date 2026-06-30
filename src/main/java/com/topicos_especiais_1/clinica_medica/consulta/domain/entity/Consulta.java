@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Especialidade;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -59,10 +60,14 @@ public class Consulta extends BaseEntity implements Serializable {
     private UUID pagamentoId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "especialidade_id",nullable = false)
+    private Especialidade especialidade;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "criado_por", nullable = false)
     private Usuario criadoPor;
 
-    public Consulta(Paciente paciente, Medico medico, Instant dataHoraInicio, Instant dataHoraFim, StatusConsulta statusConsulta, String observacao, Usuario criadoPor) {
+    public Consulta(Paciente paciente, Medico medico, Instant dataHoraInicio, Instant dataHoraFim, StatusConsulta statusConsulta, String observacao,Especialidade especialidade, Usuario criadoPor) {
         this.paciente = Objects.requireNonNull(paciente);
         this.medico = Objects.requireNonNull(medico);
         this.dataHoraInicio = Objects.requireNonNull(dataHoraInicio);
@@ -72,11 +77,12 @@ public class Consulta extends BaseEntity implements Serializable {
         String obsNormalizada = observacao != null ? observacao.trim() : null;
         validarObservacao(obsNormalizada);
         this.observacao = obsNormalizada;
+        this.especialidade = Objects.requireNonNull(especialidade);
         this.criadoPor = Objects.requireNonNull(criadoPor);
     }
 
-    public static Consulta create(Paciente paciente, Medico medico, Instant dataHoraInicio, Instant dataHoraFim, String observacao, Usuario criadoPor) {
-        return new Consulta(paciente, medico, dataHoraInicio, dataHoraFim, StatusConsulta.AGUARDANDO_PAGAMENTO, observacao, criadoPor); //
+    public static Consulta create(Paciente paciente, Medico medico, Instant dataHoraInicio, Instant dataHoraFim, String observacao,Especialidade especialidade, Usuario criadoPor) {
+        return new Consulta(paciente, medico, dataHoraInicio, dataHoraFim, StatusConsulta.AGUARDANDO_PAGAMENTO, observacao,especialidade, criadoPor); //
     }
 
     private static void validarDataHora(Instant dataHoraInicio, Instant dataHoraFim) {

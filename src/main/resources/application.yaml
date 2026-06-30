@@ -22,8 +22,8 @@ spring:
 jwt:
     secret: ${JWT_SECRET:my_secret}
 resend:
-  api-key: ${RESEND_API_KEY}
-  from: ${RESEND_FROM}
+  api-key: ${RESEND_API_KEY:re_18TYmEwj_3aHzC4RpWfXSSPk27zNb4QxQ}
+  from: ${RESEND_FROM:onboarding@resend.dev}
 app:
   cookie:
     domain: ${DOMINIO_URL:}

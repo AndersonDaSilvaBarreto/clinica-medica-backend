@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.HorarioAtendimento;
+import com.topicos_especiais_1.clinica_medica.agenda.domain.entity.SalaAtendimento;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.valueobject.Crm;
 import com.topicos_especiais_1.clinica_medica.shared.domain.entity.BaseEntity;
@@ -18,6 +19,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -40,6 +42,10 @@ public class Medico extends BaseEntity implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sala_atendimento_id")
+    private SalaAtendimento salaAtendimento;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -85,6 +91,10 @@ public class Medico extends BaseEntity implements Serializable {
 
     public void mudarTempoConsulta(Integer tempoConsulta) {
         this.tempoConsultaMinutos = Objects.requireNonNull(tempoConsulta);
+    }
+
+    public void mudarSalaAtendimento(SalaAtendimento salaAtendimento) {
+        this.salaAtendimento = salaAtendimento;
     }
 
     public void ativar() {

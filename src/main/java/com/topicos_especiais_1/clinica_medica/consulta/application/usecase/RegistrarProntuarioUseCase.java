@@ -9,7 +9,6 @@ import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ProntuarioRespons
 import com.topicos_especiais_1.clinica_medica.consulta.web.dto.RegistrarProntuarioRequest;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.AcessoNegadoException;
-import com.topicos_especiais_1.clinica_medica.shared.domain.exception.ConflitoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.FormatoInvalidoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.valueobject.Perfil;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +42,6 @@ public class RegistrarProntuarioUseCase {
                 "Você não tem permissão para registrar prontuários de consultas de outro profissional.");
         }
 
-        // [NOVO] O prontuário só pode ser preenchido se a consulta estiver EM_ATENDIMENTO.
-        // Consultas CANCELADAS, PRESENTES, AGENDADAS ou já FINALIZADAS não são elegíveis.
         if (consulta.getStatusConsulta() != StatusConsulta.EM_ATENDIMENTO) {
             throw FormatoInvalidoException.from(
                 "Consulta",
@@ -53,24 +50,22 @@ public class RegistrarProntuarioUseCase {
             );
         }
 
+        Prontuario prontuario;
         if (prontuarioRepository.existePorConsulta(consulta)) {
-            throw ConflitoException.of(
-                "Prontuario",
-                "Já existe um prontuário médico registrado para esta consulta.");
+            prontuario = prontuarioRepository.porConsultaId(consultaId);
+            prontuario.setHistorico(request.historico());
+            prontuario.setReceita(request.receita());
+            prontuario.setExamesSolicitados(request.examesSolicitados());
+        } else {
+            prontuario = Prontuario.builder()
+                    .consulta(consulta)
+                    .paciente(consulta.getPaciente())
+                    .medico(consulta.getMedico())
+                    .historico(request.historico())
+                    .receita(request.receita())
+                    .examesSolicitados(request.examesSolicitados())
+                    .build();
         }
-
-        Prontuario prontuario = Prontuario.builder()
-                .consulta(consulta)
-                .paciente(consulta.getPaciente())
-                .medico(consulta.getMedico())
-                .historico(request.historico())
-                .receita(request.receita())
-                .examesSolicitados(request.examesSolicitados())
-                .build();
-
-        // Salvar prontuário e marcar consulta como FINALIZADA
-        consulta.mudarStatus(StatusConsulta.FINALIZADA);
-        consultaRepository.salvar(consulta);
 
         Prontuario prontuarioSalvo = prontuarioRepository.salvar(prontuario);
         return ProntuarioResponse.fromEntity(prontuarioSalvo);

@@ -14,18 +14,8 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-/**
- * Gera os slots de atendimento (HorarioMedico) para um médico.
- *
- * <p>Regra de janela: os slots sempre cobrem exatamente 1 mês a partir de HOJE.
- * Ex: hoje é dia 15 → gera até dia 15 do próximo mês (exclusive).
- *     hoje é dia 16 → gera até dia 16 do próximo mês (exclusive).
- *
- * <p>O método {@link #gerarSlotsFaltantes} é idempotente: ignora slots já existentes
- * via constraint unique (medico_id, data_hora), por isso pode ser chamado pelo
- * scheduler diário sem risco de duplicata.
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -35,21 +25,17 @@ public class GeradorHorarioMedicoService {
 
     private final HorarioMedicoRepository horarioMedicoRepository;
 
-    /**
-     * Gera os slots mensais faltantes para o médico.
-     * Chamado na criação do médico e pelo scheduler diário.
-     */
     @Transactional
     public void gerarSlotsFaltantes(Medico medico) {
+        log.info("Entrou em gerarSlotsFaltantes");
         if (medico.getHorariosAtendimento() == null || medico.getHorariosAtendimento().isEmpty()) {
             log.debug("Médico {} não possui horários de atendimento cadastrados. Nenhum slot gerado.", medico.getId());
             return;
         }
 
-        LocalDate hoje      = LocalDate.now(FUSO_HORARIO);
+        LocalDate hoje = LocalDate.now(FUSO_HORARIO);
         LocalDate fimJanela = hoje.plusMonths(1); // exclusive
 
-        // Descobrir a partir de qual data gerar (evitar reprocessar o passado)
         LocalDate inicioGeracao = horarioMedicoRepository
                 .buscarDataMaximaGerada(medico.getId())
                 .map(maxInstant -> maxInstant.atZone(FUSO_HORARIO).toLocalDate().plusDays(1))
@@ -60,10 +46,22 @@ public class GeradorHorarioMedicoService {
             return;
         }
 
+        Instant inicioPeriodo = inicioGeracao.atStartOfDay(FUSO_HORARIO).toInstant();
+        Instant fimPeriodo = fimJanela.atStartOfDay(FUSO_HORARIO).toInstant();
+
+        Set<Instant> datasExistentes = horarioMedicoRepository
+                .buscarPorMedicoIdEPeriodo(medico.getId(), inicioPeriodo, fimPeriodo)
+                .stream()
+                .map(HorarioMedico::getDataHora)
+                .collect(Collectors.toSet());
+
+        log.info("Horários existentes: {}", datasExistentes.size());
         List<HorarioMedico> novos = new ArrayList<>();
         Set<HorarioAtendimento> horariosAtendimento = medico.getHorariosAtendimento();
 
+        log.info("Iniciando geração dos slots...");
         for (LocalDate dia = inicioGeracao; dia.isBefore(fimJanela); dia = dia.plusDays(1)) {
+            log.info("Processando dia {}", dia);
             final LocalDate diaFinal = dia;
             DiaSemana diaSemana = DiaSemana.de(dia.getDayOfWeek());
 
@@ -71,23 +69,24 @@ public class GeradorHorarioMedicoService {
                     .filter(h -> h.getDiaSemana() == diaSemana)
                     .forEach(h -> {
                         LocalTime cursor = h.getHoraInicio();
-                        int duracaoMin   = medico.getTempoConsultaMinutos();
+                        int duracaoMin = medico.getTempoConsultaMinutos();
 
-                        while (!cursor.plusMinutes(duracaoMin).isAfter(h.getHoraFim())) {
+                        while (!cursor.isAfter(h.getHoraFim().minusMinutes(duracaoMin))) {
+                            log.info("Cursor={}", cursor);
                             Instant dataHora = LocalDateTime.of(diaFinal, cursor)
                                     .atZone(FUSO_HORARIO)
                                     .toInstant();
 
-                            // Proteção extra: não duplicar slot já salvo
-                            if (!horarioMedicoRepository.existePorMedicoIdEDataHora(medico.getId(), dataHora)) {
+                            if (!datasExistentes.contains(dataHora)) {
                                 novos.add(HorarioMedico.criar(medico, dataHora));
                             }
                             cursor = cursor.plusMinutes(duracaoMin);
                         }
                     });
         }
-
+        log.info("Fim da geração.");
         if (!novos.isEmpty()) {
+            log.info("Quantidade de novos slots: {}", novos.size());
             horarioMedicoRepository.salvarTodos(novos);
             log.info("Gerados {} slots para o médico {} ({} → {}).",
                     novos.size(), medico.getId(), inicioGeracao, fimJanela);

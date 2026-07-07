@@ -1,5 +1,6 @@
 package com.topicos_especiais_1.clinica_medica.pessoas.application.usecase;
 
+import com.topicos_especiais_1.clinica_medica.agenda.domain.repository.SalaAtendimentoRepository;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.valueobject.Telefone;
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.MedicoRepository;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AtualizarMedicoUseCase {
     private final MedicoRepository medicoRepository;
+    private final SalaAtendimentoRepository salaAtendimentoRepository;
 
     @Transactional
     public void execute(UUID medicoId, UsuarioAutenticado usuarioAutenticado, AtualizarMedicoRequest request) {
@@ -24,6 +26,10 @@ public class AtualizarMedicoUseCase {
         if (request.nome() != null) medico.getUsuario().mudarNome(Nome.of(request.nome()));
         if (request.telefone() != null) medico.getUsuario().mudarTelefone(Telefone.of(request.telefone()));
         if (request.tempoConsultaMinutos() != null) medico.mudarTempoConsulta(request.tempoConsultaMinutos());
+        if (request.salaAtendimentoId() != null) {
+            var sala = salaAtendimentoRepository.buscarPorId(request.salaAtendimentoId());
+            medico.mudarSalaAtendimento(sala);
+        }
         medicoRepository.salvar(medico);
     }
 }

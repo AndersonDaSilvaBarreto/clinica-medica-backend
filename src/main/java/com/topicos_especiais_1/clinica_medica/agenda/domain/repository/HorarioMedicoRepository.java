@@ -21,5 +21,4 @@ public interface HorarioMedicoRepository {
 
     Optional<Instant> buscarDataMaximaGerada(UUID medicoId);
 
-    boolean existePorMedicoIdEDataHora(UUID medicoId, Instant dataHora);
 }

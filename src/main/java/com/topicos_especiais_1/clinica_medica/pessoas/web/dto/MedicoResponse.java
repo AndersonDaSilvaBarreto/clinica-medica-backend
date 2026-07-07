@@ -41,9 +41,9 @@ public record MedicoResponse(
     public record EspecialidadeResumidaResponse(
             UUID id,
             String nome
-    ) {}
+    ) implements Serializable {}
     public record SalaAtendimentoResumidaResponse(
             UUID id,
             String nome
-    ) {}
+    ) implements Serializable {}
 }

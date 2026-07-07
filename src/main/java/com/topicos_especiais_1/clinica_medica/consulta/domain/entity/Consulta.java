@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Especialidade;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -49,8 +50,8 @@ public class Consulta extends BaseEntity implements Serializable {
     private Instant dataHoraFim;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "status", nullable = false)
+    @ColumnDefault("'AGUARDANDO_PAGAMENTO'")
     private StatusConsulta statusConsulta;
 
     @Column(name = "observacao", columnDefinition = "text")

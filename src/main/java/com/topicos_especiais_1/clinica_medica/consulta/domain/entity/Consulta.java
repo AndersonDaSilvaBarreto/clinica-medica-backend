@@ -51,7 +51,7 @@ public class Consulta extends BaseEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @ColumnDefault("'AGUARDANDO_PAGAMENTO'")
+    @ColumnDefault("'AGENDADA'")
     private StatusConsulta statusConsulta;
 
     @Column(name = "observacao", columnDefinition = "text")
@@ -83,7 +83,7 @@ public class Consulta extends BaseEntity implements Serializable {
     }
 
     public static Consulta create(Paciente paciente, Medico medico, Instant dataHoraInicio, Instant dataHoraFim, String observacao,Especialidade especialidade, Usuario criadoPor) {
-        return new Consulta(paciente, medico, dataHoraInicio, dataHoraFim, StatusConsulta.AGUARDANDO_PAGAMENTO, observacao,especialidade, criadoPor); //
+        return new Consulta(paciente, medico, dataHoraInicio, dataHoraFim, StatusConsulta.AGENDADA, observacao,especialidade, criadoPor); //
     }
 
     private static void validarDataHora(Instant dataHoraInicio, Instant dataHoraFim) {

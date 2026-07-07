@@ -18,7 +18,9 @@ public class PagamentoMapper {
                 pagamento.getStatus(),
                 pagamento.getValor(),
                 pagamento.getPaymentIdMp(),
-                pagamento.getStatusDetail()
+                pagamento.getStatusDetail(),
+                pagamento.getQrCode(),       
+                pagamento.getQrCodeBase64()
         );
     }
 }

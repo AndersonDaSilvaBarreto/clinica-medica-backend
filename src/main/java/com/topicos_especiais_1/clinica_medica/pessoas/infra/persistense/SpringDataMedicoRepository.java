@@ -27,7 +27,7 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID>,
             """
             SELECT DISTINCT m
             FROM Medico m
-            JOIN FETCH m.especialidades e
+            LEFT JOIN FETCH m.especialidades e
             JOIN FETCH m.usuario u
             WHERE 
                 (cast(:cursor AS uuid ) IS NULL OR m.id > :cursor)
@@ -48,7 +48,7 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID>,
     @Query(value = """
         SELECT m FROM Medico m
         JOIN FETCH m.usuario
-        JOIN FETCH m.especialidades
+        LEFT JOIN FETCH m.especialidades
         WHERE m.id = :medicoId
 """)
     Optional<Medico> buscarPorIdComEspecialidades(@Param("medicoId") UUID medicoId);
@@ -72,7 +72,7 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID>,
     @Query("""
         SELECT DISTINCT m FROM Medico m
         JOIN FETCH m.usuario
-        JOIN FETCH m.especialidades
+        LEFT JOIN FETCH m.especialidades
 """)
     Page<Medico> findAllComRelacionamentos(Specification<Medico> specs, Pageable pageable);
     

@@ -7,33 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.AgendarConsultaUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.AtualizarStatusConsultaUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.AtualizarStatusConsultaRequest;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscaPaginadaConsultaUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscaPaginadaMedicoMeConsultasUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscaPaginadaPacienteMeConsultasUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.BuscaPaginadaReagendamentoConsultaUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.CancelarConsultaUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.ReagendamentoEmMassaUseCase;
-import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.ReagendarConsultaUseCase;
+import com.topicos_especiais_1.clinica_medica.atendimento.application.usecase.FinalizarAtendimentoUseCase;
+import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.*;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.AgendarConsultaRequest;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.CancelarConsultaRequest;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ConsultaResponse;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ReagendamentoEmMassaRequest;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ReagendamentoEmMassaResponse;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ReagendamentoResponse;
-import com.topicos_especiais_1.clinica_medica.consulta.web.dto.ReagendarConsultaRequest;
+import com.topicos_especiais_1.clinica_medica.consulta.web.dto.*;
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
 
@@ -54,6 +33,7 @@ public class ConsultaController {
     private final ReagendarConsultaUseCase reagendarConsultaUseCase;
     private final ReagendamentoEmMassaUseCase reagendamentoEmMassaUseCase;
     private final BuscaPaginadaReagendamentoConsultaUseCase buscaPaginadaReagendamentoConsultaUseCase;
+    private final FinalizarAtendimentoUseCase finalizarAtendimentoUseCase; // NOVO
 
     @PostMapping
     public ResponseEntity<Void> agendar(
@@ -61,9 +41,7 @@ public class ConsultaController {
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         agendarConsultaUseCase.execute(agendarConsultaRequest, usuarioAutenticado.usuario());
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(null);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -78,9 +56,7 @@ public class ConsultaController {
             @RequestParam(required = false, defaultValue = "10") int limit
     ) {
         var response = buscaPaginadaConsultaUseCase.execute(cursor, pacienteId, medicoId, status, dataInicio, dataFim, limit);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/pacientes/me")
@@ -93,18 +69,8 @@ public class ConsultaController {
             @RequestParam(required = false) Instant dataFim,
             @RequestParam(required = false, defaultValue = "10") int limit
     ) {
-        var response = buscaPaginaPacienteMeConsultasUseCase.execute(
-                cursor,
-                usuarioAutenticado.usuario(),
-                medicoId,
-                status,
-                dataInicio,
-                dataFim,
-                limit
-        );
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        var response = buscaPaginaPacienteMeConsultasUseCase.execute(cursor, usuarioAutenticado.usuario(), medicoId, status, dataInicio, dataFim, limit);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/medicos/me")
@@ -117,19 +83,8 @@ public class ConsultaController {
             @RequestParam(required = false) Instant dataFim,
             @RequestParam(required = false, defaultValue = "10") int limit
     ) {
-
-        var response = buscaPaginadaMedicoMeConsultasUseCase.execute(
-                cursor,
-                pacienteId,
-                usuarioAutenticado.usuario(),
-                status,
-                dataInicio,
-                dataFim,
-                limit
-        );
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        var response = buscaPaginadaMedicoMeConsultasUseCase.execute(cursor, pacienteId, usuarioAutenticado.usuario(), status, dataInicio, dataFim, limit);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{consultaId}/cancelar")
@@ -139,9 +94,7 @@ public class ConsultaController {
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         cancelarConsultaUseCase.execute(consultaId, cancelarConsultaRequest.motivo(), usuarioAutenticado.usuario());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(null);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/reagendamento-em-massa")
@@ -151,11 +104,7 @@ public class ConsultaController {
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         ReagendamentoEmMassaResponse response = reagendamentoEmMassaUseCase.execute(
-                request.medicoId(),
-                request.data(),
-                request.dataFimEfetiva(),
-                request.motivo(),
-                usuarioAutenticado.usuario()
+                request.medicoId(), request.data(), request.dataFimEfetiva(), request.motivo(), usuarioAutenticado.usuario()
         );
         return ResponseEntity.ok(response);
     }
@@ -178,9 +127,25 @@ public class ConsultaController {
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         reagendarConsultaUseCase.execute(consultaId, request.inicio(), request.motivo(), usuarioAutenticado.usuario());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(null);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * PATCH /consultas/{consultaId}/finalizar         [NOVO]
+     * Médico finaliza o atendimento sem prontuário imediato (ou quando não há próximo na fila).
+     *   StatusConsulta: EM_ATENDIMENTO → FINALIZADA
+     * Apenas o médico dono da consulta pode executar.
+     * Nota: RegistrarProntuarioUseCase também finaliza — este endpoint é para quando
+     * o médico encerra o atendimento sem salvar prontuário naquele momento.
+     */
+    @PatchMapping("/{consultaId}/finalizar")
+    @PreAuthorize("hasRole('MEDICO')")
+    public ResponseEntity<Void> finalizar(
+            @PathVariable UUID consultaId,
+            @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
+    ) {
+        finalizarAtendimentoUseCase.execute(consultaId, usuarioAutenticado.usuario());
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{consultaId}/historico-reagendamento")
@@ -192,19 +157,7 @@ public class ConsultaController {
             @RequestParam(required = false) Instant antesDe,
             @RequestParam(required = false, defaultValue = "05") int limit
     ) {
-
-        var response = buscaPaginadaReagendamentoConsultaUseCase.execute(
-                cursor,
-                consultaId,
-                pacienteId,
-                depoisDe,
-                antesDe,
-                limit
-        );
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-
+        var response = buscaPaginadaReagendamentoConsultaUseCase.execute(cursor, consultaId, pacienteId, depoisDe, antesDe, limit);
+        return ResponseEntity.ok(response);
     }
 }

@@ -11,7 +11,9 @@ import java.util.UUID;
 @Repository
 @RequiredArgsConstructor
 public class ConfirmacaoPresencaImpl implements ConfirmacaoPresencaRepository {
-    SpringDataConfirmacaoPresenca springDataConfirmacaoPresenca;
+    
+    private final SpringDataConfirmacaoPresenca springDataConfirmacaoPresenca;
+
     @Override
     public ConfirmacaoPresenca salvar(ConfirmacaoPresenca confirmacaoPresenca) {
         return springDataConfirmacaoPresenca.save(confirmacaoPresenca);

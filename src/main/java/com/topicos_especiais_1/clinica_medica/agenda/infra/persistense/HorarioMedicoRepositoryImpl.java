@@ -46,8 +46,5 @@ public class HorarioMedicoRepositoryImpl implements HorarioMedicoRepository {
         return springData.findMaxDataHoraByMedicoId(medicoId);
     }
 
-    @Override
-    public boolean existePorMedicoIdEDataHora(UUID medicoId, Instant dataHora) {
-        return springData.existsByMedicoIdAndDataHora(medicoId, dataHora);
-    }
+    
 }

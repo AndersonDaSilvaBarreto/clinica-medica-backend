@@ -20,7 +20,11 @@ public record ConsultarPagamentoResponse(
 
         String paymentIdMp,
 
-        String statusDetail
+        String statusDetail,
+
+        String qrCode,
+
+        String qrCodeBase64
 
 ) {
 }

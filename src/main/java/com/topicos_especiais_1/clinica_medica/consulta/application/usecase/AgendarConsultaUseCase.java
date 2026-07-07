@@ -8,9 +8,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import com.topicos_especiais_1.clinica_medica.notificacoes.api.events.CriarNotificacaoEvent;
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Especialidade;
-import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.EspecialidadeRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +19,12 @@ import com.topicos_especiais_1.clinica_medica.consulta.domain.entity.Consulta;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.repository.ConsultaRepository;
 import com.topicos_especiais_1.clinica_medica.consulta.web.dto.AgendarConsultaRequest;
 import com.topicos_especiais_1.clinica_medica.identidade.domain.entity.Usuario;
+import com.topicos_especiais_1.clinica_medica.notificacoes.api.events.CriarNotificacaoEvent;
 import com.topicos_especiais_1.clinica_medica.pessoas.api.MedicoApi;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Especialidade;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Medico;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.entity.Paciente;
+import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.EspecialidadeRepository;
 import com.topicos_especiais_1.clinica_medica.pessoas.domain.repository.PacienteRepository;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.AcessoNegadoException;
 import com.topicos_especiais_1.clinica_medica.shared.domain.exception.ConflitoException;
@@ -52,7 +52,7 @@ public class AgendarConsultaUseCase {
             .withZone(FUSO_HORARIO);
 
     @Transactional
-    public void execute(AgendarConsultaRequest request, Usuario usuarioAutenticado) {
+    public Consulta execute(AgendarConsultaRequest request, Usuario usuarioAutenticado) {
         Paciente paciente = pacienteRepository.buscarPorId(request.pacienteId());
         Medico medico = medicoApi.buscarPorIdComAgenda(request.medicoId());
         Especialidade especialidade = especialidadeRepository.buscarPorIdMedicoId(request.especialidadeId(),medico.getId());
@@ -97,16 +97,14 @@ public class AgendarConsultaUseCase {
         }
 
         Consulta novaConsulta = Consulta.create(paciente, medico, inicio, fim, request.observacao(),especialidade, usuarioAutenticado);
-        consultaRepository.salvar(novaConsulta);
+        novaConsulta = consultaRepository.salvar(novaConsulta);
 
-        // ── NOVO: marcar o slot correspondente como OCUPADO ───────────────────
         horarioMedicoRepository
                 .buscarPorMedicoIdEDataHora(medico.getId(), inicio)
                 .ifPresent(slot -> {
                     slot.marcarOcupado();
                     horarioMedicoRepository.salvar(slot);
                 });
-        // ─────────────────────────────────────────────────────────────────────
         String dataFormatada = FORMATADOR_BR.format(novaConsulta.getDataHoraInicio());
         eventPublisher.publishEvent(new CriarNotificacaoEvent(
                 paciente.getUsuario(),
@@ -115,5 +113,7 @@ public class AgendarConsultaUseCase {
                         medico.getUsuario().getNome().toString() + " em " +
                         dataFormatada
         ));
+
+        return novaConsulta;
     }
 }

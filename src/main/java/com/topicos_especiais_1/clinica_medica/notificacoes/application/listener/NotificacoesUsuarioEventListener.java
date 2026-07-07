@@ -5,6 +5,7 @@ import com.topicos_especiais_1.clinica_medica.consulta.api.event.ConsultaPagamen
 import com.topicos_especiais_1.clinica_medica.identidade.api.event.EsqueciSenhaCodigoEvent;
 import com.topicos_especiais_1.clinica_medica.identidade.api.event.UsuarioCriadoEvent;
 import com.topicos_especiais_1.clinica_medica.identidade.api.event.VerificacaoSolicitadaEvent;
+import com.topicos_especiais_1.clinica_medica.identidade.application.dto.DadosMudarEmail;
 import com.topicos_especiais_1.clinica_medica.notificacoes.application.usecase.CriarNotificacaoUseCase;
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.enums.TipoNotificacao;
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.service.NotificacaoService;
@@ -81,6 +82,14 @@ public class NotificacoesUsuarioEventListener {
                 TipoNotificacao.PAGAMENTO_RECUSADO,
                 mensagem,
                 "Pagamento não aprovado"
+        );
+    }
+    @ApplicationModuleListener
+    public void onMudarEmail(DadosMudarEmail event) {
+        notificacaoService.enviarEmail(
+                event.email(),
+                "Codigo para mudar email",
+                "codigo: " + event.codigo()
         );
     }
 }

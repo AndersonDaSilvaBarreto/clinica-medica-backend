@@ -49,7 +49,6 @@ public interface SpringDataMedicoRepository extends JpaRepository<Medico, UUID>,
         SELECT m FROM Medico m
         JOIN FETCH m.usuario
         LEFT JOIN FETCH m.especialidades
-        LEFT JOIN FETCH m.salaAtendimento
         WHERE m.id = :medicoId
 """)
     Optional<Medico> buscarPorIdComEspecialidades(@Param("medicoId") UUID medicoId);

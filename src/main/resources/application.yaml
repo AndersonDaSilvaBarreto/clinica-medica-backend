@@ -21,6 +21,11 @@ spring:
       time-to-live: 10m
 jwt:
     secret: ${JWT_SECRET:my_secret}
+server:
+  tomcat:
+    keep-alive-timeout: 30000
+    connection-timeout: 20000
+
 resend:
   api-key: ${RESEND_API_KEY:re_18TYmEwj_3aHzC4RpWfXSSPk27zNb4QxQ}
   from: ${RESEND_FROM:onboarding@resend.dev}

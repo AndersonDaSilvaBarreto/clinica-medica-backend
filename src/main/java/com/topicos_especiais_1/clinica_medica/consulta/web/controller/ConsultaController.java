@@ -14,6 +14,7 @@ import com.topicos_especiais_1.clinica_medica.consulta.application.usecase.*;
 import com.topicos_especiais_1.clinica_medica.consulta.domain.enums.StatusConsulta;
 import com.topicos_especiais_1.clinica_medica.consulta.web.dto.*;
 import com.topicos_especiais_1.clinica_medica.identidade.infra.security.UsuarioAutenticado;
+import com.topicos_especiais_1.clinica_medica.shared.web.dto.MensagemResponse;
 import com.topicos_especiais_1.clinica_medica.shared.web.dto.PaginacaoResponse;
 
 import jakarta.validation.Valid;
@@ -36,12 +37,12 @@ public class ConsultaController {
     private final FinalizarAtendimentoUseCase finalizarAtendimentoUseCase; // NOVO
 
     @PostMapping
-    public ResponseEntity<Void> agendar(
+    public ResponseEntity<ConsultaResponse> agendar(
             @RequestBody @Valid AgendarConsultaRequest agendarConsultaRequest,
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
-        agendarConsultaUseCase.execute(agendarConsultaRequest, usuarioAutenticado.usuario());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        var consulta = agendarConsultaUseCase.execute(agendarConsultaRequest, usuarioAutenticado.usuario());
+        return ResponseEntity.status(HttpStatus.CREATED).body(ConsultaResponse.fromEntity(consulta));
     }
 
     @GetMapping
@@ -88,13 +89,13 @@ public class ConsultaController {
     }
 
     @PatchMapping("/{consultaId}/cancelar")
-    public ResponseEntity<Void> cancelar(
+    public ResponseEntity<MensagemResponse> cancelar(
             @PathVariable UUID consultaId,
             @RequestBody CancelarConsultaRequest cancelarConsultaRequest,
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         cancelarConsultaUseCase.execute(consultaId, cancelarConsultaRequest.motivo(), usuarioAutenticado.usuario());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(MensagemResponse.of("Consulta cancelada com sucesso."));
     }
 
     @PostMapping("/reagendamento-em-massa")
@@ -111,23 +112,23 @@ public class ConsultaController {
 
     @PatchMapping("/{consultaId}/status")
     @PreAuthorize("hasAnyRole('MEDICO','RECEPCIONISTA','ADMINISTRADOR')")
-    public ResponseEntity<Void> atualizarStatus(
+    public ResponseEntity<MensagemResponse> atualizarStatus(
             @PathVariable UUID consultaId,
             @RequestBody @Valid AtualizarStatusConsultaRequest request,
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         atualizarStatusConsultaUseCase.execute(consultaId, request.status(), usuarioAutenticado.usuario());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(MensagemResponse.of("Status da consulta atualizado com sucesso."));
     }
 
     @PatchMapping("/{consultaId}/reagendar")
-    public ResponseEntity<Void> reagendar(
+    public ResponseEntity<MensagemResponse> reagendar(
             @PathVariable UUID consultaId,
             @RequestBody @Valid ReagendarConsultaRequest request,
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         reagendarConsultaUseCase.execute(consultaId, request.inicio(), request.motivo(), usuarioAutenticado.usuario());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(MensagemResponse.of("Consulta reagendada com sucesso."));
     }
 
     /**
@@ -140,12 +141,12 @@ public class ConsultaController {
      */
     @PatchMapping("/{consultaId}/finalizar")
     @PreAuthorize("hasRole('MEDICO')")
-    public ResponseEntity<Void> finalizar(
+    public ResponseEntity<MensagemResponse> finalizar(
             @PathVariable UUID consultaId,
             @AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado
     ) {
         finalizarAtendimentoUseCase.execute(consultaId, usuarioAutenticado.usuario());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(MensagemResponse.of("Atendimento finalizado com sucesso."));
     }
 
     @GetMapping("/{consultaId}/historico-reagendamento")

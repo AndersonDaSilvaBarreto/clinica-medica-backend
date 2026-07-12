@@ -1,4 +1,5 @@
-package com.topicos_especiais_1.clinica_medica.notificacoes.infra.persistence;
+package com.topicos_especiais_1.clinica_medica.notificacoes.infra.persistense;
+
 
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.entity.Notificacao;
 import com.topicos_especiais_1.clinica_medica.notificacoes.domain.repository.NotificacaoRepository;
